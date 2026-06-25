@@ -1,0 +1,707 @@
+{
+  "12": {
+    "inputs": {
+      "image": "85db20563f42696ed2c2af37292bd94e4fed9384e955bf1a732a0c47d39e2d84.JPG"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "2img"
+    }
+  },
+  "37": {
+    "inputs": {
+      "image": "d562b8c71b6cab9a1a79fb760bc78de99409e68e57f2b5bac95c1a57f78d8f11.JPG"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "3img"
+    }
+  },
+  "38": {
+    "inputs": {
+      "image": "1f0031c7a03caa6e6b5593a9d8fbea6b7c0e123ee08c17d7554fa4090a724d60.JPG"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "1img"
+    }
+  },
+  "40": {
+    "inputs": {
+      "image": "2b801e5232c33a8cb8cbfb84ba0c2e48fc1f507d2917a0ffb0479419c930379e.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "44": {
+    "inputs": {
+      "image": "3225ee8da9582330402ab7c95b7e5b9e2f859b6802006820474c4088b9e9482a.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Outfit A"
+    }
+  },
+  "45": {
+    "inputs": {
+      "image": "45b9d2ecb60b6b45a8c4434135295c0eb54d81c110b8e3997a0a2bcb427b6d94.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Outfit B"
+    }
+  },
+  "47": {
+    "inputs": {
+      "select": 4,
+      "images1": [
+        "44",
+        0
+      ],
+      "images2_opt": [
+        "45",
+        0
+      ],
+      "images3_opt": [
+        "53",
+        0
+      ],
+      "images4_opt": [
+        "52",
+        0
+      ]
+    },
+    "class_type": "ImageMaskSwitch",
+    "_meta": {
+      "title": "Switch (images, mask)"
+    }
+  },
+  "50": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "61",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "51": {
+    "inputs": {
+      "images.image0": [
+        "38",
+        0
+      ],
+      "images.image1": [
+        "12",
+        0
+      ],
+      "images.image2": [
+        "37",
+        0
+      ]
+    },
+    "class_type": "BatchImagesNode",
+    "_meta": {
+      "title": "Batch Images"
+    }
+  },
+  "52": {
+    "inputs": {
+      "image": "db916da47ddace3d96359b2e7316cadbcebafc6834d8a2d5f3d6967ff43651ce.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Outfit D"
+    }
+  },
+  "53": {
+    "inputs": {
+      "image": "8d80a42fb317d73dd36ec1e99fb66ea5166b9e189ae21a8652c1e50658d234dc.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Outfit C"
+    }
+  },
+  "56": {
+    "inputs": {
+      "prompt": "replace the person in character sheet @img1 with @img2. make sure the face, hair, size body is exactly same @img2. make sure the character must follow the pose and composition @img1 without add text or others. make the random outfit for final output either is the man or woman",
+      "model": "gpt-image-2",
+      "model.size": "Custom",
+      "model.custom_width": [
+        "57",
+        0
+      ],
+      "model.custom_height": [
+        "57",
+        1
+      ],
+      "model.background": "auto",
+      "model.quality": "high",
+      "n": 1,
+      "seed": 1,
+      "model.images.image_1": [
+        "40",
+        0
+      ],
+      "model.images.image_2": [
+        "51",
+        0
+      ],
+      "model.images.image_3": [
+        "134",
+        0
+      ]
+    },
+    "class_type": "OpenAIGPTImageNodeV2",
+    "_meta": {
+      "title": "OpenAI GPT Image 2"
+    }
+  },
+  "57": {
+    "inputs": {
+      "image": [
+        "40",
+        0
+      ]
+    },
+    "class_type": "GetImageSize+",
+    "_meta": {
+      "title": "🔧 Get Image Size"
+    }
+  },
+  "58": {
+    "inputs": {
+      "filename_prefix": "Character Sheet",
+      "images": [
+        "56",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "59": {
+    "inputs": {
+      "switch": false,
+      "on_false": [
+        "76",
+        0
+      ],
+      "on_true": [
+        "77",
+        0
+      ]
+    },
+    "class_type": "ComfySwitchNode",
+    "_meta": {
+      "title": "Switch"
+    }
+  },
+  "61": {
+    "inputs": {
+      "prompt": "replace the outfit @character sheet with @img1. remain the composition and pose from @character sheet. only replace the outfit without add text or others.",
+      "model": "gpt-image-2",
+      "model.size": "Custom",
+      "model.custom_width": [
+        "62",
+        0
+      ],
+      "model.custom_height": [
+        "62",
+        1
+      ],
+      "model.background": "auto",
+      "model.quality": "high",
+      "n": 1,
+      "seed": 1,
+      "model.images.image_1": [
+        "56",
+        0
+      ],
+      "model.images.image_2": [
+        "47",
+        0
+      ],
+      "model.images.image_3": [
+        "134",
+        0
+      ]
+    },
+    "class_type": "OpenAIGPTImageNodeV2",
+    "_meta": {
+      "title": "OpenAI GPT Image 2"
+    }
+  },
+  "62": {
+    "inputs": {
+      "image": [
+        "56",
+        0
+      ]
+    },
+    "class_type": "GetImageSize+",
+    "_meta": {
+      "title": "🔧 Get Image Size"
+    }
+  },
+  "63": {
+    "inputs": {
+      "images": [
+        "51",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "76": {
+    "inputs": {
+      "value": ""
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "Text String"
+    }
+  },
+  "77": {
+    "inputs": {
+      "value": ""
+    },
+    "class_type": "PrimitiveString",
+    "_meta": {
+      "title": "Text String"
+    }
+  },
+  "85": {
+    "inputs": {
+      "prompt": [
+        "99",
+        0
+      ],
+      "model": "gpt-image-2",
+      "model.size": "2160x3840",
+      "model.custom_width": 1024,
+      "model.custom_height": 1024,
+      "model.background": "auto",
+      "model.quality": "high",
+      "n": 1,
+      "seed": 1,
+      "model.images.image_1": [
+        "61",
+        0
+      ],
+      "model.images.image_2": [
+        "134",
+        0
+      ]
+    },
+    "class_type": "OpenAIGPTImageNodeV2",
+    "_meta": {
+      "title": "OpenAI GPT Image 2"
+    }
+  },
+  "86": {
+    "inputs": {
+      "prompt": [
+        "102",
+        0
+      ],
+      "model": "gpt-image-2",
+      "model.size": "2160x3840",
+      "model.custom_width": 1024,
+      "model.custom_height": 1024,
+      "model.background": "auto",
+      "model.quality": "high",
+      "n": 1,
+      "seed": 1,
+      "model.images.image_1": [
+        "61",
+        0
+      ],
+      "model.images.image_2": [
+        "134",
+        0
+      ]
+    },
+    "class_type": "OpenAIGPTImageNodeV2",
+    "_meta": {
+      "title": "OpenAI GPT Image 2"
+    }
+  },
+  "87": {
+    "inputs": {
+      "prompt": [
+        "104",
+        0
+      ],
+      "model": "gpt-image-2",
+      "model.size": "2160x3840",
+      "model.custom_width": 1024,
+      "model.custom_height": 1024,
+      "model.background": "auto",
+      "model.quality": "high",
+      "n": 1,
+      "seed": 1,
+      "model.images.image_1": [
+        "61",
+        0
+      ],
+      "model.images.image_2": [
+        "134",
+        0
+      ]
+    },
+    "class_type": "OpenAIGPTImageNodeV2",
+    "_meta": {
+      "title": "OpenAI GPT Image 2"
+    }
+  },
+  "89": {
+    "inputs": {
+      "filename_prefix": "Editorial 1",
+      "images": [
+        "85",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "90": {
+    "inputs": {
+      "filename_prefix": "Editorial 2",
+      "images": [
+        "86",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "91": {
+    "inputs": {
+      "filename_prefix": "Editorial 3",
+      "images": [
+        "87",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "92": {
+    "inputs": {
+      "prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image, no need full body shot. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]\n\noutput only show the prompt only",
+      "model": "Gemini 3.1 Flash-Lite",
+      "model.thinking_level": "LOW",
+      "model.temperature": 1,
+      "model.top_p": 0.95,
+      "model.max_output_tokens": 32768,
+      "seed": 1989815598,
+      "system_prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]",
+      "model.images.image_1": [
+        "61",
+        0
+      ]
+    },
+    "class_type": "GeminiNodeV2",
+    "_meta": {
+      "title": "Google Gemini"
+    }
+  },
+  "99": {
+    "inputs": {
+      "source": [
+        "92",
+        0
+      ]
+    },
+    "class_type": "PreviewAny",
+    "_meta": {
+      "title": "Preview as Text"
+    }
+  },
+  "102": {
+    "inputs": {
+      "source": [
+        "103",
+        0
+      ]
+    },
+    "class_type": "PreviewAny",
+    "_meta": {
+      "title": "Preview as Text"
+    }
+  },
+  "103": {
+    "inputs": {
+      "prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image (no need full body shot camera). the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]\n\noutput only show the prompt only",
+      "model": "Gemini 3.1 Flash-Lite",
+      "model.thinking_level": "LOW",
+      "model.temperature": 1,
+      "model.top_p": 0.95,
+      "model.max_output_tokens": 32768,
+      "seed": 1286308466,
+      "system_prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]",
+      "model.images.image_1": [
+        "61",
+        0
+      ],
+      "model.images.image_2": [
+        "134",
+        0
+      ]
+    },
+    "class_type": "GeminiNodeV2",
+    "_meta": {
+      "title": "Google Gemini"
+    }
+  },
+  "104": {
+    "inputs": {
+      "source": [
+        "105",
+        0
+      ]
+    },
+    "class_type": "PreviewAny",
+    "_meta": {
+      "title": "Preview as Text"
+    }
+  },
+  "105": {
+    "inputs": {
+      "prompt": "you an clever assistant in editorial. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image (no need full body shot). the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]\n\noutput only show the prompt only",
+      "model": "Gemini 3.1 Flash-Lite",
+      "model.thinking_level": "HIGH",
+      "model.temperature": 1,
+      "model.top_p": 0.95,
+      "model.max_output_tokens": 32768,
+      "seed": 724376483,
+      "system_prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]",
+      "model.images.image_1": [
+        "61",
+        0
+      ]
+    },
+    "class_type": "GeminiNodeV2",
+    "_meta": {
+      "title": "Google Gemini"
+    }
+  },
+  "108": {
+    "inputs": {
+      "prompt": "you are art expert director videographer for editorial. based on image. give me a prompt video for this. only show the motion prompt. make sure the prompt video should like editorial",
+      "model": "Gemini 3.1 Flash-Lite",
+      "model.thinking_level": "HIGH",
+      "model.temperature": 1,
+      "model.top_p": 0.95,
+      "model.max_output_tokens": 32768,
+      "seed": 231509287,
+      "system_prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]",
+      "model.images.image_1": [
+        "85",
+        0
+      ]
+    },
+    "class_type": "GeminiNodeV2",
+    "_meta": {
+      "title": "Google Gemini"
+    }
+  },
+  "110": {
+    "inputs": {
+      "source": [
+        "108",
+        0
+      ]
+    },
+    "class_type": "PreviewAny",
+    "_meta": {
+      "title": "Preview as Text"
+    }
+  },
+  "114": {
+    "inputs": {
+      "filename_prefix": "Final Video",
+      "format": "mp4",
+      "codec": "auto",
+      "video": [
+        "115",
+        0
+      ]
+    },
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "Save Video"
+    }
+  },
+  "115": {
+    "inputs": {
+      "multi_shot": "disabled",
+      "multi_shot.prompt": [
+        "110",
+        0
+      ],
+      "multi_shot.negative_prompt": "[Negative Prompt]\nCGI, plastic skin, distorted face, oversaturated colors, shaky camera, blurry subject, artificial lighting, cartoonish, low resolution, watermark, text, out of focus.",
+      "multi_shot.duration": 5,
+      "generate_audio": true,
+      "model": "kling-3.0-turbo",
+      "model.resolution": "720p",
+      "model.aspect_ratio": "9:16",
+      "seed": 817648154,
+      "start_frame": [
+        "85",
+        0
+      ]
+    },
+    "class_type": "KlingVideoNode",
+    "_meta": {
+      "title": "Kling 3.0 Video"
+    }
+  },
+  "129": {
+    "inputs": {
+      "prompt": [
+        "132",
+        0
+      ],
+      "model": "gpt-image-2",
+      "model.size": "2160x3840",
+      "model.custom_width": 1024,
+      "model.custom_height": 1024,
+      "model.background": "auto",
+      "model.quality": "high",
+      "n": 1,
+      "seed": 1,
+      "model.images.image_1": [
+        "61",
+        0
+      ],
+      "model.images.image_2": [
+        "134",
+        0
+      ]
+    },
+    "class_type": "OpenAIGPTImageNodeV2",
+    "_meta": {
+      "title": "OpenAI GPT Image 2"
+    }
+  },
+  "130": {
+    "inputs": {
+      "filename_prefix": "Editorial 4 (white)",
+      "images": [
+        "129",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "131": {
+    "inputs": {
+      "prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which white studio background. remain the outift and character. give a random camera angle image, no need full body shot. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]\n\noutput only show the prompt only",
+      "model": "Gemini 3.1 Flash-Lite",
+      "model.thinking_level": "LOW",
+      "model.temperature": 1,
+      "model.top_p": 0.95,
+      "model.max_output_tokens": 32768,
+      "seed": 1181699976,
+      "system_prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]",
+      "model.images.image_1": [
+        "61",
+        0
+      ]
+    },
+    "class_type": "GeminiNodeV2",
+    "_meta": {
+      "title": "Google Gemini"
+    }
+  },
+  "132": {
+    "inputs": {
+      "source": [
+        "131",
+        0
+      ]
+    },
+    "class_type": "PreviewAny",
+    "_meta": {
+      "title": "Preview as Text"
+    }
+  },
+  "134": {
+    "inputs": {
+      "prompt": "show me the front close-up of the face with white background studio, add some micro skin details. the hair and face should follow exactly as img1",
+      "model": "gpt-image-2",
+      "model.size": "Custom",
+      "model.custom_width": 1024,
+      "model.custom_height": 1024,
+      "model.background": "auto",
+      "model.quality": "medium",
+      "n": 1,
+      "seed": 1,
+      "model.images.image_1": [
+        "135",
+        0
+      ]
+    },
+    "class_type": "OpenAIGPTImageNodeV2",
+    "_meta": {
+      "title": "OpenAI GPT Image 2"
+    }
+  },
+  "135": {
+    "inputs": {
+      "images.image0": [
+        "38",
+        0
+      ],
+      "images.image1": [
+        "12",
+        0
+      ],
+      "images.image2": [
+        "37",
+        0
+      ]
+    },
+    "class_type": "BatchImagesNode",
+    "_meta": {
+      "title": "Batch Images"
+    }
+  },
+  "136": {
+    "inputs": {
+      "filename_prefix": "Character Sheet",
+      "images": [
+        "134",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  }
+}

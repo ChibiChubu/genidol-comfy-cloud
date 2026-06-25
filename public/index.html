@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GenIDOL Automation Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true">
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V4m0 0 4 4m-4-4-4 4"/><path d="M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 1.7 5.1a3 3 0 0 0 1.9 1.9L21 12l-5.4 2a3 3 0 0 0-1.9 1.9L12 21l-1.7-5.1A3 3 0 0 0 8.4 14L3 12l5.4-2a3 3 0 0 0 1.9-1.9z"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01"/><path d="M10.3 4.5 2.8 18a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3L13.7 4.5a2 2 0 0 0-3.4 0Z"/></symbol>
+  </svg>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="mark"><svg><use href="#i-spark"></use></svg></div>
+      <div>
+        <strong>GenIDOL</strong>
+        <span>Comfy Cloud automation</span>
+      </div>
+    </div>
+    <div class="cloud-pill" id="keyStatus">Checking API key</div>
+  </header>
+
+  <main class="app">
+    <section class="workspace">
+      <div class="intro">
+        <p class="eyebrow">Client intake</p>
+        <h1>Upload 3 references, pick wardrobe, generate the full editorial pack.</h1>
+      </div>
+
+      <form id="generateForm" class="flow">
+        <section class="panel">
+          <div class="panel-head">
+            <span class="step">01</span>
+            <div>
+              <h2>Reference Images</h2>
+              <p>Face, hair, body shape, and styling identity source for the character sheet.</p>
+            </div>
+          </div>
+          <div class="upload-grid">
+            <label class="upload-card">
+              <input name="ref1" type="file" accept="image/*" required>
+              <div class="preview"><svg><use href="#i-upload"></use></svg></div>
+              <strong>Reference 1</strong>
+              <span>Primary face</span>
+            </label>
+            <label class="upload-card">
+              <input name="ref2" type="file" accept="image/*" required>
+              <div class="preview"><svg><use href="#i-upload"></use></svg></div>
+              <strong>Reference 2</strong>
+              <span>Angle / hair</span>
+            </label>
+            <label class="upload-card">
+              <input name="ref3" type="file" accept="image/*" required>
+              <div class="preview"><svg><use href="#i-upload"></use></svg></div>
+              <strong>Reference 3</strong>
+              <span>Body / pose</span>
+            </label>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <span class="step">02</span>
+            <div>
+              <h2>Wardrobe</h2>
+              <p>These are the existing wardrobe nodes inside your Comfy workflow.</p>
+            </div>
+          </div>
+          <div class="wardrobe-grid" id="wardrobeGrid"></div>
+        </section>
+
+        <section class="action-panel">
+          <div>
+            <strong>Output recipe</strong>
+            <span>3 random editorial locations + 1 white studio editorial + 1 vertical video.</span>
+          </div>
+          <button class="generate-btn" type="submit">
+            <svg><use href="#i-spark"></use></svg>
+            Generate Pack
+          </button>
+        </section>
+
+        <section class="panel final-output-panel">
+          <div class="panel-head">
+            <span class="step">03</span>
+            <div>
+              <h2>Final Outputs</h2>
+              <p>Only Editorial 1, 2, 3, 4 and the final video will appear here.</p>
+            </div>
+          </div>
+          <div id="resultGrid" class="result-grid empty">
+            <div class="empty-state">Generated images and video will appear here.</div>
+          </div>
+        </section>
+      </form>
+    </section>
+
+    <aside class="runway">
+      <section class="status-card">
+        <p class="eyebrow">Pipeline</p>
+        <ol id="steps">
+          <li class="active">Ready for client references</li>
+          <li>Upload images to Comfy Cloud</li>
+          <li>Build character + wardrobe</li>
+          <li>Render editorial set</li>
+          <li>Generate video</li>
+        </ol>
+      </section>
+    </aside>
+  </main>
+
+  <div class="toast" id="toast" hidden></div>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>
