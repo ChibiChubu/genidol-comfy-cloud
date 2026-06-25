@@ -9,7 +9,8 @@ const PUBLIC_DIR = resolve(ROOT, "public");
 const WORKFLOW_PATH = resolve(ROOT, "data", "workflow-api.json");
 const BASE_URL = "https://cloud.comfy.org";
 
-loadDotEnv();
+loadDotEnv(".env");
+loadDotEnv(".env.local");
 const PORT = Number(process.env.PORT || 8787);
 
 const WARDROBE = [
@@ -107,8 +108,8 @@ function getApiKey() {
   return process.env.COMFY_CLOUD_API_KEY || "";
 }
 
-function loadDotEnv() {
-  const envPath = resolve(ROOT, ".env");
+function loadDotEnv(filename) {
+  const envPath = resolve(ROOT, filename);
   if (!existsSync(envPath)) return;
   const text = readFileSync(envPath, "utf8");
   for (const line of text.split(/\r?\n/)) {
