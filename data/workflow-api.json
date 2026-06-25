@@ -1,7 +1,7 @@
 {
   "12": {
     "inputs": {
-      "image": "85db20563f42696ed2c2af37292bd94e4fed9384e955bf1a732a0c47d39e2d84.JPG"
+      "image": "6664dd201b5d8ed51a027d70b047f6388791977acb837460ec854c4fdff1c0da.png"
     },
     "class_type": "LoadImage",
     "_meta": {
@@ -10,7 +10,7 @@
   },
   "37": {
     "inputs": {
-      "image": "d562b8c71b6cab9a1a79fb760bc78de99409e68e57f2b5bac95c1a57f78d8f11.JPG"
+      "image": "3048e0ef65d3a17e8625c36e4d846c232b7d17035a9af1a41546c3ab865e2b89.png"
     },
     "class_type": "LoadImage",
     "_meta": {
@@ -19,7 +19,7 @@
   },
   "38": {
     "inputs": {
-      "image": "1f0031c7a03caa6e6b5593a9d8fbea6b7c0e123ee08c17d7554fa4090a724d60.JPG"
+      "image": "9d417172014e8f851e9479ec5f38d2cf20f9b45161859b5d5fd78397054b48da.png"
     },
     "class_type": "LoadImage",
     "_meta": {
@@ -131,7 +131,7 @@
   },
   "56": {
     "inputs": {
-      "prompt": "replace the person in character sheet @img1 with @img2. make sure the face, hair, size body is exactly same @img2. make sure the character must follow the pose and composition @img1 without add text or others. make the random outfit for final output either is the man or woman",
+      "prompt": "replace the person in character sheet @img1 with @img2. make sure the face, hair, size body is exactly same @img2. make sure the character must follow the pose and composition @img1 without add text or others. make the random outfit for final output either is the man or woman. i need the size body must follow exacly 100% like @img2",
       "model": "gpt-image-2",
       "model.size": "Custom",
       "model.custom_width": [
@@ -414,7 +414,7 @@
       "model.temperature": 1,
       "model.top_p": 0.95,
       "model.max_output_tokens": 32768,
-      "seed": 1989815598,
+      "seed": 319345609,
       "system_prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]",
       "model.images.image_1": [
         "61",
@@ -458,7 +458,7 @@
       "model.temperature": 1,
       "model.top_p": 0.95,
       "model.max_output_tokens": 32768,
-      "seed": 1286308466,
+      "seed": 1286308469,
       "system_prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]",
       "model.images.image_1": [
         "61",
@@ -490,11 +490,11 @@
     "inputs": {
       "prompt": "you an clever assistant in editorial. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image (no need full body shot). the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]\n\noutput only show the prompt only",
       "model": "Gemini 3.1 Flash-Lite",
-      "model.thinking_level": "HIGH",
+      "model.thinking_level": "LOW",
       "model.temperature": 1,
       "model.top_p": 0.95,
       "model.max_output_tokens": 32768,
-      "seed": 724376483,
+      "seed": 724376486,
       "system_prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]",
       "model.images.image_1": [
         "61",
@@ -510,7 +510,7 @@
     "inputs": {
       "prompt": "you are art expert director videographer for editorial. based on image. give me a prompt video for this. only show the motion prompt. make sure the prompt video should like editorial",
       "model": "Gemini 3.1 Flash-Lite",
-      "model.thinking_level": "HIGH",
+      "model.thinking_level": "LOW",
       "model.temperature": 1,
       "model.top_p": 0.95,
       "model.max_output_tokens": 32768,
@@ -561,12 +561,12 @@
         0
       ],
       "multi_shot.negative_prompt": "[Negative Prompt]\nCGI, plastic skin, distorted face, oversaturated colors, shaky camera, blurry subject, artificial lighting, cartoonish, low resolution, watermark, text, out of focus.",
-      "multi_shot.duration": 5,
-      "generate_audio": true,
+      "multi_shot.duration": 8,
+      "generate_audio": false,
       "model": "kling-3.0-turbo",
       "model.resolution": "720p",
       "model.aspect_ratio": "9:16",
-      "seed": 817648154,
+      "seed": 1465232951,
       "start_frame": [
         "85",
         0
@@ -626,7 +626,7 @@
       "model.temperature": 1,
       "model.top_p": 0.95,
       "model.max_output_tokens": 32768,
-      "seed": 1181699976,
+      "seed": 931319400,
       "system_prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]",
       "model.images.image_1": [
         "61",
