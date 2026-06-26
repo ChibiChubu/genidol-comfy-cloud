@@ -1,7 +1,7 @@
 {
   "12": {
     "inputs": {
-      "image": "6664dd201b5d8ed51a027d70b047f6388791977acb837460ec854c4fdff1c0da.png"
+      "image": "564c0e689480482b753d9d3305ba56a843f23222d82727660a32c638b45068f7.png"
     },
     "class_type": "LoadImage",
     "_meta": {
@@ -10,7 +10,7 @@
   },
   "37": {
     "inputs": {
-      "image": "3048e0ef65d3a17e8625c36e4d846c232b7d17035a9af1a41546c3ab865e2b89.png"
+      "image": "7f9f542f89522c4d6b2aa98176258cad279d9fa7c0352b75cb606517718edea0.png"
     },
     "class_type": "LoadImage",
     "_meta": {
@@ -19,7 +19,7 @@
   },
   "38": {
     "inputs": {
-      "image": "9d417172014e8f851e9479ec5f38d2cf20f9b45161859b5d5fd78397054b48da.png"
+      "image": "5830db8c30abada223c44c0ae3c6bca0af98f92e4e9a5c62ce7d41bbdcff9c98.png"
     },
     "class_type": "LoadImage",
     "_meta": {
@@ -143,9 +143,9 @@
         1
       ],
       "model.background": "auto",
-      "model.quality": "high",
+      "model.quality": "medium",
       "n": 1,
-      "seed": 1,
+      "seed": 2,
       "model.images.image_1": [
         "40",
         0
@@ -187,23 +187,6 @@
     "class_type": "SaveImage",
     "_meta": {
       "title": "Save Image"
-    }
-  },
-  "59": {
-    "inputs": {
-      "switch": false,
-      "on_false": [
-        "76",
-        0
-      ],
-      "on_true": [
-        "77",
-        0
-      ]
-    },
-    "class_type": "ComfySwitchNode",
-    "_meta": {
-      "title": "Switch"
     }
   },
   "61": {
@@ -263,24 +246,6 @@
     "class_type": "PreviewImage",
     "_meta": {
       "title": "Preview Image"
-    }
-  },
-  "76": {
-    "inputs": {
-      "value": ""
-    },
-    "class_type": "PrimitiveString",
-    "_meta": {
-      "title": "Text String"
-    }
-  },
-  "77": {
-    "inputs": {
-      "value": ""
-    },
-    "class_type": "PrimitiveString",
-    "_meta": {
-      "title": "Text String"
     }
   },
   "85": {
@@ -408,13 +373,13 @@
   },
   "92": {
     "inputs": {
-      "prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image, no need full body shot. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]\n\noutput only show the prompt only",
+      "prompt": "You are an expert prompt engineer specializing in high-end editorial photography prompts for AI image generation.\n\nYour task is to analyze the uploaded reference image and recreate it as a brand-new editorial scene.\n\nRequirements:\n\n- Preserve the exact character identity (face, hairstyle, age, body proportion, skin tone, ethnicity, and overall appearance).\n- Preserve the exact outfit, accessories, colors, materials, textures, and styling.\n- Do NOT redesign or modify the clothing.\n- Keep the character recognizable as the same person.\n\nScene Generation:\n\n- Create an entirely new editorial environment.\n- Randomly choose a realistic location every generation.\n- Never reuse the previous background.\n- Examples include:\n  - modern city street\n  - luxury hotel lobby\n  - rooftop\n  - underground parking\n  - subway station\n  - airport terminal\n  - cafe\n  - bookstore\n  - museum\n  - office hallway\n  - apartment corridor\n  - botanical garden\n  - beach promenade\n  - old alley\n  - industrial warehouse\n  - luxury shopping mall\n  - train station\n  - university campus\n  - pedestrian bridge\n  - contemporary architecture\n  - random outdoor urban location\n\nEditorial Style:\n\n- Generate a high-end luxury fashion editorial composition.\n- The character should naturally interact with the environment.\n- Every image should feel like it was photographed for Vogue, Harper's Bazaar, ELLE, or a premium fashion campaign, while avoiding visible logos or magazine branding.\n- Prioritize elegant body language, clean composition, premium styling, and sophisticated visual storytelling.\n- The model should appear naturally photogenic, confident, and effortlessly stylish.\n- Avoid awkward poses, symmetrical standing posture, or generic AI portrait compositions.\n\nFraming:\n\n- Never generate a full body shot.\n- Crop between waist, thigh, or knee level only.\n- Shoes should never be visible.\n- Prioritize medium shot, medium close-up, portrait, or upper-body compositions.\n\nCamera Angle:\n\nRandomize the camera angle every generation.\n\nPossible angles include:\n- eye level\n- slightly high angle\n- slightly low angle\n- Dutch angle\n- over-the-shoulder\n- side profile\n- front three-quarter\n- rear three-quarter\n- close-up portrait\n- tight medium shot\n- telephoto compression\n- wide environmental portrait\n- candid walking shot\n- cinematic handheld perspective\n\nDo not repeatedly use the same angle.\n\nLighting:\n\nGenerate realistic lighting that matches the environment, such as:\n- soft overcast daylight\n- golden hour\n- window light\n- diffused sunlight\n- moody indoor lighting\n- fluorescent subway lighting\n- hotel ambient lighting\n- cinematic neon\n- cloudy daylight\n- soft reflected light\n\nBackground:\n\n- Keep the background believable.\n- Add natural environmental details.\n- Maintain realistic depth separation.\n- Strong subject separation with cinematic depth of field.\n- No floating or unrealistic objects.\n\nPhysical Realism:\n\n- Natural body anatomy.\n- Realistic fabric folds.\n- Correct hand anatomy.\n- Correct facial proportions.\n- Natural shadows.\n- Proper perspective.\n- Physically accurate lighting.\n- High realism.\n\nOutput Rules:\n\nOnly output the prompt.\n\nDo NOT explain anything.\n\nDo NOT use markdown.\n\nDo NOT use bullet points outside the required structure.\n\nAlways follow this exact structure:\n\n[Framing]\n\n[Subject Detail]\n\n[Lighting]\n\n[Emotion]\n\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n\n[Exposure]\n\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n\n[Negative Prompt]",
       "model": "Gemini 3.1 Flash-Lite",
       "model.thinking_level": "LOW",
       "model.temperature": 1,
       "model.top_p": 0.95,
       "model.max_output_tokens": 32768,
-      "seed": 319345609,
+      "seed": 688102869,
       "system_prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]",
       "model.images.image_1": [
         "61",
@@ -452,20 +417,16 @@
   },
   "103": {
     "inputs": {
-      "prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image (no need full body shot camera). the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]\n\noutput only show the prompt only",
+      "prompt": "You are an expert prompt engineer specializing in high-end editorial photography prompts for AI image generation.\n\nYour task is to analyze the uploaded reference image and recreate it as a brand-new editorial scene.\n\nRequirements:\n\n- Preserve the exact character identity (face, hairstyle, age, body proportion, skin tone, ethnicity, and overall appearance).\n- Preserve the exact outfit, accessories, colors, materials, textures, and styling.\n- Do NOT redesign or modify the clothing.\n- Keep the character recognizable as the same person.\n\nScene Generation:\n\n- Create an entirely new editorial environment.\n- Randomly choose a realistic location every generation.\n- Never reuse the previous background.\n- Examples include:\n  - modern city street\n  - luxury hotel lobby\n  - rooftop\n  - underground parking\n  - subway station\n  - airport terminal\n  - cafe\n  - bookstore\n  - museum\n  - office hallway\n  - apartment corridor\n  - botanical garden\n  - beach promenade\n  - old alley\n  - industrial warehouse\n  - luxury shopping mall\n  - train station\n  - university campus\n  - pedestrian bridge\n  - contemporary architecture\n  - random outdoor urban location\n\nEditorial Style:\n\n- Generate a high-end luxury fashion editorial composition.\n- The character should naturally interact with the environment.\n- Every image should feel like it was photographed for Vogue, Harper's Bazaar, ELLE, or a premium fashion campaign, while avoiding visible logos or magazine branding.\n- Prioritize elegant body language, clean composition, premium styling, and sophisticated visual storytelling.\n- The model should appear naturally photogenic, confident, and effortlessly stylish.\n- Avoid awkward poses, symmetrical standing posture, or generic AI portrait compositions.\n\nFraming:\n\n- Never generate a full body shot.\n- Crop between waist, thigh, or knee level only.\n- Shoes should never be visible.\n- Prioritize medium shot, medium close-up, portrait, or upper-body compositions.\n\nCamera Angle:\n\nRandomize the camera angle every generation.\n\nPossible angles include:\n- eye level\n- slightly high angle\n- slightly low angle\n- Dutch angle\n- over-the-shoulder\n- side profile\n- front three-quarter\n- rear three-quarter\n- close-up portrait\n- tight medium shot\n- telephoto compression\n- wide environmental portrait\n- candid walking shot\n- cinematic handheld perspective\n\nDo not repeatedly use the same angle.\n\nLighting:\n\nGenerate realistic lighting that matches the environment, such as:\n- soft overcast daylight\n- golden hour\n- window light\n- diffused sunlight\n- moody indoor lighting\n- fluorescent subway lighting\n- hotel ambient lighting\n- cinematic neon\n- cloudy daylight\n- soft reflected light\n\nBackground:\n\n- Keep the background believable.\n- Add natural environmental details.\n- Maintain realistic depth separation.\n- Strong subject separation with cinematic depth of field.\n- No floating or unrealistic objects.\n\nPhysical Realism:\n\n- Natural body anatomy.\n- Realistic fabric folds.\n- Correct hand anatomy.\n- Correct facial proportions.\n- Natural shadows.\n- Proper perspective.\n- Physically accurate lighting.\n- High realism.\n\nOutput Rules:\n\nOnly output the prompt.\n\nDo NOT explain anything.\n\nDo NOT use markdown.\n\nDo NOT use bullet points outside the required structure.\n\nAlways follow this exact structure:\n\n[Framing]\n\n[Subject Detail]\n\n[Lighting]\n\n[Emotion]\n\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n\n[Exposure]\n\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n\n[Negative Prompt]",
       "model": "Gemini 3.1 Flash-Lite",
       "model.thinking_level": "LOW",
       "model.temperature": 1,
       "model.top_p": 0.95,
       "model.max_output_tokens": 32768,
-      "seed": 1286308469,
+      "seed": 1286308477,
       "system_prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]",
       "model.images.image_1": [
         "61",
-        0
-      ],
-      "model.images.image_2": [
-        "134",
         0
       ]
     },
@@ -488,13 +449,13 @@
   },
   "105": {
     "inputs": {
-      "prompt": "you an clever assistant in editorial. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image (no need full body shot). the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]\n\noutput only show the prompt only",
+      "prompt": "You are an expert prompt engineer specializing in high-end editorial photography prompts for AI image generation.\n\nYour task is to analyze the uploaded reference image and recreate it as a brand-new editorial scene.\n\nRequirements:\n\n- Preserve the exact character identity (face, hairstyle, age, body proportion, skin tone, ethnicity, and overall appearance).\n- Preserve the exact outfit, accessories, colors, materials, textures, and styling.\n- Do NOT redesign or modify the clothing.\n- Keep the character recognizable as the same person.\n\nScene Generation:\n\n- Create an entirely new editorial environment.\n- Randomly choose a realistic location every generation.\n- Never reuse the previous background.\n- Examples include:\n  - modern city street\n  - luxury hotel lobby\n  - rooftop\n  - underground parking\n  - subway station\n  - airport terminal\n  - cafe\n  - bookstore\n  - museum\n  - office hallway\n  - apartment corridor\n  - botanical garden\n  - beach promenade\n  - old alley\n  - industrial warehouse\n  - luxury shopping mall\n  - train station\n  - university campus\n  - pedestrian bridge\n  - contemporary architecture\n  - random outdoor urban location\n\nEditorial Style:\n\n- Generate a high-end luxury fashion editorial composition.\n- The character should naturally interact with the environment.\n- Every image should feel like it was photographed for Vogue, Harper's Bazaar, ELLE, or a premium fashion campaign, while avoiding visible logos or magazine branding.\n- Prioritize elegant body language, clean composition, premium styling, and sophisticated visual storytelling.\n- The model should appear naturally photogenic, confident, and effortlessly stylish.\n- Avoid awkward poses, symmetrical standing posture, or generic AI portrait compositions.\n\nFraming:\n\n- Never generate a full body shot.\n- Crop between waist, thigh, or knee level only.\n- Shoes should never be visible.\n- Prioritize medium shot, medium close-up, portrait, or upper-body compositions.\n\nCamera Angle:\n\nRandomize the camera angle every generation.\n\nPossible angles include:\n- eye level\n- slightly high angle\n- slightly low angle\n- Dutch angle\n- over-the-shoulder\n- side profile\n- front three-quarter\n- rear three-quarter\n- close-up portrait\n- tight medium shot\n- telephoto compression\n- wide environmental portrait\n- candid walking shot\n- cinematic handheld perspective\n\nDo not repeatedly use the same angle.\n\nLighting:\n\nGenerate realistic lighting that matches the environment, such as:\n- soft overcast daylight\n- golden hour\n- window light\n- diffused sunlight\n- moody indoor lighting\n- fluorescent subway lighting\n- hotel ambient lighting\n- cinematic neon\n- cloudy daylight\n- soft reflected light\n\nBackground:\n\n- Keep the background believable.\n- Add natural environmental details.\n- Maintain realistic depth separation.\n- Strong subject separation with cinematic depth of field.\n- No floating or unrealistic objects.\n\nPhysical Realism:\n\n- Natural body anatomy.\n- Realistic fabric folds.\n- Correct hand anatomy.\n- Correct facial proportions.\n- Natural shadows.\n- Proper perspective.\n- Physically accurate lighting.\n- High realism.\n\nOutput Rules:\n\nOnly output the prompt.\n\nDo NOT explain anything.\n\nDo NOT use markdown.\n\nDo NOT use bullet points outside the required structure.\n\nAlways follow this exact structure:\n\n[Framing]\n\n[Subject Detail]\n\n[Lighting]\n\n[Emotion]\n\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n\n[Exposure]\n\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n\n[Negative Prompt]",
       "model": "Gemini 3.1 Flash-Lite",
       "model.thinking_level": "LOW",
       "model.temperature": 1,
       "model.top_p": 0.95,
       "model.max_output_tokens": 32768,
-      "seed": 724376486,
+      "seed": 724376494,
       "system_prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]",
       "model.images.image_1": [
         "61",
@@ -508,7 +469,7 @@
   },
   "108": {
     "inputs": {
-      "prompt": "you are art expert director videographer for editorial. based on image. give me a prompt video for this. only show the motion prompt. make sure the prompt video should like editorial",
+      "prompt": "You are a fashion film director and cinematographer creating a luxury editorial video prompt from a reference image.\nRules:\n\n\nPreserve the exact same person from the reference image (identity, face, hair, body, outfit, accessories unchanged).\n\n\nDo not modify clothing or styling in any way.\n\n\nFocus only on motion and camera direction.\n\n\nKeep movement natural, subtle, and elegant like a high-end fashion campaign.\n\n\nNo action, no dance, no exaggerated gestures.\n\n\nSubject Motion:\n\n\nSubtle body weight shift\n\n\nGentle head turn or slight tilt\n\n\nSoft gaze change (camera / off-camera / down)\n\n\nMinimal hand movement (light clothing adjustment or resting pose)\n\n\nNatural blinking and breathing\n\n\nVery slight posture adjustment\n\n\nElegant, controlled, slow movement only\n\n\nCamera Movement (randomize):\n\n\nslow push in\n\n\nslow pull out\n\n\ndolly left or right\n\n\npan left or right\n\n\ntilt up or down\n\n\narc around subject (slow)\n\n\norbit slow\n\n\nstatic camera with subject movement\n\n\ngentle handheld cinematic drift\n\n\nRules for motion:\n\n\nSmooth and slow\n\n\nNo fast movement\n\n\nNo dramatic action\n\n\nNo dancing\n\n\nNo cuts\n\n\nDuration:\n\n\n5–10 seconds\n\n\nsingle continuous shot\n\n\nOutput:\nOnly output a simple clean motion prompt (video prompt only, one paragraph).",
       "model": "Gemini 3.1 Flash-Lite",
       "model.thinking_level": "LOW",
       "model.temperature": 1,
@@ -561,12 +522,12 @@
         0
       ],
       "multi_shot.negative_prompt": "[Negative Prompt]\nCGI, plastic skin, distorted face, oversaturated colors, shaky camera, blurry subject, artificial lighting, cartoonish, low resolution, watermark, text, out of focus.",
-      "multi_shot.duration": 8,
+      "multi_shot.duration": 5,
       "generate_audio": false,
-      "model": "kling-3.0-turbo",
+      "model": "kling-v3",
       "model.resolution": "720p",
       "model.aspect_ratio": "9:16",
-      "seed": 1465232951,
+      "seed": 1196185789,
       "start_frame": [
         "85",
         0
@@ -620,13 +581,13 @@
   },
   "131": {
     "inputs": {
-      "prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which white studio background. remain the outift and character. give a random camera angle image, no need full body shot. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]\n\noutput only show the prompt only",
+      "prompt": "You are an expert prompt engineer specializing in high-end editorial and commercial fashion photography prompts for AI image generation.\n\nYour task is to analyze the uploaded reference image and recreate it into a brand-new WHITE STUDIO commercial photoshoot while preserving the original character and outfit.\n\nSCENE TYPE (FIXED: WHITE STUDIO ONLY)\n\nAlways generate a professional white studio fashion photoshoot.\n\nHard constraints:\n\nPure seamless white background only (#FFFFFF or equivalent)\nNo environment, no rooms, no real-world locations\nNo props, no furniture, no objects\nNo decorations, no gradients, no colored backdrop\nClean commercial studio setup only\nHigh-end fashion catalog aesthetic\n\nLighting must always be studio-based:\n\nsoftbox lighting\nbeauty lighting\ndiffused studio lighting\ncontrolled commercial fashion lighting\nclean soft shadows only\nbalanced exposure with no harsh contrast\nCHARACTER PRESERVATION\n\nPreserve exactly:\n\nFace identity\nHairstyle\nHair color\nSkin tone\nEthnicity\nAge\nFacial structure\nBody proportion\nAccessories\nClothing\nClothing colors\nClothing materials\nClothing textures\nStyling details\n\nDo NOT modify or redesign anything.\n\nDo NOT simplify or enhance outfit design.\n\nThe character must remain immediately recognizable as the same person in the reference image.\n\nEDITORIAL STYLE\nHigh-end luxury fashion editorial studio composition\nCommercial fashion catalog quality\nPremium beauty photography aesthetic\nClean, minimal, and expensive visual look\nModel should appear naturally photogenic, confident, and effortlessly elegant\nAvoid stiff, passport-style, or awkward AI poses\nComposition must feel like a professional fashion campaign shoot\nPOSE DIRECTION\nGenerate a new elegant fashion editorial pose every time\nPose must look natural, refined, and professionally art-directed\nSubtle asymmetry in body posture preferred\nSlight weight shift for natural silhouette\nHands may naturally interact with clothing (collar, sleeves, pockets) or remain softly positioned\nFacial expression must be soft, confident, and editorial-ready\nEyes may vary: direct gaze, slight off-camera gaze, or soft downward look\nAvoid exaggerated, overdramatic, or unnatural poses\nAvoid stiff symmetrical standing\nFRAMING\n\nNever generate full body shots.\n\nAllowed framing only:\n\nmedium shot\nmedium close-up\nportrait crop\nupper body\nhalf body\nknee crop (ONLY if shoes are not visible)\n\nStrict rule:\n\nShoes must never be visible\n\nComposition should feel like high-end studio fashion photography with clean negative space when appropriate.\n\nCAMERA ANGLE\n\nRandomize professional studio photography angles:\n\neye level\nslightly high angle\nslightly low angle\nfront three-quarter\nside profile\ntight medium shot\nclose-up portrait\ndynamic diagonal composition\n\nAvoid repetitive framing patterns.\n\nLIGHTING (STUDIO ONLY)\n\nAlways use controlled studio lighting:\n\nsoftbox key light\nbeauty dish lighting\ndiffused fill light\nrim light for separation (optional)\nclean shadow falloff\neven skin illumination\nno harsh shadows\nno natural environment lighting\nBACKGROUND\nPure seamless white background only\nStrong subject separation\nSubtle natural shadow under subject only\nNo texture, no environment, no objects\nNo gradient walls, no studio clutter\nPHYSICAL REALISM\n\nGenerate ultra-realistic photography:\n\naccurate human anatomy\nrealistic face proportions\nnatural skin texture and pores\nrealistic hair strands\ncorrect hand anatomy and finger structure\nphysically accurate clothing folds\nrealistic fabric tension and draping\ncorrect lighting interaction with skin and fabric\ntrue-to-life shadow behavior\naccurate perspective\nhigh-end commercial photography realism\nOUTPUT FORMAT\n\nOutput ONLY the prompt.\n\nDo NOT explain anything.\n\nDo NOT add notes.\n\nDo NOT use markdown.\n\nAlways follow this exact structure:\n\n[Framing]\n\n[Subject Detail]\n\n[Lighting]\n\n[Emotion]\n\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n\n[Exposure]\n\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n\n[Negative Prompt]",
       "model": "Gemini 3.1 Flash-Lite",
       "model.thinking_level": "LOW",
       "model.temperature": 1,
       "model.top_p": 0.95,
       "model.max_output_tokens": 32768,
-      "seed": 931319400,
+      "seed": 634898428,
       "system_prompt": "you an assistant. i need you to recreate back the prompt based on image i upload. i need an editorial shot which random background. remain the outift and character. give a random camera angle image. the structure prompt must follow :\n[Framing]\n[Subject Detail]\n[Lighting]\n\n[Emotion]\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n[Exposure]\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n[Negative Prompt]",
       "model.images.image_1": [
         "61",
@@ -660,7 +621,7 @@
       "model.background": "auto",
       "model.quality": "medium",
       "n": 1,
-      "seed": 1,
+      "seed": 2,
       "model.images.image_1": [
         "135",
         0
