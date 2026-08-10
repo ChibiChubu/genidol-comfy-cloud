@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ComfyUI Workflow Studio</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">CF</div>
+        <div>
+          <strong>ComfyUI Workflow Studio</strong>
+          <span>Local replay for Comfy Cloud workflow</span>
+        </div>
+      </div>
+      <div class="status-pill" id="keyStatus">Checking API key</div>
+    </header>
+
+    <main class="app-shell">
+      <section class="hero-layout">
+        <div class="hero-copy">
+          <p class="eyebrow">Client intake</p>
+          <h1>Upload 4 references, choose wardrobe, then generate the character download.</h1>
+          <p class="lede">
+            Reference 4 is the body pose from behind. Wardrobe cards stay inside the wardrobe section, and the uploaded client outfit can override the wardrobe picks when selected.
+          </p>
+        </div>
+
+        <aside class="pipeline panel">
+          <div class="panel-heading">
+            <p class="eyebrow tiny">Pipeline</p>
+            <div class="pipeline-status">Ready for client references</div>
+          </div>
+          <ol class="pipeline-list" id="steps">
+            <li class="active">Upload images to Comfy Cloud</li>
+            <li>Build character + wardrobe</li>
+            <li>Generate character download</li>
+          </ol>
+        </aside>
+      </section>
+
+      <section class="main-grid">
+        <div class="left-column">
+          <section class="panel stack">
+            <div class="section-title">
+              <span class="section-badge">01</span>
+              <div>
+                <h2>Reference Images</h2>
+                <p>Face, hair, body shape, and the back-pose reference for the character sheet.</p>
+              </div>
+            </div>
+            <div id="referenceGrid" class="reference-grid"></div>
+          </section>
+
+          <section class="panel stack">
+            <div class="section-title">
+              <span class="section-badge">02</span>
+              <div>
+                <h2>Wardrobe</h2>
+                <p>Choose from grouped wardrobe nodes, then upload the client outfit inside this section.</p>
+              </div>
+            </div>
+
+            <div id="wardrobeModes" class="wardrobe-modes"></div>
+            <div id="wardrobeGroups" class="wardrobe-groups"></div>
+
+            <div class="wardrobe-upload-panel">
+              <div class="section-title compact client-upload-head">
+                <span class="section-badge">UP</span>
+                <div>
+                  <h2>Uploaded by Client</h2>
+                  <p>Client outfit source lives here, not in the reference grid.</p>
+                </div>
+                <button id="clientOutfitToggleBtn" class="client-toggle" type="button" disabled>
+                  Use client outfit
+                </button>
+              </div>
+              <div id="wardrobeUpload" class="wardrobe-upload"></div>
+            </div>
+          </section>
+
+          <section class="panel output-panel">
+            <div class="output-header">
+              <div>
+                <h2>Output recipe</h2>
+                <p>Generate the character download after reference and wardrobe selection.</p>
+              </div>
+              <div class="output-actions">
+                <button id="generateCharacterBtn" class="button primary" type="button">
+                  Generate Character Download
+                </button>
+              </div>
+            </div>
+            <p class="selection-hint" id="selectionHint">Ready for character download.</p>
+          </section>
+
+          <section class="panel stack">
+            <div class="section-title">
+              <span class="section-badge">04</span>
+              <div>
+                <h2>Character Download</h2>
+                <p>Only the final character download will appear here.</p>
+              </div>
+            </div>
+            <div id="resultGrid" class="result-grid empty">
+              <div class="empty-state">Generated character download will appear here.</div>
+            </div>
+          </section>
+        </div>
+
+      </section>
+
+      <div id="fileInputPool" hidden></div>
+      <section id="workflowDebug" hidden>
+        <div class="right-column">
+          <section class="panel inspector">
+            <div class="panel-heading">
+              <p class="eyebrow tiny">Workflow</p>
+              <strong id="workflowLabel">Local node server</strong>
+            </div>
+
+            <div class="inspector-meta">
+              <div>
+                <span>Mode</span>
+                <strong id="modeLabel">character-sheet</strong>
+              </div>
+              <div>
+                <span>Active node</span>
+                <strong id="activeNodeLabel">-</strong>
+              </div>
+            </div>
+
+            <label class="prompt-field">
+              <span>Prompt</span>
+              <textarea id="promptInput" rows="11"></textarea>
+            </label>
+          </section>
+
+          <section class="panel inspector">
+            <div class="panel-heading">
+              <p class="eyebrow tiny">Payload</p>
+              <strong>Preview</strong>
+            </div>
+            <pre id="payloadPreview" class="code-block">{}</pre>
+          </section>
+        </div>
+      </section>
+      <div id="toast" class="toast" hidden role="status" aria-live="polite"></div>
+    </main>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
