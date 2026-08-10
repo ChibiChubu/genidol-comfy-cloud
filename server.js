@@ -298,19 +298,20 @@ function collectAssets(workflow, outputs) {
 
   for (const [nodeId, output] of Object.entries(outputs)) {
     const node = workflow[nodeId];
-    if (!node || !["SaveImage", "SaveVideo"].includes(node.class_type)) continue;
+    if (!node || (node.class_type !== "SaveImage" && node.class_type !== "SaveVideo")) continue;
 
     const label = node.inputs?.filename_prefix || node._meta?.title || `Node ${nodeId}`;
-    const groups = [output.images, output.gifs, output.animated, output.videos, output.video].filter(Boolean);
-    const kind = node.class_type === "SaveVideo" ? "video" : "image";
+    const groups = Object.values(output || {}).filter((value) => Array.isArray(value));
 
     for (const files of groups) {
       for (const file of files || []) {
+        if (!file?.filename) continue;
         const params = new URLSearchParams({
           filename: file.filename,
           subfolder: file.subfolder || "",
           type: file.type || "output",
         });
+        const kind = node.class_type === "SaveVideo" || isVideoFile(file.filename) ? "video" : "image";
         assets.push({
           nodeId,
           label,

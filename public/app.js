@@ -483,7 +483,7 @@ async function runGeneration(mode) {
 
 function renderResults(outputs) {
   const resultGrid = document.getElementById("resultGrid");
-  const order = ["209", "89", "90", "91"];
+  const order = ["209", "89", "90", "91", "114"];
   const filtered = outputs
     .filter((asset) => order.includes(String(asset.nodeId)))
     .sort((a, b) => order.indexOf(String(a.nodeId)) - order.indexOf(String(b.nodeId)));

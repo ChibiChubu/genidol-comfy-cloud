@@ -73,7 +73,7 @@
       "model.background": "auto",
       "model.quality": "medium",
       "n": 1,
-      "seed": 135,
+      "seed": 140,
       "model.images.image_1": [
         "51",
         0
@@ -90,7 +90,7 @@
   },
   "58": {
     "inputs": {
-        "filename_prefix": "Character Download",
+      "filename_prefix": "Character Sheet",
       "images": [
         "56",
         0
@@ -240,7 +240,7 @@
       "model": "kling-v3",
       "model.resolution": "1080p",
       "model.aspect_ratio": "9:16",
-      "seed": 1162959450,
+      "seed": 317371830,
       "start_frame": [
         "280:27",
         0
@@ -276,7 +276,7 @@
       "crop_region": {
         "x": 0,
         "y": 0,
-        "width": 921,
+        "width": 982,
         "height": 1536
       },
       "image": [
@@ -358,18 +358,9 @@
       "title": "OpenAI ChatGPT"
     }
   },
-  "157": {
-    "inputs": {
-      "image": "2b801e5232c33a8cb8cbfb84ba0c2e48fc1f507d2917a0ffb0479419c930379e.png"
-    },
-    "class_type": "LoadImage",
-    "_meta": {
-      "title": "Load Image"
-    }
-  },
   "158": {
     "inputs": {
-      "prompt": "replace the person in character sheet @img1 with @img2. make sure the face, hair, size body is exactly same @img2. make sure the character must follow the pose and composition @img1 without add text or others.\n\nClean plain grey studio presentation with a seamless neutral background.\n\nNo change clothing, armor, props, weapons, accessories, jewelry, environment, shadows outside the studio floor, visual effects, dust, smoke, particles, text, labels, logos, borders, watermarks, extra people, or additional objects.\n\nUltra-consistent human anatomy across all three panels. Production-ready character turnaround. AAA character reference sheet. 8K photorealistic. Hyper-realistic human skin detail with natural pores and subtle skin texture. Physically accurate human anatomy and proportions. Consistent facial identity, body proportions, hairstyle, skin tone, and muscle definition across every panel. Neutral expression. Studio lighting. Character sheet presentation. 16:9. remain the outfit like @img2",
+      "prompt": "Professional AAA human character turnaround sheet based strictly on the provided reference image. Use the reference image ONLY to preserve the exact character identity, facial identity, hairstyle, hair color, skin tone, body proportions, muscle definition, physical features, and overall appearance of the character. Preserve the character exactly as shown regardless of gender, age, ethnicity, hairstyle, facial features, or physical design. Do not redesign, reinterpret, beautify, stylize, age, slim, enlarge, masculinize, feminize, or otherwise modify the character.\n\nSTRICT 16:9 LANDSCAPE CHARACTER SHEET COMPOSITION.\n\nDivide the entire canvas into TWO CLEAR MAIN SECTIONS:\n\nLEFT HALF = FACE TURNAROUND\nRIGHT HALF = FULL-BODY TURNAROUND\n\nLEFT HALF — THREE FACE VIEWS:\nPlace exactly THREE head-and-upper-neck portraits in the left half.\n\nAt the TOP CENTER of the left half:\nONE LARGE STRAIGHT FRONT FACE VIEW, looking directly into camera, perfectly centered, symmetrical head position, neutral expression.\n\nDIRECTLY BELOW the large front face:\nTWO SMALLER PROFILE VIEWS placed horizontally side-by-side.\n\nLEFT SMALL VIEW = exact LEFT PROFILE, face rotated exactly 90 degrees toward screen-left.\n\nRIGHT SMALL VIEW = exact RIGHT PROFILE, face rotated exactly 90 degrees toward screen-right.\n\nThe arrangement must visually read as:\n\n```\n             FRONT FACE\n         LEFT PROFILE | RIGHT PROFILE\n```\n\nAll three faces must have identical head size, identical eye level, identical facial proportions, identical hairstyle, identical hairline, identical hair color, identical skin tone, identical facial identity and identical neutral expression. The left and right profiles must show the true side silhouette of the exact same character.\n\nRIGHT HALF — TWO FULL-BODY VIEWS:\nPlace EXACTLY TWO full-body character views horizontally side-by-side inside the right half.\n\nLEFT SIDE OF RIGHT HALF:\nFRONT FULL-BODY VIEW, perfectly straight toward camera, completely neutral A-POSE, symmetrical shoulders, arms slightly away from torso, relaxed hands, feet naturally separated and aligned, entire character visible from the top of the head to the soles of the feet.\n\nRIGHT SIDE OF RIGHT HALF:\nREAR FULL-BODY VIEW, perfectly straight back toward camera, EXACTLY matching the front view in height, scale, stance, A-pose, shoulder position, arm position, leg position, foot position and camera height, showing the complete rear silhouette from head to toe.\n\nThe arrangement must visually read as:\n\nFRONT FULL BODY | REAR FULL BODY\n\nIMPORTANT COMPOSITION RULE:\nThe five views must NEVER be rearranged into a conventional three-panel turnaround.\n\nDo not place the rear body underneath the front body.\nDo not place the face views above the full-body views.\nDo not create additional panels.\nDo not create six views.\nDo not merge views.\nDo not create extra character poses.\nDo not create extra angles.\n\nThe final image must contain EXACTLY FIVE CHARACTER VIEWS:\n\n1 large front face\n1 small left profile\n1 small right profile\n1 front full body\n1 rear full body\n\nIDENTITY LOCK:\nMaintain absolute identity consistency across all five views. Every view represents the exact same character.\n\nPreserve the exact facial identity, facial bone structure, eye shape, nose, lips or mouth structure, jawline, cheek structure, hairstyle, hairline, hair color, skin tone, height, body proportions, shoulder width, waist, hips, limb proportions, muscle definition, hands, legs, feet, silhouette, distinctive physical features and overall appearance from the reference image.\n\nDo not change the character's gender presentation, age appearance, body type, facial structure, hairstyle, hair length, hair texture, hair color, skin tone, or defining physical characteristics.\n\nWARDROBE — UNIVERSAL CHARACTER REFERENCE OUTFIT:\n\nThe character wears a fitted plain black compression-style long-sleeve shirt, plain black fitted pants, and plain black low-top sneakers.\n\nThe clothing must be completely minimal, neutral, form-fitting and functional, designed to clearly reveal the character's natural body proportions, silhouette and muscle definition.\n\nThe black compression-style long-sleeve shirt must be completely plain with no patterns, logos, branding, graphics, text, decorative seams, unnecessary panels, zippers, straps, buttons, prints or additional design elements.\n\nThe black fitted pants must be completely plain and form-fitting with no patterns, logos, branding, graphics, text, decorative seams, pockets, straps, buckles or additional design elements.\n\nThe black low-top sneakers must be completely plain and minimal, with no visible logos, branding, patterns, graphics, colored accents, decorative elements or additional design features.\n\nThe clothing must remain IDENTICAL across all five views. Preserve the exact same fit, proportions, material appearance, sleeve length, pants length, shoe shape and clothing construction across front, left profile, right profile and rear views.\n\nThe simplified black outfit must NOT alter, distort or hide the character's underlying body proportions, muscle definition, silhouette, height, shoulder width, waist, hips, arms or legs.\n\nIf the character wears a hijab in the reference image, preserve the exact hijab style, color, fit, coverage, shape, folds, draping and overall appearance without modification. Do not remove, redesign, recolor, restyle, tighten, loosen or replace the hijab.\n\nIf the character has other permanent physical identity features that are clearly visible in the reference image, preserve them exactly.\n\nDo not carry over the original fashion clothing, costumes, armor, handbag, jewelry, weapons or temporary accessories from the reference image unless they are permanent physical identity features that must remain part of the character.\n\nThe reference image establishes WHO THE CHARACTER IS, while the plain black outfit establishes the STANDARD TURNAROUND OUTFIT.\n\nFor the rear full-body view, accurately show the back of the black compression shirt, fitted pants and sneakers, maintaining the exact same garment fit and body proportions as the front view.\n\nCLEAN CHARACTER-SHEET PRESENTATION:\nSeamless neutral light-gray studio background, professional AAA character reference sheet, evenly spaced views, consistent character scale, clean orthographic-style presentation, precise alignment, minimal visual clutter, no original environment from the reference image.\n\nSoft controlled studio lighting, even illumination across every character view, consistent white balance, consistent exposure, subtle natural contact shadows beneath the feet, realistic dimensionality, no dramatic cinematic lighting.\n\nUltra-realistic human anatomy, physically accurate proportions, realistic skin pores, subtle skin micro-detail, realistic individual hair strands, physically accurate muscle definition, realistic fabric texture, physically accurate garment folds, realistic stitching and material response, photorealistic rendering, production-ready AAA game character reference sheet, extremely high detail, 8K.\n\nSTRICT NEGATIVE PROMPT:\ndifferent character, identity drift, altered face, altered facial proportions, different hairstyle, different hair length, different hair color, different skin tone, altered body proportions, altered muscle definition, altered height, altered body shape, altered facial features, altered hairline, changed distinctive physical features, changed gender presentation, changed age appearance, changed body type, missing hijab, redesigned hijab, different hijab color, different hijab style, changed clothing, fashion outfit, original costume, original suit, original dress, original armor, original accessories, handbag, jewelry, weapons, props, patterned clothing, logos, branding, graphics, text, colored clothing, decorative seams, straps, buckles, zippers, pockets, extra clothing details, sneakers with logos, sneakers with patterns, high heels, sandals, boots, different shoes, different pose, walking pose, crossed legs, contrapposto, bent knees, asymmetrical stance, perspective mismatch, three-quarter profile, distorted profile, incorrect rear view, incomplete body, cropped feet, cropped head, hidden limbs, extra limbs, extra fingers, malformed hands, malformed feet, anatomy errors, duplicate character, duplicate views, extra views, six views, seven views, conventional three-panel layout, rear body underneath front body, face above full body, mixed panels, overlapping characters, environmental background, original location, street, architecture, outdoor environment, smoke, fog, haze, dust, particles, visual effects, dramatic shadows, text, labels, annotations, logos, borders, watermark.\n\nARRI Alexa 35, neutral 50mm character-reference perspective, controlled studio exposure, natural skin rendering, physically accurate color reproduction, subtle cinematic camera texture, high-resolution photorealistic detail, clean professional production photography, 16:9 landscape.",
       "model": "gpt-image-2",
       "model.size": "Custom",
       "model.custom_width": 2752,
@@ -377,9 +368,9 @@
       "model.background": "auto",
       "model.quality": "medium",
       "n": 1,
-      "seed": 135,
+      "seed": 140,
       "model.images.image_1": [
-        "157",
+        "51",
         0
       ],
       "model.images.image_2": [
@@ -634,7 +625,7 @@
   },
   "187": {
     "inputs": {
-      "select": 3,
+      "select": 4,
       "images1": [
         "189",
         0
@@ -722,37 +713,13 @@
     "inputs": {
       "filename_prefix": "Character Download",
       "images": [
-        "211:59",
+        "366:361",
         0
       ]
     },
     "class_type": "SaveImage",
     "_meta": {
       "title": "Save Image"
-    }
-  },
-  "210": {
-    "inputs": {
-      "compare_view": {
-        "beforeImages": [
-          "/api/view?filename=02fe97e40337460a23a5c1bf25cf1452242ab5790d358eee0de39a1f381ac4d4.png&id=d21bde08-a630-4060-b49f-e0e34b81f4e7&subfolder=&type=temp"
-        ],
-        "afterImages": [
-          "/api/view?filename=d6c033d5a994352ac5588e0b9e48e2b081353c29e7af2c07b1fd5feaa957f488.png&id=ae8f2966-1bce-4f06-a5c4-3dda76814290&subfolder=&type=temp"
-        ]
-      },
-      "image_a": [
-        "158",
-        0
-      ],
-      "image_b": [
-        "209",
-        0
-      ]
-    },
-    "class_type": "ImageCompare",
-    "_meta": {
-      "title": "Compare Images"
     }
   },
   "212": {
@@ -775,7 +742,7 @@
       "model.temperature": 1,
       "model.top_p": 0.95,
       "model.max_output_tokens": 32768,
-      "seed": 1684009638,
+      "seed": 258773797,
       "system_prompt": "",
       "model.images.image_1": [
         "346",
@@ -803,7 +770,7 @@
       "model.background": "auto",
       "model.quality": "medium",
       "n": 1,
-      "seed": 135,
+      "seed": 140,
       "model.images.image_1": [
         "58",
         0
@@ -920,9 +887,9 @@
       "title": "Crop Image"
     }
   },
-  "353": {
+  "355": {
     "inputs": {
-      "image": "101860574d1764bba92ce07b45bac6118b5ea44fbc2466a172b879f0e300e074.png"
+      "image": "a92c2ecded4a957af236e153446aa4dc1c2410a8805f3a94bc0e1b06171f9749.jpg"
     },
     "class_type": "LoadImage",
     "_meta": {
@@ -1071,7 +1038,7 @@
       "megapixels": 1,
       "resolution_steps": 1,
       "image": [
-        "353",
+        "355",
         0
       ]
     },
@@ -1170,176 +1137,155 @@
   },
   "185:73": {
     "inputs": {
-      "noise_seed": 1099136214143771
+      "noise_seed": 298843955956487
     },
     "class_type": "RandomNoise",
     "_meta": {
       "title": "RandomNoise"
     }
   },
-  "211:48": {
+  "366:357": {
     "inputs": {
-      "tile_size": 512,
-      "overlap": 128,
-      "temporal_size": 4096,
-      "temporal_overlap": 8,
-      "pixels": [
-        "211:207",
+      "if_condition": [
+        "366:358",
         0
       ],
-      "vae": [
-        "211:206",
+      "when_TRUE": [
+        "366:364",
+        0
+      ],
+      "when_FALSE": [
+        "366:364",
+        1
+      ]
+    },
+    "class_type": "LayerUtility: If ",
+    "_meta": {
+      "title": "IfElse"
+    }
+  },
+  "366:358": {
+    "inputs": {
+      "cmp": "a <= b",
+      "a": [
+        "366:364",
+        0
+      ],
+      "b": [
+        "366:364",
+        1
+      ]
+    },
+    "class_type": "ImpactCompare",
+    "_meta": {
+      "title": "ImpactCompare"
+    }
+  },
+  "366:359": {
+    "inputs": {
+      "value": "a*b",
+      "a": [
+        "366:357",
+        0
+      ],
+      "b": [
+        "366:360",
         0
       ]
     },
-    "class_type": "VAEEncodeTiled",
+    "class_type": "SimpleMath+",
     "_meta": {
-      "title": "VAE Encode (Tiled)"
+      "title": "Upscale to Shortest Edge (pixels)"
     }
   },
-  "211:205": {
+  "366:360": {
     "inputs": {
+      "value": 2
+    },
+    "class_type": "PrimitiveFloat",
+    "_meta": {
+      "title": "Upscale Factor"
+    }
+  },
+  "366:361": {
+    "inputs": {
+      "seed": 1876564709,
+      "resolution": [
+        "366:359",
+        0
+      ],
+      "max_resolution": 0,
+      "batch_size": 1,
+      "uniform_batch_size": false,
+      "color_correction": "lab",
+      "temporal_overlap": 0,
+      "prepend_frames": 0,
+      "input_noise_scale": 0,
+      "latent_noise_scale": 0,
+      "offload_device": "cpu",
+      "enable_debug": false,
       "image": [
         "158",
         0
       ],
-      "alpha": [
-        "157",
-        1
-      ]
-    },
-    "class_type": "JoinImageWithAlpha",
-    "_meta": {
-      "title": "Join Image with Alpha"
-    }
-  },
-  "211:206": {
-    "inputs": {
-      "vae_name": "seedvr2_ema_vae_fp16.safetensors"
-    },
-    "class_type": "VAELoader",
-    "_meta": {
-      "title": "Load VAE"
-    }
-  },
-  "211:52": {
-    "inputs": {
-      "unet_name": "seedvr2_7b_int8_convrot.safetensors",
-      "weight_dtype": "default"
-    },
-    "class_type": "UNETLoader",
-    "_meta": {
-      "title": "Load Diffusion Model"
-    }
-  },
-  "211:54": {
-    "inputs": {
-      "seed": 959948902156062,
-      "steps": 1,
-      "cfg": 1,
-      "sampler_name": "euler",
-      "scheduler": "simple",
-      "denoise": 1,
-      "model": [
-        "211:52",
-        0
-      ],
-      "positive": [
-        "211:208",
-        0
-      ],
-      "negative": [
-        "211:208",
-        1
-      ],
-      "latent_image": [
-        "211:48",
-        0
-      ]
-    },
-    "class_type": "KSampler",
-    "_meta": {
-      "title": "KSampler"
-    }
-  },
-  "211:55": {
-    "inputs": {
-      "tile_size": 512,
-      "overlap": 128,
-      "temporal_size": 4096,
-      "temporal_overlap": 8,
-      "samples": [
-        "211:54",
+      "dit": [
+        "366:363",
         0
       ],
       "vae": [
-        "211:206",
+        "366:362",
         0
       ]
     },
-    "class_type": "VAEDecodeTiled",
+    "class_type": "SeedVR2VideoUpscaler",
     "_meta": {
-      "title": "VAE Decode (Tiled)"
+      "title": "SeedVR2 Video Upscaler (v2.5.24)"
     }
   },
-  "211:57": {
+  "366:362": {
     "inputs": {
-      "resize_type": "scale by multiplier",
-      "resize_type.multiplier": 2,
-      "scale_method": "lanczos",
-      "input": [
-        "211:205",
-        0
-      ]
+      "model": "ema_vae_fp16.safetensors",
+      "device": "cuda:0",
+      "encode_tiled": true,
+      "encode_tile_size": 1024,
+      "encode_tile_overlap": 128,
+      "decode_tiled": true,
+      "decode_tile_size": 1024,
+      "decode_tile_overlap": 128,
+      "tile_debug": "false",
+      "offload_device": "none",
+      "cache_model": false
     },
-    "class_type": "ResizeImageMaskNode",
+    "class_type": "SeedVR2LoadVAEModel",
     "_meta": {
-      "title": "Resize Image/Mask"
+      "title": "SeedVR2 (Down)Load VAE Model"
     }
   },
-  "211:207": {
+  "366:363": {
     "inputs": {
-      "resized_images": [
-        "211:57",
-        0
-      ]
+      "model": "seedvr2_ema_7b_fp16.safetensors",
+      "device": "cuda:0",
+      "blocks_to_swap": 0,
+      "swap_io_components": false,
+      "offload_device": "cpu",
+      "cache_model": false,
+      "attention_mode": "sdpa"
     },
-    "class_type": "SeedVR2Preprocess",
+    "class_type": "SeedVR2LoadDiTModel",
     "_meta": {
-      "title": "Pre-Process SeedVR2 Input"
+      "title": "SeedVR2 (Down)Load DiT Model"
     }
   },
-  "211:59": {
+  "366:364": {
     "inputs": {
-      "color_correction_method": "none",
-      "images": [
-        "211:55",
-        0
-      ],
-      "original_resized_images": [
-        "211:57",
+      "image": [
+        "158",
         0
       ]
     },
-    "class_type": "SeedVR2PostProcessing",
+    "class_type": "GetImageSize",
     "_meta": {
-      "title": "Post-Process SeedVR2 Output"
-    }
-  },
-  "211:208": {
-    "inputs": {
-      "model": [
-        "211:52",
-        0
-      ],
-      "vae_conditioning": [
-        "211:48",
-        0
-      ]
-    },
-    "class_type": "SeedVR2Conditioning",
-    "_meta": {
-      "title": "Apply SeedVR2 Conditioning"
+      "title": "Get Image Size"
     }
   },
   "280:43": {
@@ -1407,7 +1353,7 @@
   },
   "280:27": {
     "inputs": {
-      "seed": 3593852164,
+      "seed": 2010980035,
       "resolution": [
         "280:25",
         0
@@ -1551,7 +1497,7 @@
   },
   "290:285": {
     "inputs": {
-      "seed": 342176484,
+      "seed": 962124403,
       "resolution": [
         "290:283",
         0
@@ -1695,7 +1641,7 @@
   },
   "300:295": {
     "inputs": {
-      "seed": 3381198174,
+      "seed": 3976225748,
       "resolution": [
         "300:293",
         0

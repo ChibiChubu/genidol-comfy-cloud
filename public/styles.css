@@ -438,7 +438,7 @@ h1 {
     transform 0.16s ease;
 }
 
-.mode-chip:hover {
+.mode-chip:hover:not(:disabled) {
   transform: translateY(-1px);
 }
 
@@ -446,6 +446,12 @@ h1 {
   color: var(--text);
   border-color: var(--panel-border-strong);
   background: rgba(141, 125, 255, 0.14);
+}
+
+.mode-chip:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: grayscale(0.6);
 }
 
 .wardrobe-group {
@@ -479,6 +485,12 @@ h1 {
 .wardrobe-card.active {
   border-color: var(--panel-border-strong);
   box-shadow: 0 0 0 1px rgba(141, 125, 255, 0.22) inset;
+}
+
+.wardrobe-card:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: grayscale(0.6);
 }
 
 .wardrobe-art {
