@@ -19,9 +19,9 @@ const state = {
 };
 
 const EDITORIAL_SOURCES = [
-  { key: "editorial-1", label: "Editorial 1", nodeId: "280:27", subtitle: "Primary editorial frame" },
-  { key: "editorial-2", label: "Editorial 2", nodeId: "290:285", subtitle: "Alternate editorial frame" },
-  { key: "editorial-3", label: "Editorial 3", nodeId: "300:295", subtitle: "Alternate editorial frame" },
+  { key: "editorial-1", label: "Editorial 1", nodeId: "418", subtitle: "Primary editorial frame" },
+  { key: "editorial-2", label: "Editorial 2", nodeId: "419", subtitle: "Alternate editorial frame" },
+  { key: "editorial-3", label: "Editorial 3", nodeId: "420", subtitle: "Alternate editorial frame" },
 ];
 
 const referenceGrid = document.getElementById("referenceGrid");

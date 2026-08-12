@@ -1,7 +1,7 @@
 {
   "12": {
     "inputs": {
-      "image": "32bfc3af7a6a3cc3573c11b0a8c49d41876ff7cb30d3fe005840cd291aa82a77.png"
+      "image": "751dd65bc6ae68f1c04e11b39dc09928da9fe6060b945329f019c722678920c6.JPG"
     },
     "class_type": "LoadImage",
     "_meta": {
@@ -10,7 +10,7 @@
   },
   "37": {
     "inputs": {
-      "image": "2a5d616c7b852c3fec6392cf28ec873a77145ce5eb1461c98f23ca95de36b288.png"
+      "image": "a6dd21cbc0f7f1251854b56fd4a06db40173dd40cea95d7320ecda2f805574a5.JPG"
     },
     "class_type": "LoadImage",
     "_meta": {
@@ -19,7 +19,7 @@
   },
   "38": {
     "inputs": {
-      "image": "a994a4a4354b3ded86bc891e06f9d7934e7bb5f8de3b016d837e6596ddf12ff9.png"
+      "image": "8cbf057e9c699345992948e6ea502e10065a7f3c728f9f40bbda87197a63c0bc.JPG"
     },
     "class_type": "LoadImage",
     "_meta": {
@@ -73,7 +73,7 @@
       "model.background": "auto",
       "model.quality": "medium",
       "n": 1,
-      "seed": 140,
+      "seed": 174,
       "model.images.image_1": [
         "51",
         0
@@ -129,7 +129,7 @@
     "inputs": {
       "filename_prefix": "Editorial 1",
       "images": [
-        "280:27",
+        "418",
         0
       ]
     },
@@ -142,7 +142,7 @@
     "inputs": {
       "filename_prefix": "Editorial 2",
       "images": [
-        "290:285",
+        "419",
         0
       ]
     },
@@ -155,7 +155,7 @@
     "inputs": {
       "filename_prefix": "Editorial 3",
       "images": [
-        "300:295",
+        "420",
         0
       ]
     },
@@ -179,7 +179,7 @@
   "102": {
     "inputs": {
       "source": [
-        "267",
+        "421",
         0
       ]
     },
@@ -240,9 +240,9 @@
       "model": "kling-v3",
       "model.resolution": "1080p",
       "model.aspect_ratio": "9:16",
-      "seed": 317371830,
+      "seed": 2070235384,
       "start_frame": [
-        "280:27",
+        "418",
         0
       ]
     },
@@ -276,7 +276,7 @@
       "crop_region": {
         "x": 0,
         "y": 0,
-        "width": 982,
+        "width": 968,
         "height": 1536
       },
       "image": [
@@ -315,7 +315,7 @@
   },
   "149": {
     "inputs": {
-      "prompt": "You are an expert prompt engineer specializing in high-end editorial photography prompts for AI image generation.\n\nYour task is to analyze the uploaded reference image and recreate it as a brand-new editorial scene.\n\nRequirements:\n\nPreserve the exact character identity (face, hairstyle, age, body proportion, skin tone, ethnicity, and overall appearance).\nPreserve the exact outfit, accessories, colors, materials, textures, and styling.\nDo NOT redesign or modify the clothing.\nKeep the character recognizable as the same person.\n\nScene Generation:\n\nCreate an entirely new editorial environment.\nRandomly choose a realistic location every generation.\nNever reuse the previous background.\nExamples include:\nmodern city street\nrooftop\nunderground parking\nsubway station Malaysia\nairport terminal\ncafe\nbookstore\noffice hallway\napartment corridor\nbotanical garden\nbeach promenade\nold alley\nindustrial warehouse\ntrain station Malaysia\nuniversity Malaysia campus\npedestrian bridge\ncontemporary architecture\nluxury hotel lobby\nart gallery\nshopping arcade\nparking rooftop\nluxury apartment lobby\npenthouse terrace\n\n\nEditorial Photography Style:\n\nGenerate a different editorial photography style every generation.\nNever repeat the same visual treatment.\nMix authentic luxury fashion photography styles including:\nnatural ambient editorial\ncinematic environmental portrait\nluxury lifestyle campaign\nVogue-inspired street editorial\nHarper's Bazaar fashion editorial\nELLE campaign photography\nNuméro fashion story\ndirect on-camera flash\noff-camera strobe photography\nfashion week backstage documentary\nhigh-fashion studio campaign\nseamless studio backdrop\nsoftbox beauty lighting\nhard shadow fashion lighting\nmixed ambient + flash\nfine art fashion portrait\npremium commercial fashion campaign\nluxury advertising campaign\nminimalist editorial portrait\ncinematic luxury portrait\nEvery generation should feel visually unique while maintaining a premium luxury editorial aesthetic.\nLighting, composition, posing, framing, and camera angle should naturally adapt to the selected photography style.\nPreserve realistic lighting interaction, reflections, shadows, and material response.\n\nEditorial Style:\n\nGenerate a high-end luxury fashion editorial composition.\nEvery image should resemble an authentic luxury fashion magazine editorial or premium campaign photographed by a professional fashion photographer.\nThe character should naturally interact with the environment.\nEvery image should feel like it was photographed for Vogue, Harper's Bazaar, ELLE, Numéro, or a premium luxury fashion campaign while avoiding visible logos or magazine branding.\nPrioritize elegant body language, cinematic storytelling, refined composition, premium styling, and sophisticated visual direction.\nThe character should appear naturally photogenic, confident, and effortlessly stylish.\nAvoid generic AI portrait compositions.\nAvoid awkward poses.\nAvoid stiff posture.\nAvoid symmetrical standing posture.\nAvoid catalog-style product photography.\nAvoid passport-style portraits.\nNatural candid moments are preferred over direct posing.\n\nEditorial Posing:\n\nGenerate a unique high-fashion editorial pose every generation.\nNever repeat the same pose.\nThe pose should feel natural, effortless, dynamic, and fashion-forward rather than intentionally posing for the camera.\nCreate realistic weight distribution, subtle body twists, varied shoulder and hip angles, expressive arm placement, believable movement, and relaxed posture.\nThe character should naturally interact with surrounding objects and architecture whenever appropriate.\nRandomly choose poses inspired by authentic luxury fashion editorials.\n\nExamples include:\n\nwalking naturally\nmid-stride movement\nturning while walking\nlooking back over the shoulder\nleaning against a wall\nleaning on a railing\nresting on furniture\nsitting casually\nsitting on stairs\nperching on a chair\ncrossing one leg naturally\nadjusting sleeves\nadjusting the collar\ntouching the hair naturally\none hand inside a pocket\nresting one arm on a table\nlooking through a window\nlooking into the distance\nlooking downward naturally\nreading a book\nusing a phone naturally\nwaiting naturally\ncandid movement\neditorial storytelling pose\nluxury campaign body language\n\nAvoid:\n\nstatic standing\nperfectly symmetrical posture\nboth arms hanging straight beside the body\nmannequin poses\nawkward hands\nT-pose\nA-pose\ncatalog poses\npassport-style portraits\n\nThe final pose should resemble authentic editorial fashion photography rather than a standard portrait.\n\nFraming:\n\nNever generate a full body shot.\nCrop between waist, thigh, or knee level only.\nShoes should never be visible.\nPrioritize dynamic editorial framing with intentional cropping, cinematic negative space, asymmetrical balance, and magazine-style composition rather than centered portrait framing.\nRandomize composition every generation.\n\nCamera Angle:\n\nRandomize the camera angle every generation.\nNever repeat the same angle.\n\nPossible angles include:\n\neye level\nslightly high angle\nslightly low angle\nDutch angle\nover-the-shoulder\nside profile\nfront three-quarter\nrear three-quarter\nclose-up portrait\ntight medium shot\ntelephoto compression\nwide environmental portrait\ncandid walking shot\ncinematic handheld perspective\n\nLighting:\n\nRandomize lighting every generation.\nMatch the lighting to both the location and photography style.\nExamples include:\nsoft overcast daylight\ngolden hour\nwindow light\ndiffused sunlight\ncloudy daylight\nmoody indoor lighting\nfluorescent subway lighting\nluxury hotel ambient lighting\ncinematic neon\ndirect on-camera flash\noff-camera strobe\nlarge softbox studio lighting\nbeauty dish lighting\nhard fashion flash\nrim lighting\nmixed ambient + flash\ndramatic editorial lighting\nLighting should produce physically accurate shadows, reflections, skin rendering, fabric response, and realistic light falloff.\n\nBackground:\n\nGenerate an entirely new believable environment every generation.\nMaintain a realistic environment with authentic perspective, scale, and spatial depth.\nEnsure the background complements the selected editorial photography style and location while preserving clear subject separation through composition, lighting, contrast, or lens characteristics when appropriate.\nKeep enough environmental detail to establish the location naturally.\nAvoid flat backgrounds.\nNo floating or impossible objects.\nPreserve realistic perspective and environmental scale.\n\nPhysical Realism:\n\nNatural body anatomy.\nCorrect facial proportions.\nCorrect hand anatomy.\nRealistic body weight distribution.\nNatural muscle tension.\nPhysically accurate posture.\nRealistic fabric folds.\nAccurate clothing drape.\nProper perspective.\nAccurate contact shadows.\nPhysically correct lighting interaction.\nNatural skin texture.\nRealistic hair strands.\nHigh realism.\n\nOutput Rules:\n\nOnly output the prompt.\n\nDo NOT explain anything.\n\nDo NOT use markdown.\n\nDo NOT use bullet points outside the required structure.\n\nAlways follow this exact structure:\n\n[Framing]\n\n[Subject Detail]\n\n[Lighting]\n\n[Emotion]\n\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n\n[Exposure]\n\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n\n[Negative Prompt]",
+      "prompt": "You are an expert prompt engineer specializing in high-end editorial photography prompts for AI image generation.\n\nYour task is to analyze the uploaded reference image (@char_sheet) and extract every relevant visual detail — face, hairstyle, body proportions, skin tone, exact outfit, accessories, materials, and textures — then use those extracted details to enhance and complete the fixed structure below into one finished, cohesive prompt. Never invent a different person or different garments than what is in the reference; only enhance the description of what is actually there, in natural photographic language.\n\nAlways build the final prompt from these three fixed parts, in order:\n\n[PART1] - CharSheet Show me this person @char_sheet. Direct the pose like a Harper's Bazaar photographer. Never refer to the subject as \"man\" or \"woman\" — describe them only as \"this person\" or by neutral physical/styling descriptors drawn from the reference. Enhance this line with a specific, non-repeating editorial pose description drawn from the reference's body type and outfit — confident, asymmetrical, magazine-directed body language, never a flat standing pose. Also enhance with the exact identity and outfit details extracted from @char_sheet (face, hair, garments, accessories, colors, materials) so the character and clothing stay fully consistent with the reference.\n\n[PART2] - FIXED LIGHTING/AESTHETIC Editorial menswear lookbook photograph, medium format digital capture, 85mm lens, f/5.6, moderate telephoto compression, subject sharp front to back, background softly separated, planar graphic backdrop, subject aligned to strong vertical architecture, overcast diffused natural daylight, large soft key from upper camera-left at 40 degrees, 2:1 lighting ratio, soft-edged shadows with slow falloff, ambient fill bounced from pale plaster and stone, no direct sun on subject, dappled leaf shadow confined to background surfaces, 5800K cool-neutral daylight with warm bounce returning from timber, Kodak Portra 400 color science, lifted milky blacks, soft highlight rolloff, no clipping, faint green-olive cast in shadows, neutral-warm midtones, clean uncolored highlights, low to medium contrast, flat film-like curve, ultra fine grain, no vignette, muted earth-leaning color response, single accent color permitted to stay saturated. This block is fixed — reproduce it exactly every generation, do not alter or shorten it.\n\n[PART3] - FIXED LOCATION Exposed architectural structure, natural material palette, soft overcast afternoon light, still composed atmosphere, restrained gesture, garment-forward, quiet luxury editorial, understated, natural, unstyled realism. This block is fixed — reproduce it exactly every generation, do not alter or shorten it.\n\nOutput Rules: Only output the finished, merged prompt as one continuous descriptive passage combining PART1, PART2, and PART3 in order. Do NOT output the part labels, headers, or brackets in the final result — they are structural guides only. Do NOT explain your reasoning or add commentary. Do NOT use markdown or bullet points. Every generation must use a new, non-repeating pose for PART1 while keeping PART2 and PART3 identical every time.",
       "persist_context": false,
       "model": "gpt-5-mini",
       "images": [
@@ -330,9 +330,9 @@
   },
   "151": {
     "inputs": {
-      "prompt": "You are an expert prompt engineer specializing in high-end editorial photography prompts for AI image generation.\n\nYour task is to analyze the uploaded reference image and recreate it as a brand-new editorial scene.\n\nRequirements:\n\nPreserve the exact character identity (face, hairstyle, age, body proportion, skin tone, ethnicity, and overall appearance).\nPreserve the exact outfit, accessories, colors, materials, textures, and styling.\nDo NOT redesign or modify the clothing.\nKeep the character recognizable as the same person.\n\nScene Generation:\n\nCreate an entirely new editorial environment.\nRandomly choose a realistic location every generation.\nNever reuse the previous background.\nExamples include:\nbotanical garden\nbeach promenade\nold alley\ntrain station Malaysia\nuniversity Malaysia campus\npedestrian bridge\ncontemporary architecture\nart gallery\nshopping arcade\nparking rooftop\nrandom outdoor urban location\n\nEditorial Photography Style:\n\nGenerate a different editorial photography style every generation.\nNever repeat the same visual treatment.\nMix authentic luxury fashion photography styles including:\nnatural ambient editorial\ncinematic environmental portrait\nluxury lifestyle campaign\nVogue-inspired street editorial\nHarper's Bazaar fashion editorial\nELLE campaign photography\nNuméro fashion story\ndirect on-camera flash\noff-camera strobe photography\nfashion week backstage documentary\nhigh-fashion studio campaign\nseamless studio backdrop\nsoftbox beauty lighting\nhard shadow fashion lighting\nmixed ambient + flash\nfine art fashion portrait\npremium commercial fashion campaign\nluxury advertising campaign\nminimalist editorial portrait\ncinematic luxury portrait\nEvery generation should feel visually unique while maintaining a premium luxury editorial aesthetic.\nLighting, composition, posing, framing, and camera angle should naturally adapt to the selected photography style.\nPreserve realistic lighting interaction, reflections, shadows, and material response.\n\nEditorial Style:\n\nGenerate a high-end luxury fashion editorial composition.\nEvery image should resemble an authentic luxury fashion magazine editorial or premium campaign photographed by a professional fashion photographer.\nThe character should naturally interact with the environment.\nEvery image should feel like it was photographed for Vogue, Harper's Bazaar, ELLE, Numéro, or a premium luxury fashion campaign while avoiding visible logos or magazine branding.\nPrioritize elegant body language, cinematic storytelling, refined composition, premium styling, and sophisticated visual direction.\nThe character should appear naturally photogenic, confident, and effortlessly stylish.\nAvoid generic AI portrait compositions.\nAvoid awkward poses.\nAvoid stiff posture.\nAvoid symmetrical standing posture.\nAvoid catalog-style product photography.\nAvoid passport-style portraits.\nNatural candid moments are preferred over direct posing.\n\nEditorial Posing:\n\nGenerate a unique high-fashion editorial pose every generation.\nNever repeat the same pose.\nThe pose should feel natural, effortless, dynamic, and fashion-forward rather than intentionally posing for the camera.\nCreate realistic weight distribution, subtle body twists, varied shoulder and hip angles, expressive arm placement, believable movement, and relaxed posture.\nThe character should naturally interact with surrounding objects and architecture whenever appropriate.\nRandomly choose poses inspired by authentic luxury fashion editorials.\n\nExamples include:\n\nwalking naturally\nmid-stride movement\nturning while walking\nlooking back over the shoulder\nleaning against a wall\nleaning on a railing\nresting on furniture\nsitting casually\nsitting on stairs\nperching on a chair\ncrossing one leg naturally\nadjusting sleeves\nadjusting the collar\ntouching the hair naturally\none hand inside a pocket\nresting one arm on a table\nlooking through a window\nlooking into the distance\nlooking downward naturally\nreading a book\nusing a phone naturally\nwaiting naturally\ncandid movement\neditorial storytelling pose\nluxury campaign body language\n\nAvoid:\n\nstatic standing\nperfectly symmetrical posture\nboth arms hanging straight beside the body\nmannequin poses\nawkward hands\nT-pose\nA-pose\ncatalog poses\npassport-style portraits\n\nThe final pose should resemble authentic editorial fashion photography rather than a standard portrait.\n\nFraming:\n\nNever generate a full body shot.\nCrop between waist, thigh, or knee level only.\nShoes should never be visible.\nPrioritize dynamic editorial framing with intentional cropping, cinematic negative space, asymmetrical balance, and magazine-style composition rather than centered portrait framing.\nRandomize composition every generation.\n\nCamera Angle:\n\nRandomize the camera angle every generation.\nNever repeat the same angle.\n\nPossible angles include:\n\neye level\nslightly high angle\nslightly low angle\nDutch angle\nover-the-shoulder\nside profile\nfront three-quarter\nrear three-quarter\nclose-up portrait\ntight medium shot\ntelephoto compression\nwide environmental portrait\ncandid walking shot\ncinematic handheld perspective\n\nLighting:\n\nRandomize lighting every generation.\nMatch the lighting to both the location and photography style.\nExamples include:\nsoft overcast daylight\ngolden hour\nwindow light\ndiffused sunlight\ncloudy daylight\nmoody indoor lighting\nfluorescent subway lighting\nluxury hotel ambient lighting\ncinematic neon\ndirect on-camera flash\noff-camera strobe\nlarge softbox studio lighting\nbeauty dish lighting\nhard fashion flash\nrim lighting\nmixed ambient + flash\ndramatic editorial lighting\nLighting should produce physically accurate shadows, reflections, skin rendering, fabric response, and realistic light falloff.\n\nBackground:\n\nGenerate an entirely new believable environment every generation.\nUse shallow depth of field (shallow DOF) with realistic optical lens behavior to create natural bokeh.\nBlur should result naturally from aperture, focal length, and camera distance rather than artificial blur.\nMaintain enough environmental detail to establish the location while keeping strong subject separation.\nAvoid flat backgrounds.\nAvoid unrealistic blur.\nNo floating or impossible objects.\nPreserve realistic perspective and environmental scale.\n\nPhysical Realism:\n\nNatural body anatomy.\nCorrect facial proportions.\nCorrect hand anatomy.\nRealistic body weight distribution.\nNatural muscle tension.\nPhysically accurate posture.\nRealistic fabric folds.\nAccurate clothing drape.\nProper perspective.\nAccurate contact shadows.\nPhysically correct lighting interaction.\nNatural skin texture.\nRealistic hair strands.\nHigh realism.\n\nOutput Rules:\n\nOnly output the prompt.\n\nDo NOT explain anything.\n\nDo NOT use markdown.\n\nDo NOT use bullet points outside the required structure.\n\nAlways follow this exact structure:\n\n[Framing]\n\n[Subject Detail]\n\n[Lighting]\n\n[Emotion]\n\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n\n[Exposure]\n\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n\n[Negative Prompt]",
+      "prompt": "You are an expert prompt engineer specializing in high-end editorial photography prompts for AI image generation.\n\nYour task is to analyze the uploaded reference image (@char_sheet) and extract every relevant visual detail — face, hairstyle, body proportions, skin tone, exact outfit, accessories, materials, and textures — then use those extracted details to enhance and complete the fixed structure below into one finished, cohesive prompt. Never invent a different person or different garments than what is in the reference; only enhance the description of what is actually there, in natural photographic language.\n\nAlways build the final prompt from these three fixed parts, in order:\n\n[PART1] - CharSheet Show me this person @char_sheet. Direct the pose like a Harper's Bazaar photographer. Never refer to the subject as \"man\" or \"woman\" — describe them only as \"this person\" or by neutral physical/styling descriptors drawn from the reference. Enhance this line with a specific, non-repeating editorial pose description drawn from the reference's body type and outfit — confident, asymmetrical, magazine-directed body language, never a flat standing pose. Also enhance with the exact identity and outfit details extracted from @char_sheet (face, hair, garments, accessories, colors, materials) so the character and clothing stay fully consistent with the reference.\n\n[PART2] - FIXED LIGHTING/AESTHETIC Editorial menswear lookbook photograph, medium format digital capture, 85mm lens, f/5.6, moderate telephoto compression, subject sharp front to back, background softly separated, planar graphic backdrop, subject aligned to strong vertical architecture, overcast diffused natural daylight, large soft key from upper camera-left at 40 degrees, 2:1 lighting ratio, soft-edged shadows with slow falloff, ambient fill bounced from pale plaster and stone, no direct sun on subject, dappled leaf shadow confined to background surfaces, 5800K cool-neutral daylight with warm bounce returning from timber, Kodak Portra 400 color science, lifted milky blacks, soft highlight rolloff, no clipping, faint green-olive cast in shadows, neutral-warm midtones, clean uncolored highlights, low to medium contrast, flat film-like curve, ultra fine grain, no vignette, muted earth-leaning color response, single accent color permitted to stay saturated. This block is fixed — reproduce it exactly every generation, do not alter or shorten it.\n\n[PART3] - FIXED LOCATION Exposed architectural structure, natural material palette, soft overcast afternoon light, still composed atmosphere, restrained gesture, garment-forward, quiet luxury editorial, understated, natural, unstyled realism. This block is fixed — reproduce it exactly every generation, do not alter or shorten it.\n\nOutput Rules: Only output the finished, merged prompt as one continuous descriptive passage combining PART1, PART2, and PART3 in order. Do NOT output the part labels, headers, or brackets in the final result — they are structural guides only. Do NOT explain your reasoning or add commentary. Do NOT use markdown or bullet points. Every generation must use a new, non-repeating pose for PART1 while keeping PART2 and PART3 identical every time.",
       "persist_context": false,
-      "model": "gpt-5-mini",
+      "model": "gpt-4.1-mini",
       "images": [
         "346",
         0
@@ -349,7 +349,7 @@
       "persist_context": false,
       "model": "gpt-5-mini",
       "images": [
-        "280:27",
+        "418",
         0
       ]
     },
@@ -368,7 +368,7 @@
       "model.background": "auto",
       "model.quality": "medium",
       "n": 1,
-      "seed": 140,
+      "seed": 174,
       "model.images.image_1": [
         "51",
         0
@@ -385,7 +385,7 @@
   },
   "160": {
     "inputs": {
-      "image": "70b446733ff15f652711aaf7f02d8a9747028455167b2f23f1e71dd8ae93b09c.png"
+      "image": "4bf4855dc004e0510dd23aa5d4fd22e5c1fc22423fb9299d7b1710cb6612342b.JPG"
     },
     "class_type": "LoadImage",
     "_meta": {
@@ -734,26 +734,6 @@
       "title": "Preview Image"
     }
   },
-  "267": {
-    "inputs": {
-      "prompt": "You are an expert prompt engineer specializing in high-end editorial photography prompts for AI image generation.\n\nYour task is to analyze the uploaded reference image and recreate it as a brand-new editorial scene.\n\nRequirements:\n\nPreserve the exact character identity (face, hairstyle, age, body proportion, skin tone, ethnicity, and overall appearance).\nPreserve the exact outfit, accessories, colors, materials, textures, and styling.\nDo NOT redesign or modify the clothing.\nKeep the character recognizable as the same person.\n\nScene Generation:\n\nCreate an entirely new editorial environment.\nRandomly choose a realistic location every generation.\nNever reuse the previous background.\nExamples include:\nmodern city street\nsubway station Malaysia\ncafe\nbookstore\noffice hallway\nbotanical garden\nbeach promenade\nold alley\nindustrial warehouse\ntrain station Malaysia\nuniversity Malaysia campus\ncontemporary architecture\nart gallery\nshopping arcade\nparking rooftop\n\nEditorial Photography Style:\n\nGenerate a different editorial photography style every generation.\nNever repeat the same visual treatment.\nMix authentic luxury fashion photography styles including:\nnatural ambient editorial\ncinematic environmental portrait\nluxury lifestyle campaign\nVogue-inspired street editorial\nHarper's Bazaar fashion editorial\nELLE campaign photography\nNuméro fashion story\ndirect on-camera flash\noff-camera strobe photography\nfashion week backstage documentary\nhigh-fashion studio campaign\nseamless studio backdrop\nsoftbox beauty lighting\nhard shadow fashion lighting\nmixed ambient + flash\nfine art fashion portrait\npremium commercial fashion campaign\nluxury advertising campaign\nminimalist editorial portrait\ncinematic luxury portrait\nEvery generation should feel visually unique while maintaining a premium luxury editorial aesthetic.\nLighting, composition, posing, framing, and camera angle should naturally adapt to the selected photography style.\nPreserve realistic lighting interaction, reflections, shadows, and material response.\n\nEditorial Style:\n\nGenerate a high-end luxury fashion editorial composition.\nEvery image should resemble an authentic luxury fashion magazine editorial or premium campaign photographed by a professional fashion photographer.\nThe character should naturally interact with the environment.\nEvery image should feel like it was photographed for Vogue, Harper's Bazaar, ELLE, Numéro, or a premium luxury fashion campaign while avoiding visible logos or magazine branding.\nPrioritize elegant body language, cinematic storytelling, refined composition, premium styling, and sophisticated visual direction.\nThe character should appear naturally photogenic, confident, and effortlessly stylish.\nAvoid generic AI portrait compositions.\nAvoid awkward poses.\nAvoid stiff posture.\nAvoid symmetrical standing posture.\nAvoid catalog-style product photography.\nAvoid passport-style portraits.\nNatural candid moments are preferred over direct posing.\n\nEditorial Posing:\n\nGenerate a unique high-fashion editorial pose every generation.\nNever repeat the same pose.\nThe pose should feel natural, effortless, dynamic, and fashion-forward rather than intentionally posing for the camera.\nCreate realistic weight distribution, subtle body twists, varied shoulder and hip angles, expressive arm placement, believable movement, and relaxed posture.\nThe character should naturally interact with surrounding objects and architecture whenever appropriate.\nRandomly choose poses inspired by authentic luxury fashion editorials.\n\nExamples include:\n\nwalking naturally\nmid-stride movement\nturning while walking\nlooking back over the shoulder\nleaning against a wall\nleaning on a railing\nresting on furniture\nsitting casually\nsitting on stairs\nperching on a chair\ncrossing one leg naturally\nadjusting sleeves\nadjusting the collar\ntouching the hair naturally\none hand inside a pocket\nresting one arm on a table\nlooking through a window\nlooking into the distance\nlooking downward naturally\nreading a book\nusing a phone naturally\nwaiting naturally\ncandid movement\neditorial storytelling pose\nluxury campaign body language\n\nAvoid:\n\nstatic standing\nperfectly symmetrical posture\nboth arms hanging straight beside the body\nmannequin poses\nawkward hands\nT-pose\nA-pose\ncatalog poses\npassport-style portraits\n\nThe final pose should resemble authentic editorial fashion photography rather than a standard portrait.\n\nFraming:\n\nNever generate a full body shot.\nCrop between waist, thigh, or knee level only.\nShoes should never be visible.\nPrioritize dynamic editorial framing with intentional cropping, cinematic negative space, asymmetrical balance, and magazine-style composition rather than centered portrait framing.\nRandomize composition every generation.\n\nCamera Angle:\n\nRandomize the camera angle every generation.\nNever repeat the same angle.\n\nPossible angles include:\n\neye level\nslightly high angle\nslightly low angle\nDutch angle\nover-the-shoulder\nside profile\nfront three-quarter\nrear three-quarter\nclose-up portrait\ntight medium shot\ntelephoto compression\nwide environmental portrait\ncandid walking shot\ncinematic handheld perspective\n\nLighting:\n\nRandomize lighting every generation.\nMatch the lighting to both the location and photography style.\nExamples include:\nsoft overcast daylight\ngolden hour\nwindow light\ndiffused sunlight\ncloudy daylight\nmoody indoor lighting\nfluorescent subway lighting\nluxury hotel ambient lighting\ncinematic neon\ndirect on-camera flash\noff-camera strobe\nlarge softbox studio lighting\nbeauty dish lighting\nhard fashion flash\nrim lighting\nmixed ambient + flash\ndramatic editorial lighting\nLighting should produce physically accurate shadows, reflections, skin rendering, fabric response, and realistic light falloff.\n\nBackground:\n\nGenerate an entirely new believable environment every generation.\nUse shallow depth of field (shallow DOF) with realistic optical lens behavior to create natural bokeh.\nBlur should result naturally from aperture, focal length, and camera distance rather than artificial blur.\nMaintain enough environmental detail to establish the location while keeping strong subject separation.\nAvoid flat backgrounds.\nAvoid unrealistic blur.\nNo floating or impossible objects.\nPreserve realistic perspective and environmental scale.\n\nPhysical Realism:\n\nNatural body anatomy.\nCorrect facial proportions.\nCorrect hand anatomy.\nRealistic body weight distribution.\nNatural muscle tension.\nPhysically accurate posture.\nRealistic fabric folds.\nAccurate clothing drape.\nProper perspective.\nAccurate contact shadows.\nPhysically correct lighting interaction.\nNatural skin texture.\nRealistic hair strands.\nHigh realism.\n\nOutput Rules:\n\nOnly output the prompt.\n\nDo NOT explain anything.\n\nDo NOT use markdown.\n\nDo NOT use bullet points outside the required structure.\n\nAlways follow this exact structure:\n\n[Framing]\n\n[Subject Detail]\n\n[Lighting]\n\n[Emotion]\n\n[Background Separation]\n\n[Camera Identity]\n\n[Color Grade]\n\n[Exposure]\n\n[Camera Texture]\n\n[Physical Realism]\n\n[Camera / Film Format]\n\n[Negative Prompt]",
-      "model": "Gemini 3.5 Flash",
-      "model.thinking_level": "MEDIUM",
-      "model.temperature": 1,
-      "model.top_p": 0.95,
-      "model.max_output_tokens": 32768,
-      "seed": 258773797,
-      "system_prompt": "",
-      "model.images.image_1": [
-        "346",
-        0
-      ]
-    },
-    "class_type": "GeminiNodeV2",
-    "_meta": {
-      "title": "Google Gemini"
-    }
-  },
   "346": {
     "inputs": {
       "prompt": "Replace only the outfit on the character sheet with the outfit from @img2.\n\nPreserve the exact pose, body alignment, proportions, framing, camera angle, panel layout, composition, and studio presentation from @character sheet. Do not modify the character's face, hairstyle, body shape, or expression.\n\nTransfer the outfit from @img2 exactly as shown, including every clothing item, footwear, layers, colors, materials, fabric texture, stitching, seams, folds, wrinkles, patterns, prints, embroidery, logos, graphics, patches, trims, pockets, buttons, zippers, straps, belts, accessories attached to the clothing, and all other design details. Reproduce the outfit with maximum accuracy without simplifying, redesigning, recoloring, or omitting any element.\n\nClean plain grey studio presentation with a seamless neutral background.\n\nDo not add or remove any clothing details. No text, labels, watermarks, borders, additional accessories, armor, props, weapons, visual effects, dust, smoke, particles, extra people, or additional objects.\n\nUltra-consistent human anatomy across all three panels. Production-ready character turnaround. AAA character reference sheet. 8K photorealistic. Hyper-realistic fabric detail and realistic clothing construction. Physically accurate human anatomy and proportions. Preserve the exact outfit design from @img2 while maintaining the character sheet composition from @character sheet.\n\nTreat @img2 as the authoritative source for every aspect of the outfit. Every visible clothing detail must be preserved exactly, including all logos, patterns, graphics, branding, colors, textures, stitching, and construction. Do not simplify, reinterpret, or invent any clothing details.",
@@ -770,7 +750,7 @@
       "model.background": "auto",
       "model.quality": "medium",
       "n": 1,
-      "seed": 140,
+      "seed": 174,
       "model.images.image_1": [
         "58",
         0
@@ -785,96 +765,12 @@
       "title": "OpenAI GPT Image 2"
     }
   },
-  "347": {
-    "inputs": {
-      "prompt": [
-        "99",
-        0
-      ],
-      "model": "gpt-image-2",
-      "model.size": "Custom",
-      "model.custom_width": 1664,
-      "model.custom_height": 2496,
-      "model.background": "auto",
-      "model.quality": "medium",
-      "n": 1,
-      "seed": 433453453,
-      "model.images.image_1": [
-        "346",
-        0
-      ],
-      "model.images.image_2": [
-        "352",
-        0
-      ]
-    },
-    "class_type": "OpenAIGPTImageNodeV2",
-    "_meta": {
-      "title": "OpenAI GPT Image 2"
-    }
-  },
-  "348": {
-    "inputs": {
-      "prompt": [
-        "102",
-        0
-      ],
-      "model": "gpt-image-2",
-      "model.size": "Custom",
-      "model.custom_width": 1664,
-      "model.custom_height": 2496,
-      "model.background": "auto",
-      "model.quality": "medium",
-      "n": 1,
-      "seed": 136,
-      "model.images.image_1": [
-        "346",
-        0
-      ],
-      "model.images.image_2": [
-        "352",
-        0
-      ]
-    },
-    "class_type": "OpenAIGPTImageNodeV2",
-    "_meta": {
-      "title": "OpenAI GPT Image 2"
-    }
-  },
-  "351": {
-    "inputs": {
-      "prompt": [
-        "104",
-        0
-      ],
-      "model": "gpt-image-2",
-      "model.size": "Custom",
-      "model.custom_width": 1664,
-      "model.custom_height": 2496,
-      "model.background": "auto",
-      "model.quality": "medium",
-      "n": 1,
-      "seed": 136,
-      "model.images.image_1": [
-        "346",
-        0
-      ],
-      "model.images.image_2": [
-        "352",
-        0
-      ]
-    },
-    "class_type": "OpenAIGPTImageNodeV2",
-    "_meta": {
-      "title": "OpenAI GPT Image 2"
-    }
-  },
   "352": {
     "inputs": {
       "crop_region": {
         "x": 0,
         "y": 0,
-        "width": 921,
+        "width": 968,
         "height": 1536
       },
       "image": [
@@ -889,11 +785,107 @@
   },
   "355": {
     "inputs": {
-      "image": "a92c2ecded4a957af236e153446aa4dc1c2410a8805f3a94bc0e1b06171f9749.jpg"
+      "image": "d83451abd91452a6f8dd30ad64deb09711f903183cf279d1c617fe13eafeffc1.jpg"
     },
     "class_type": "LoadImage",
     "_meta": {
       "title": "Load Image"
+    }
+  },
+  "418": {
+    "inputs": {
+      "prompt": [
+        "99",
+        0
+      ],
+      "model": "seedream 5.0 pro",
+      "model.size_preset": "Custom",
+      "model.width": 1440,
+      "model.height": 2496,
+      "seed": 332743325,
+      "watermark": false,
+      "thinking": true,
+      "model.images.image_1": [
+        "346",
+        0
+      ],
+      "model.images.image_2": [
+        "352",
+        0
+      ]
+    },
+    "class_type": "ByteDanceSeedreamNodeV2",
+    "_meta": {
+      "title": "ByteDance Seedream 4.5 & 5.0"
+    }
+  },
+  "419": {
+    "inputs": {
+      "prompt": [
+        "102",
+        0
+      ],
+      "model": "seedream 5.0 pro",
+      "model.size_preset": "Custom",
+      "model.width": 1440,
+      "model.height": 2496,
+      "seed": 1696954525,
+      "watermark": false,
+      "thinking": true,
+      "model.images.image_1": [
+        "346",
+        0
+      ],
+      "model.images.image_2": [
+        "352",
+        0
+      ]
+    },
+    "class_type": "ByteDanceSeedreamNodeV2",
+    "_meta": {
+      "title": "ByteDance Seedream 4.5 & 5.0"
+    }
+  },
+  "420": {
+    "inputs": {
+      "prompt": [
+        "104",
+        0
+      ],
+      "model": "seedream 5.0 pro",
+      "model.size_preset": "Custom",
+      "model.width": 1440,
+      "model.height": 2496,
+      "seed": 212472854,
+      "watermark": false,
+      "thinking": true,
+      "model.images.image_1": [
+        "346",
+        0
+      ],
+      "model.images.image_2": [
+        "352",
+        0
+      ]
+    },
+    "class_type": "ByteDanceSeedreamNodeV2",
+    "_meta": {
+      "title": "ByteDance Seedream 4.5 & 5.0"
+    }
+  },
+  "421": {
+    "inputs": {
+      "prompt": "You are an expert prompt engineer specializing in high-end editorial photography prompts for AI image generation.\n\nYour task is to analyze the uploaded reference image (@char_sheet) and extract every relevant visual detail — face, hairstyle, body proportions, skin tone, exact outfit, accessories, materials, and textures — then use those extracted details to enhance and complete the fixed structure below into one finished, cohesive prompt. Never invent a different person or different garments than what is in the reference; only enhance the description of what is actually there, in natural photographic language.\n\nAlways build the final prompt from these three fixed parts, in order:\n\n[PART1] - CharSheet Show me this person @char_sheet. Direct the pose like a Harper's Bazaar photographer. Never refer to the subject as \"man\" or \"woman\" — describe them only as \"this person\" or by neutral physical/styling descriptors drawn from the reference. Enhance this line with a specific, non-repeating editorial pose description drawn from the reference's body type and outfit — confident, asymmetrical, magazine-directed body language, never a flat standing pose. Also enhance with the exact identity and outfit details extracted from @char_sheet (face, hair, garments, accessories, colors, materials) so the character and clothing stay fully consistent with the reference.\n\n[PART2] - FIXED LIGHTING/AESTHETIC Editorial menswear lookbook photograph, medium format digital capture, 85mm lens, f/5.6, moderate telephoto compression, subject sharp front to back, background softly separated, planar graphic backdrop, subject aligned to strong vertical architecture, overcast diffused natural daylight, large soft key from upper camera-left at 40 degrees, 2:1 lighting ratio, soft-edged shadows with slow falloff, ambient fill bounced from pale plaster and stone, no direct sun on subject, dappled leaf shadow confined to background surfaces, 5800K cool-neutral daylight with warm bounce returning from timber, Kodak Portra 400 color science, lifted milky blacks, soft highlight rolloff, no clipping, faint green-olive cast in shadows, neutral-warm midtones, clean uncolored highlights, low to medium contrast, flat film-like curve, ultra fine grain, no vignette, muted earth-leaning color response, single accent color permitted to stay saturated. This block is fixed — reproduce it exactly every generation, do not alter or shorten it.\n\n[PART3] - FIXED LOCATION Exposed architectural structure, natural material palette, soft overcast afternoon light, still composed atmosphere, restrained gesture, garment-forward, quiet luxury editorial, understated, natural, unstyled realism. This block is fixed — reproduce it exactly every generation, do not alter or shorten it.\n\nOutput Rules: Only output the finished, merged prompt as one continuous descriptive passage combining PART1, PART2, and PART3 in order. Do NOT output the part labels, headers, or brackets in the final result — they are structural guides only. Do NOT explain your reasoning or add commentary. Do NOT use markdown or bullet points. Every generation must use a new, non-repeating pose for PART1 while keeping PART2 and PART3 identical every time.",
+      "persist_context": false,
+      "model": "gpt-5",
+      "images": [
+        "346",
+        0
+      ]
+    },
+    "class_type": "OpenAIChatNode",
+    "_meta": {
+      "title": "OpenAI ChatGPT"
     }
   },
   "185:182": {
@@ -1137,7 +1129,7 @@
   },
   "185:73": {
     "inputs": {
-      "noise_seed": 298843955956487
+      "noise_seed": 1007627869949907
     },
     "class_type": "RandomNoise",
     "_meta": {
@@ -1209,7 +1201,7 @@
   },
   "366:361": {
     "inputs": {
-      "seed": 1876564709,
+      "seed": 3027903843,
       "resolution": [
         "366:359",
         0
@@ -1280,438 +1272,6 @@
     "inputs": {
       "image": [
         "158",
-        0
-      ]
-    },
-    "class_type": "GetImageSize",
-    "_meta": {
-      "title": "Get Image Size"
-    }
-  },
-  "280:43": {
-    "inputs": {
-      "if_condition": [
-        "280:40",
-        0
-      ],
-      "when_TRUE": [
-        "280:21",
-        0
-      ],
-      "when_FALSE": [
-        "280:21",
-        1
-      ]
-    },
-    "class_type": "LayerUtility: If ",
-    "_meta": {
-      "title": "IfElse"
-    }
-  },
-  "280:40": {
-    "inputs": {
-      "cmp": "a <= b",
-      "a": [
-        "280:21",
-        0
-      ],
-      "b": [
-        "280:21",
-        1
-      ]
-    },
-    "class_type": "ImpactCompare",
-    "_meta": {
-      "title": "ImpactCompare"
-    }
-  },
-  "280:25": {
-    "inputs": {
-      "value": "a*b",
-      "a": [
-        "280:43",
-        0
-      ],
-      "b": [
-        "280:30",
-        0
-      ]
-    },
-    "class_type": "SimpleMath+",
-    "_meta": {
-      "title": "Upscale to Shortest Edge (pixels)"
-    }
-  },
-  "280:30": {
-    "inputs": {
-      "value": 1.5
-    },
-    "class_type": "PrimitiveFloat",
-    "_meta": {
-      "title": "Upscale Factor"
-    }
-  },
-  "280:27": {
-    "inputs": {
-      "seed": 2010980035,
-      "resolution": [
-        "280:25",
-        0
-      ],
-      "max_resolution": 0,
-      "batch_size": 1,
-      "uniform_batch_size": false,
-      "color_correction": "lab",
-      "temporal_overlap": 0,
-      "prepend_frames": 0,
-      "input_noise_scale": 0,
-      "latent_noise_scale": 0,
-      "offload_device": "cpu",
-      "enable_debug": false,
-      "image": [
-        "347",
-        0
-      ],
-      "dit": [
-        "280:28",
-        0
-      ],
-      "vae": [
-        "280:22",
-        0
-      ]
-    },
-    "class_type": "SeedVR2VideoUpscaler",
-    "_meta": {
-      "title": "SeedVR2 Video Upscaler (v2.5.24)"
-    }
-  },
-  "280:22": {
-    "inputs": {
-      "model": "ema_vae_fp16.safetensors",
-      "device": "cuda:0",
-      "encode_tiled": true,
-      "encode_tile_size": 1024,
-      "encode_tile_overlap": 128,
-      "decode_tiled": true,
-      "decode_tile_size": 1024,
-      "decode_tile_overlap": 128,
-      "tile_debug": "false",
-      "offload_device": "none",
-      "cache_model": false
-    },
-    "class_type": "SeedVR2LoadVAEModel",
-    "_meta": {
-      "title": "SeedVR2 (Down)Load VAE Model"
-    }
-  },
-  "280:28": {
-    "inputs": {
-      "model": "seedvr2_ema_7b_fp16.safetensors",
-      "device": "cuda:0",
-      "blocks_to_swap": 0,
-      "swap_io_components": false,
-      "offload_device": "cpu",
-      "cache_model": false,
-      "attention_mode": "sdpa"
-    },
-    "class_type": "SeedVR2LoadDiTModel",
-    "_meta": {
-      "title": "SeedVR2 (Down)Load DiT Model"
-    }
-  },
-  "280:21": {
-    "inputs": {
-      "image": [
-        "347",
-        0
-      ]
-    },
-    "class_type": "GetImageSize",
-    "_meta": {
-      "title": "Get Image Size"
-    }
-  },
-  "290:281": {
-    "inputs": {
-      "if_condition": [
-        "290:282",
-        0
-      ],
-      "when_TRUE": [
-        "290:288",
-        0
-      ],
-      "when_FALSE": [
-        "290:288",
-        1
-      ]
-    },
-    "class_type": "LayerUtility: If ",
-    "_meta": {
-      "title": "IfElse"
-    }
-  },
-  "290:282": {
-    "inputs": {
-      "cmp": "a <= b",
-      "a": [
-        "290:288",
-        0
-      ],
-      "b": [
-        "290:288",
-        1
-      ]
-    },
-    "class_type": "ImpactCompare",
-    "_meta": {
-      "title": "ImpactCompare"
-    }
-  },
-  "290:283": {
-    "inputs": {
-      "value": "a*b",
-      "a": [
-        "290:281",
-        0
-      ],
-      "b": [
-        "290:284",
-        0
-      ]
-    },
-    "class_type": "SimpleMath+",
-    "_meta": {
-      "title": "Upscale to Shortest Edge (pixels)"
-    }
-  },
-  "290:284": {
-    "inputs": {
-      "value": 1.5
-    },
-    "class_type": "PrimitiveFloat",
-    "_meta": {
-      "title": "Upscale Factor"
-    }
-  },
-  "290:285": {
-    "inputs": {
-      "seed": 962124403,
-      "resolution": [
-        "290:283",
-        0
-      ],
-      "max_resolution": 0,
-      "batch_size": 1,
-      "uniform_batch_size": false,
-      "color_correction": "lab",
-      "temporal_overlap": 0,
-      "prepend_frames": 0,
-      "input_noise_scale": 0,
-      "latent_noise_scale": 0,
-      "offload_device": "cpu",
-      "enable_debug": false,
-      "image": [
-        "348",
-        0
-      ],
-      "dit": [
-        "290:287",
-        0
-      ],
-      "vae": [
-        "290:286",
-        0
-      ]
-    },
-    "class_type": "SeedVR2VideoUpscaler",
-    "_meta": {
-      "title": "SeedVR2 Video Upscaler (v2.5.24)"
-    }
-  },
-  "290:286": {
-    "inputs": {
-      "model": "ema_vae_fp16.safetensors",
-      "device": "cuda:0",
-      "encode_tiled": true,
-      "encode_tile_size": 1024,
-      "encode_tile_overlap": 128,
-      "decode_tiled": true,
-      "decode_tile_size": 1024,
-      "decode_tile_overlap": 128,
-      "tile_debug": "false",
-      "offload_device": "none",
-      "cache_model": false
-    },
-    "class_type": "SeedVR2LoadVAEModel",
-    "_meta": {
-      "title": "SeedVR2 (Down)Load VAE Model"
-    }
-  },
-  "290:287": {
-    "inputs": {
-      "model": "seedvr2_ema_7b_fp16.safetensors",
-      "device": "cuda:0",
-      "blocks_to_swap": 0,
-      "swap_io_components": false,
-      "offload_device": "cpu",
-      "cache_model": false,
-      "attention_mode": "sdpa"
-    },
-    "class_type": "SeedVR2LoadDiTModel",
-    "_meta": {
-      "title": "SeedVR2 (Down)Load DiT Model"
-    }
-  },
-  "290:288": {
-    "inputs": {
-      "image": [
-        "348",
-        0
-      ]
-    },
-    "class_type": "GetImageSize",
-    "_meta": {
-      "title": "Get Image Size"
-    }
-  },
-  "300:291": {
-    "inputs": {
-      "if_condition": [
-        "300:292",
-        0
-      ],
-      "when_TRUE": [
-        "300:298",
-        0
-      ],
-      "when_FALSE": [
-        "300:298",
-        1
-      ]
-    },
-    "class_type": "LayerUtility: If ",
-    "_meta": {
-      "title": "IfElse"
-    }
-  },
-  "300:292": {
-    "inputs": {
-      "cmp": "a <= b",
-      "a": [
-        "300:298",
-        0
-      ],
-      "b": [
-        "300:298",
-        1
-      ]
-    },
-    "class_type": "ImpactCompare",
-    "_meta": {
-      "title": "ImpactCompare"
-    }
-  },
-  "300:293": {
-    "inputs": {
-      "value": "a*b",
-      "a": [
-        "300:291",
-        0
-      ],
-      "b": [
-        "300:294",
-        0
-      ]
-    },
-    "class_type": "SimpleMath+",
-    "_meta": {
-      "title": "Upscale to Shortest Edge (pixels)"
-    }
-  },
-  "300:294": {
-    "inputs": {
-      "value": 1.5
-    },
-    "class_type": "PrimitiveFloat",
-    "_meta": {
-      "title": "Upscale Factor"
-    }
-  },
-  "300:295": {
-    "inputs": {
-      "seed": 3976225748,
-      "resolution": [
-        "300:293",
-        0
-      ],
-      "max_resolution": 0,
-      "batch_size": 1,
-      "uniform_batch_size": false,
-      "color_correction": "lab",
-      "temporal_overlap": 0,
-      "prepend_frames": 0,
-      "input_noise_scale": 0,
-      "latent_noise_scale": 0,
-      "offload_device": "cpu",
-      "enable_debug": false,
-      "image": [
-        "351",
-        0
-      ],
-      "dit": [
-        "300:297",
-        0
-      ],
-      "vae": [
-        "300:296",
-        0
-      ]
-    },
-    "class_type": "SeedVR2VideoUpscaler",
-    "_meta": {
-      "title": "SeedVR2 Video Upscaler (v2.5.24)"
-    }
-  },
-  "300:296": {
-    "inputs": {
-      "model": "ema_vae_fp16.safetensors",
-      "device": "cuda:0",
-      "encode_tiled": true,
-      "encode_tile_size": 1024,
-      "encode_tile_overlap": 128,
-      "decode_tiled": true,
-      "decode_tile_size": 1024,
-      "decode_tile_overlap": 128,
-      "tile_debug": "false",
-      "offload_device": "none",
-      "cache_model": false
-    },
-    "class_type": "SeedVR2LoadVAEModel",
-    "_meta": {
-      "title": "SeedVR2 (Down)Load VAE Model"
-    }
-  },
-  "300:297": {
-    "inputs": {
-      "model": "seedvr2_ema_7b_fp16.safetensors",
-      "device": "cuda:0",
-      "blocks_to_swap": 0,
-      "swap_io_components": false,
-      "offload_device": "cpu",
-      "cache_model": false,
-      "attention_mode": "sdpa"
-    },
-    "class_type": "SeedVR2LoadDiTModel",
-    "_meta": {
-      "title": "SeedVR2 (Down)Load DiT Model"
-    }
-  },
-  "300:298": {
-    "inputs": {
-      "image": [
-        "351",
         0
       ]
     },
