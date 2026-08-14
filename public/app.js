@@ -8,9 +8,6 @@ const state = {
   selectedPantsId: "pants-a",
   selectedDressId: "dress-a",
   selectedEditorialKey: "editorial-1",
-  seed: 135,
-  width: 2752,
-  height: 1536,
   references: Array.from({ length: 4 }, () => null),
   clientOutfit: null,
   payload: null,
@@ -384,9 +381,6 @@ async function refreshPayload() {
         client_id: state.clientId,
         mode: state.workflowMode,
         prompt: promptInput.value,
-        seed: state.seed,
-        width: state.width,
-        height: state.height,
         wardrobe: getWardrobePayload(),
         clientOutfit: state.clientOutfit
           ? {
@@ -438,9 +432,6 @@ async function runGeneration(mode) {
     formData.set("client_id", state.clientId);
     formData.set("mode", mode);
     formData.set("prompt", promptInput.value);
-    formData.set("seed", String(state.seed));
-    formData.set("width", String(state.width));
-    formData.set("height", String(state.height));
     formData.set("wardrobe", JSON.stringify(getWardrobePayload()));
     formData.set("selectedEditorialNodeId", getEditorialSource().nodeId);
     formData.set("references", JSON.stringify(getReferencePayload()));

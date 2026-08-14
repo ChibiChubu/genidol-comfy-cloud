@@ -240,7 +240,7 @@
       "model": "kling-v3",
       "model.resolution": "1080p",
       "model.aspect_ratio": "9:16",
-      "seed": 661320153,
+      "seed": 874710058,
       "start_frame": [
         "418",
         0
@@ -802,7 +802,7 @@
       "model.size_preset": "Custom",
       "model.width": 1440,
       "model.height": 2496,
-      "seed": 547694557,
+      "seed": 223974764,
       "watermark": false,
       "thinking": true,
       "model.images.image_1": [
@@ -829,7 +829,7 @@
       "model.size_preset": "Custom",
       "model.width": 1440,
       "model.height": 2496,
-      "seed": 1874594028,
+      "seed": 1774723829,
       "watermark": false,
       "thinking": true,
       "model.images.image_1": [
@@ -856,7 +856,7 @@
       "model.size_preset": "Custom",
       "model.width": 1440,
       "model.height": 2496,
-      "seed": 1075670146,
+      "seed": 298133406,
       "watermark": false,
       "thinking": true,
       "model.images.image_1": [
@@ -1129,7 +1129,7 @@
   },
   "185:73": {
     "inputs": {
-      "noise_seed": 794310787022956
+      "noise_seed": 712179592845993
     },
     "class_type": "RandomNoise",
     "_meta": {
@@ -1201,7 +1201,7 @@
   },
   "366:361": {
     "inputs": {
-      "seed": 1728310758,
+      "seed": 1685252939,
       "resolution": [
         "366:359",
         0
