@@ -33,3 +33,8 @@ export async function deleteTalent(id) {
   const response = await fetch(`/api/talents/${encodeURIComponent(id)}`, { method: "DELETE" });
   return parseJson(response);
 }
+
+export async function cancelGeneration(requestId) {
+  const response = await fetch(`/api/generations/${encodeURIComponent(requestId)}/cancel`, { method: "POST" });
+  return parseJson(response);
+}

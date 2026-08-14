@@ -1,4 +1,4 @@
-import { getIntake, createTalent } from "../api.js";
+import { getIntake, createTalent, cancelGeneration } from "../api.js";
 import { createWardrobeController } from "../wardrobe.js";
 import { escapeHtml, formatFileSize, showToast } from "../util.js";
 import { goToTalent } from "../router.js";
@@ -30,6 +30,8 @@ let intakeLoaded = false;
 let generating = false;
 let savedTalentId = null;
 let abortController = null;
+let currentRequestId = null;
+let cancelling = false;
 
 function q(id) {
   return document.getElementById(id);
@@ -75,9 +77,7 @@ function bindOnce() {
   els.closeBtn.addEventListener("click", closePipeline);
   els.backBtn.addEventListener("click", () => go(cur - 1));
   els.primaryBtn.addEventListener("click", onPrimary);
-  els.cancelBtn.addEventListener("click", () => {
-    if (abortController) abortController.abort();
-  });
+  els.cancelBtn.addEventListener("click", onCancel);
   els.rail.forEach((btn) => {
     btn.addEventListener("click", () => {
       const i = Number(btn.dataset.i);
@@ -148,6 +148,8 @@ function render() {
   els.count.textContent = `Stage ${cur + 1} / ${TOTAL}`;
   els.backBtn.disabled = cur === 0 || generating;
   els.cancelBtn.hidden = !generating;
+  els.cancelBtn.disabled = cancelling;
+  els.cancelBtn.textContent = cancelling ? "Cancelling..." : "Cancel generate";
   els.closeBtn.disabled = generating;
 
   const last = cur === TOTAL - 1;
@@ -202,7 +204,9 @@ async function onPrimary() {
 
 async function runGeneration() {
   generating = true;
+  cancelling = false;
   savedTalentId = null;
+  currentRequestId = crypto.randomUUID();
   abortController = new AbortController();
   els.genResults.hidden = true;
   els.genResults.innerHTML = "";
@@ -212,6 +216,7 @@ async function runGeneration() {
 
   try {
     const formData = new FormData();
+    formData.set("requestId", currentRequestId);
     formData.set("name", els.twinName.value.trim());
     formData.set("mode", "character-sheet");
     formData.set("wardrobe", JSON.stringify(wardrobeController.getPayload()));
@@ -235,8 +240,22 @@ async function runGeneration() {
     if (!cancelled) showToast(error.message, true);
   } finally {
     generating = false;
+    cancelling = false;
     abortController = null;
+    currentRequestId = null;
     render();
+  }
+}
+
+async function onCancel() {
+  if (!generating || cancelling || !currentRequestId) return;
+  cancelling = true;
+  render();
+  if (abortController) abortController.abort();
+  try {
+    await cancelGeneration(currentRequestId);
+  } catch {
+    // Ignore — the generation may have already finished server-side.
   }
 }
 
@@ -271,6 +290,8 @@ export function openPipeline() {
   bindOnce();
   cur = 0;
   generating = false;
+  cancelling = false;
+  currentRequestId = null;
   savedTalentId = null;
   intakeLoaded = false;
   wardrobeController = null;

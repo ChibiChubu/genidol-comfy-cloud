@@ -24,6 +24,8 @@ const TALENT_ASSET_NODES = {
   "114": { key: "video", base: "video" },
 };
 
+const activeGenerations = new Map();
+
 const PORT = Number.parseInt(process.env.PORT ?? "3000", 10);
 const COMFYUI_ENDPOINT = process.env.COMFYUI_URL ?? "https://cloud.comfy.org";
 
@@ -655,13 +657,20 @@ const server = http.createServer(async (req, res) => {
           return;
         }
 
+        const requestId = fields.requestId || randomUUID();
         const abortController = new AbortController();
+        activeGenerations.set(requestId, abortController);
         req.on("aborted", () => abortController.abort());
         req.on("close", () => {
           if (!res.writableEnded) abortController.abort();
         });
 
-        const result = await runComfyGeneration(apiKey, fields, files, abortController.signal);
+        let result;
+        try {
+          result = await runComfyGeneration(apiKey, fields, files, abortController.signal);
+        } finally {
+          activeGenerations.delete(requestId);
+        }
         const talentId = randomUUID();
         const { assetMap, references } = await persistTalentAssets(
           talentId,
@@ -693,6 +702,18 @@ const server = http.createServer(async (req, res) => {
           message: error instanceof Error ? error.message : "Unknown error",
         }, error.status || 400);
       }
+      return;
+    }
+
+    if (req.method === "POST" && url.pathname.startsWith("/api/generations/") && url.pathname.endsWith("/cancel")) {
+      const requestId = url.pathname.slice("/api/generations/".length, -"/cancel".length);
+      const controller = activeGenerations.get(requestId);
+      if (!controller) {
+        sendJson(res, { ok: false, message: "No active generation found (it may have already finished)." }, 404);
+        return;
+      }
+      controller.abort();
+      sendJson(res, { ok: true });
       return;
     }
 
