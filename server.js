@@ -1,5 +1,5 @@
 import http from "node:http";
-import { readFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { extname, join, resolve } from "node:path";
 import { randomUUID } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
@@ -9,10 +9,20 @@ import {
   getWorkflowSummary,
   loadWorkflowGraph,
 } from "./lib/workflow.js";
+import { addTalent, deleteTalent, getTalent, listTalents } from "./lib/talentStore.js";
 
 const ROOT = resolve(".");
 const PUBLIC_DIR = join(ROOT, "public");
+const GENERATED_DIR = join(PUBLIC_DIR, "generated");
 const COMFYUI_ENV_PATH = resolve("C:/Users/Administrator/Documents/Comfyui/.env.local");
+
+const TALENT_ASSET_NODES = {
+  "209": { key: "characterDownload", base: "character-download" },
+  "89": { key: "editorial1", base: "editorial-1" },
+  "90": { key: "editorial2", base: "editorial-2" },
+  "91": { key: "editorial3", base: "editorial-3" },
+  "114": { key: "video", base: "video" },
+};
 
 const PORT = Number.parseInt(process.env.PORT ?? "3000", 10);
 const COMFYUI_ENDPOINT = process.env.COMFYUI_URL ?? "https://cloud.comfy.org";
@@ -27,6 +37,9 @@ const CONTENT_TYPES = {
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
   ".ico": "image/x-icon",
+  ".mp4": "video/mp4",
+  ".webm": "video/webm",
+  ".mov": "video/quicktime",
 };
 
 function loadDotEnv(filePath) {
@@ -215,7 +228,7 @@ async function submitWorkflow(workflow, apiKey) {
   return data.prompt_id;
 }
 
-async function waitForCompletion(promptId, apiKey) {
+async function waitForCompletion(promptId, apiKey, signal) {
   const timeoutMs = 15 * 60 * 1000;
   const startedAt = Date.now();
   const wsUrl = `wss://cloud.comfy.org/ws?clientId=${randomUUID()}&token=${encodeURIComponent(apiKey)}`;
@@ -227,6 +240,21 @@ async function waitForCompletion(promptId, apiKey) {
       ws.close();
       reject(new Error("Job timed out after 15 minutes."));
     }, timeoutMs);
+
+    const onAbort = () => {
+      clearTimeout(timer);
+      ws.close();
+      const error = new Error("Generation cancelled.");
+      error.status = 499;
+      reject(error);
+    };
+    if (signal) {
+      if (signal.aborted) {
+        onAbort();
+        return;
+      }
+      signal.addEventListener("abort", onAbort, { once: true });
+    }
 
     ws.addEventListener("message", (event) => {
       if (typeof event.data !== "string") return;
@@ -240,12 +268,14 @@ async function waitForCompletion(promptId, apiKey) {
 
       if (message.type === "execution_success") {
         clearTimeout(timer);
+        signal?.removeEventListener("abort", onAbort);
         ws.close();
         resolvePromise(outputs);
       }
 
       if (message.type === "execution_error") {
         clearTimeout(timer);
+        signal?.removeEventListener("abort", onAbort);
         ws.close();
         reject(new Error(data.exception_message || "Comfy Cloud execution failed."));
       }
@@ -254,12 +284,14 @@ async function waitForCompletion(promptId, apiKey) {
     ws.addEventListener("error", async () => {
       try {
         const status = await pollJobStatus(promptId, apiKey, startedAt, timeoutMs);
+        signal?.removeEventListener("abort", onAbort);
         if (status.status === "completed") {
           resolvePromise(outputs);
         } else {
           reject(new Error(`WebSocket failed and job status is ${status.status || "unknown"}.`));
         }
       } catch (error) {
+        signal?.removeEventListener("abort", onAbort);
         reject(error);
       }
     });
@@ -329,6 +361,102 @@ function collectAssets(workflow, outputs) {
 
 function isVideoFile(filename = "") {
   return /\.(mp4|webm|mov|m4v|avi|mkv)$/i.test(filename);
+}
+
+function throwIfAborted(signal) {
+  if (signal?.aborted) {
+    const error = new Error("Generation cancelled.");
+    error.status = 499;
+    throw error;
+  }
+}
+
+async function runComfyGeneration(apiKey, fields, files, signal) {
+  const body = normalizeBody(fields);
+  const references = ["ref1", "ref2", "ref3", "ref4"].map((name) => files[name]).filter(Boolean);
+  if (references.length !== 4) {
+    const error = new Error("Please upload exactly 4 reference images.");
+    error.status = 400;
+    throw error;
+  }
+
+  const uploadedRefs = [];
+  for (const file of references) {
+    throwIfAborted(signal);
+    uploadedRefs.push(await uploadImage(file, apiKey));
+  }
+
+  if (files.clientOutfit) {
+    throwIfAborted(signal);
+    const uploadedOutfit = await uploadImage(files.clientOutfit, apiKey);
+    body.clientOutfit = {
+      ...(body.clientOutfit || {}),
+      name: uploadedOutfit.filename,
+      uploaded: true,
+    };
+  }
+
+  const payload = buildComfyUIPayload(workflowGraph, body);
+  const workflow = JSON.parse(JSON.stringify(payload.workflow));
+  patchReferenceNodes(workflow, uploadedRefs);
+  if (body.clientOutfit?.name && workflow["157"]?.inputs) {
+    workflow["157"].inputs.image = body.clientOutfit.name;
+  }
+
+  throwIfAborted(signal);
+  const promptId = await submitWorkflow(workflow, apiKey);
+  const outputs = await waitForCompletion(promptId, apiKey, signal);
+  const assets = collectAssets(workflow, outputs);
+
+  return { body, payload, workflow, uploadedRefs, referenceFiles: references, promptId, outputs, assets };
+}
+
+async function downloadComfyAsset(filename, subfolder, type, apiKey) {
+  const params = new URLSearchParams({ filename, subfolder: subfolder || "", type: type || "output" });
+  const response = await fetch(`${COMFYUI_ENDPOINT}/api/view?${params.toString()}`, {
+    headers: { "X-API-Key": apiKey },
+  });
+  if (!response.ok) throw new Error(`Failed to download asset ${filename}: ${response.status}`);
+  return Buffer.from(await response.arrayBuffer());
+}
+
+async function persistTalentAssets(talentId, assets, referenceFiles, apiKey) {
+  const talentDir = join(GENERATED_DIR, talentId);
+  await mkdir(talentDir, { recursive: true });
+
+  const assetMap = {};
+  for (const asset of assets) {
+    const mapping = TALENT_ASSET_NODES[String(asset.nodeId)];
+    if (!mapping) continue;
+
+    const query = new URL(asset.url, "http://internal").searchParams;
+    const buffer = await downloadComfyAsset(
+      query.get("filename"),
+      query.get("subfolder"),
+      query.get("type"),
+      apiKey,
+    );
+    const ext = extname(asset.filename) || (asset.kind === "video" ? ".mp4" : ".png");
+    const outFilename = `${mapping.base}${ext}`;
+    await writeFile(join(talentDir, outFilename), buffer);
+    assetMap[mapping.key] = {
+      nodeId: asset.nodeId,
+      kind: asset.kind,
+      url: `/generated/${talentId}/${outFilename}`,
+    };
+  }
+
+  const references = [];
+  for (let index = 0; index < referenceFiles.length; index += 1) {
+    const file = referenceFiles[index];
+    if (!file) continue;
+    const ext = extname(file.filename || "") || ".jpg";
+    const outFilename = `ref-${index + 1}${ext}`;
+    await writeFile(join(talentDir, outFilename), file.buffer);
+    references.push({ url: `/generated/${talentId}/${outFilename}` });
+  }
+
+  return { assetMap, references };
 }
 
 async function proxyComfyView(res, url) {
@@ -469,53 +597,116 @@ const server = http.createServer(async (req, res) => {
         }
 
         const { fields, files } = await parseMultipart(req);
-        const body = normalizeBody(fields);
-        const references = ["ref1", "ref2", "ref3", "ref4"].map((name) => files[name]).filter(Boolean);
-        if (references.length !== 4) {
-          sendJson(res, { error: "Please upload exactly 4 reference images." }, 400);
-          return;
-        }
-
-        const uploadedRefs = [];
-        for (const file of references) {
-          uploadedRefs.push(await uploadImage(file, apiKey));
-        }
-
-        if (files.clientOutfit) {
-          const uploadedOutfit = await uploadImage(files.clientOutfit, apiKey);
-          body.clientOutfit = {
-            ...(body.clientOutfit || {}),
-            name: uploadedOutfit.filename,
-            uploaded: true,
-          };
-        }
-
-        const payload = buildComfyUIPayload(workflowGraph, body);
-        const workflow = JSON.parse(JSON.stringify(payload.workflow));
-        patchReferenceNodes(workflow, uploadedRefs);
-        if (body.clientOutfit?.name && workflow["157"]?.inputs) {
-          workflow["157"].inputs.image = body.clientOutfit.name;
-        }
-
-        const promptId = await submitWorkflow(workflow, apiKey);
-        const outputs = await waitForCompletion(promptId, apiKey);
-        const assets = collectAssets(workflow, outputs);
+        const result = await runComfyGeneration(apiKey, fields, files);
 
         sendJson(res, {
-          promptId,
-          mode: body.mode ?? "character-sheet",
-          activeNodeId: payload.activeNodeId,
-          activeNodeTitle: payload.activeNodeTitle,
-          selectedEditorialNodeId: payload.selectedEditorialNodeId,
-          outputs: assets,
-          rawOutputs: outputs,
+          promptId: result.promptId,
+          mode: result.body.mode ?? "character-sheet",
+          activeNodeId: result.payload.activeNodeId,
+          activeNodeTitle: result.payload.activeNodeTitle,
+          selectedEditorialNodeId: result.payload.selectedEditorialNodeId,
+          outputs: result.assets,
+          rawOutputs: result.outputs,
         });
       } catch (error) {
         sendJson(res, {
           error: "Workflow execution failed",
           message: error instanceof Error ? error.message : "Unknown error",
-        }, 400);
+        }, error.status || 400);
       }
+      return;
+    }
+
+    if (req.method === "POST" && url.pathname === "/api/talents") {
+      try {
+        const apiKey = getApiKey();
+        if (!apiKey) {
+          sendJson(res, { error: "Missing COMFY_CLOUD_API_KEY in .env.local." }, 500);
+          return;
+        }
+
+        const { fields, files } = await parseMultipart(req);
+        const name = (fields.name || "").trim();
+        if (!name) {
+          sendJson(res, { error: "Talent name is required." }, 400);
+          return;
+        }
+
+        const abortController = new AbortController();
+        req.on("aborted", () => abortController.abort());
+        req.on("close", () => {
+          if (!res.writableEnded) abortController.abort();
+        });
+
+        const result = await runComfyGeneration(apiKey, fields, files, abortController.signal);
+        const talentId = randomUUID();
+        const { assetMap, references } = await persistTalentAssets(
+          talentId,
+          result.assets,
+          result.referenceFiles,
+          apiKey,
+        );
+
+        const requiredKeys = Object.values(TALENT_ASSET_NODES).map((mapping) => mapping.key);
+        const missing = requiredKeys.filter((key) => !assetMap[key]);
+        if (missing.length) {
+          throw new Error(`Generation completed but missing expected outputs: ${missing.join(", ")}`);
+        }
+
+        const talent = await addTalent({
+          id: talentId,
+          name,
+          wardrobe: result.payload.wardrobe,
+          clientOutfitUsed: result.payload.wardrobe?.source === "client",
+          promptId: result.promptId,
+          assets: assetMap,
+          references,
+        });
+
+        sendJson(res, { talent });
+      } catch (error) {
+        sendJson(res, {
+          error: "Talent generation failed",
+          message: error instanceof Error ? error.message : "Unknown error",
+        }, error.status || 400);
+      }
+      return;
+    }
+
+    if (req.method === "GET" && url.pathname === "/api/talents") {
+      const talents = await listTalents();
+      sendJson(res, {
+        talents: talents.map((talent) => ({
+          id: talent.id,
+          name: talent.name,
+          createdAt: talent.createdAt,
+          wardrobe: talent.wardrobe,
+          coverUrl: talent.assets?.editorial1?.url ?? talent.assets?.characterDownload?.url ?? null,
+        })),
+      });
+      return;
+    }
+
+    if (req.method === "GET" && url.pathname.startsWith("/api/talents/")) {
+      const id = url.pathname.slice("/api/talents/".length);
+      const talent = await getTalent(id);
+      if (!talent) {
+        sendJson(res, { error: "Not found" }, 404);
+        return;
+      }
+      sendJson(res, { talent });
+      return;
+    }
+
+    if (req.method === "DELETE" && url.pathname.startsWith("/api/talents/")) {
+      const id = url.pathname.slice("/api/talents/".length);
+      const removed = await deleteTalent(id);
+      if (!removed) {
+        sendJson(res, { error: "Not found" }, 404);
+        return;
+      }
+      await rm(join(GENERATED_DIR, id), { recursive: true, force: true });
+      sendJson(res, { ok: true });
       return;
     }
 
