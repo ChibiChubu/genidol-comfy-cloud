@@ -1,6 +1,6 @@
 import http from "node:http";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
-import { extname, join, resolve } from "node:path";
+import { basename, extname, join, resolve } from "node:path";
 import { randomUUID } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 
@@ -105,10 +105,14 @@ async function serveStatic(res, pathname) {
 
   try {
     const data = await readFile(filePath);
-    res.writeHead(200, {
+    const headers = {
       "Content-Type": CONTENT_TYPES[extname(filePath)] ?? "application/octet-stream",
       "Cache-Control": "no-store",
-    });
+    };
+    if (safeName.startsWith("/generated/")) {
+      headers["Content-Disposition"] = `attachment; filename="${basename(filePath)}"`;
+    }
+    res.writeHead(200, headers);
     res.end(data);
   } catch {
     sendJson(res, { error: "Not found" }, 404);
