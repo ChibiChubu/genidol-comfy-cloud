@@ -244,6 +244,7 @@ async function waitForCompletion(promptId, apiKey, signal) {
     const onAbort = () => {
       clearTimeout(timer);
       ws.close();
+      interruptComfyJob(promptId, apiKey);
       const error = new Error("Generation cancelled.");
       error.status = 499;
       reject(error);
@@ -296,6 +297,28 @@ async function waitForCompletion(promptId, apiKey, signal) {
       }
     });
   });
+}
+
+async function interruptComfyJob(promptId, apiKey) {
+  const headers = { "X-API-Key": apiKey, "Content-Type": "application/json" };
+  try {
+    await fetch(`${COMFYUI_ENDPOINT}/api/interrupt`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ prompt_id: promptId }),
+    });
+  } catch {
+    // Best-effort: cloud endpoint may not support this, ignore failures.
+  }
+  try {
+    await fetch(`${COMFYUI_ENDPOINT}/api/queue`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ delete: [promptId] }),
+    });
+  } catch {
+    // Best-effort: cloud endpoint may not support this, ignore failures.
+  }
 }
 
 async function pollJobStatus(promptId, apiKey, startedAt, timeoutMs) {

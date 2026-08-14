@@ -246,10 +246,12 @@ function renderReview(talent) {
     const asset = talent.assets?.[key];
     if (!asset) return "";
     return `
-      <div class="vp filled">
-        <span class="tag pill iris" style="font-size:11px;padding:3px 9px">${escapeHtml(label)}</span>
-        <img src="${asset.url}" alt="${escapeHtml(label)}">
-        <a class="btn sm dl" href="${asset.url}" download title="Download ${escapeHtml(label)}"><svg class="ic" style="width:14px;height:14px"><use href="#i-download"/></svg></a>
+      <div>
+        <div class="vp filled">
+          <span class="tag pill iris" style="font-size:11px;padding:3px 9px">${escapeHtml(label)}</span>
+          <img src="${asset.url}" alt="${escapeHtml(label)}">
+        </div>
+        <div style="margin-top:10px"><a class="btn sm" href="${asset.url}" download><svg class="ic" style="width:14px;height:14px"><use href="#i-download"/></svg> Download</a></div>
       </div>
     `;
   }).join("");
