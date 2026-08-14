@@ -16,10 +16,10 @@ async function initStatus() {
   try {
     const data = await getIntake();
     pill.innerHTML = data.hasApiKey
-      ? `<span class="ldot"></span> Comfy Cloud connected`
-      : `<span class="ldot" style="background:#e0607a"></span> Missing Comfy Cloud key`;
+      ? `<span class="ldot"></span> API connected`
+      : `<span class="ldot" style="background:#e0607a"></span> Missing API key`;
   } catch {
-    pill.innerHTML = `<span class="ldot" style="background:#e0607a"></span> Comfy Cloud unavailable`;
+    pill.innerHTML = `<span class="ldot" style="background:#e0607a"></span> API unavailable`;
   }
 }
 
