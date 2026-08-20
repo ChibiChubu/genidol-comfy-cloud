@@ -9,20 +9,7 @@ import {
   getWorkflowSummary,
   loadWorkflowGraph,
 } from "./lib/workflow.js";
-import { addTalent, deleteTalent, getTalent, listTalents, updateTalentOwner } from "./lib/talentStore.js";
-import {
-  createSessionCookie,
-  clearSessionCookie,
-  getSessionUserId,
-  verifyPassword,
-} from "./lib/auth.js";
-import {
-  createUser,
-  getUserByEmail,
-  getUserById,
-  listUsers,
-  updateApiKey,
-} from "./lib/userStore.js";
+import { addTalent, deleteTalent, getTalent, listTalents } from "./lib/talentStore.js";
 
 const ROOT = resolve(".");
 const PUBLIC_DIR = join(ROOT, "public");
@@ -88,37 +75,8 @@ function send(res, statusCode, payload, headers = {}) {
   res.end(body);
 }
 
-function sendJson(res, data, status = 200, headers = {}) {
-  send(res, status, data, headers);
-}
-
-function publicUser(user) {
-  return {
-    id: user.id,
-    email: user.email,
-    role: user.role,
-    hasApiKey: Boolean(user.comfyApiKey),
-  };
-}
-
-async function getOptionalUser(req) {
-  const uid = getSessionUserId(req);
-  if (!uid) return null;
-  return await getUserById(uid);
-}
-
-async function requireAuth(req, res) {
-  const uid = getSessionUserId(req);
-  if (!uid) {
-    sendJson(res, { error: "Authentication required" }, 401);
-    return null;
-  }
-  const user = await getUserById(uid);
-  if (!user) {
-    sendJson(res, { error: "Authentication required" }, 401);
-    return null;
-  }
-  return user;
+function sendJson(res, data, status = 200) {
+  send(res, status, data);
 }
 
 async function readJsonBody(req) {
@@ -530,9 +488,10 @@ async function persistTalentAssets(talentId, assets, referenceFiles, apiKey) {
   return { assetMap, references };
 }
 
-async function proxyComfyView(res, url, apiKey) {
+async function proxyComfyView(res, url) {
+  const apiKey = getApiKey();
   if (!apiKey) {
-    sendJson(res, { error: "Set your ComfyUI Cloud API key first.", redirectHint: "/#/account" }, 400);
+    sendJson(res, { error: "Missing COMFY_CLOUD_API_KEY." }, 500);
     return;
   }
 
@@ -549,6 +508,10 @@ async function proxyComfyView(res, url, apiKey) {
 
   res.writeHead(response.status, Object.fromEntries(response.headers.entries()));
   res.end(Buffer.from(await response.arrayBuffer()));
+}
+
+function getApiKey() {
+  return process.env.COMFY_CLOUD_API_KEY || "";
 }
 
 const workflowGraph = loadWorkflowGraph();
@@ -602,123 +565,28 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
-    if (req.method === "POST" && url.pathname === "/api/auth/signup") {
-      try {
-        const body = await readJsonBody(req);
-        const email = (body.email || "").trim();
-        const password = body.password || "";
-        if (!email || !email.includes("@")) {
-          sendJson(res, { error: "Valid email is required." }, 400);
-          return;
-        }
-        if (password.length < 8) {
-          sendJson(res, { error: "Password must be at least 8 characters." }, 400);
-          return;
-        }
-        const user = await createUser({ email, password });
-        const cookie = createSessionCookie(req, user.id);
-        sendJson(res, { user: publicUser(user) }, 200, { "Set-Cookie": cookie });
-      } catch (error) {
-        if (error.message === "EMAIL_TAKEN") {
-          sendJson(res, { error: "An account with that email already exists." }, 409);
-          return;
-        }
-        sendJson(res, { error: "Signup failed" }, 400);
-      }
-      return;
-    }
-
-    if (req.method === "POST" && url.pathname === "/api/auth/login") {
-      const body = await readJsonBody(req);
-      const email = (body.email || "").trim();
-      const password = body.password || "";
-      const user = await getUserByEmail(email);
-      if (!user || !verifyPassword(password, user.passwordHash)) {
-        sendJson(res, { error: "Invalid email or password." }, 401);
-        return;
-      }
-      const cookie = createSessionCookie(req, user.id);
-      sendJson(res, { user: publicUser(user) }, 200, { "Set-Cookie": cookie });
-      return;
-    }
-
-    if (req.method === "POST" && url.pathname === "/api/auth/logout") {
-      const cookie = clearSessionCookie(req);
-      sendJson(res, { ok: true }, 200, { "Set-Cookie": cookie });
-      return;
-    }
-
-    if (req.method === "GET" && url.pathname === "/api/auth/me") {
-      const user = await getOptionalUser(req);
-      sendJson(res, { user: user ? publicUser(user) : null });
-      return;
-    }
-
-    if (req.method === "PUT" && url.pathname === "/api/account/api-key") {
-      const user = await requireAuth(req, res);
-      if (!user) return;
-      const body = await readJsonBody(req);
-      const apiKey = typeof body.apiKey === "string" ? body.apiKey.trim() : "";
-      const updated = await updateApiKey(user.id, apiKey);
-      sendJson(res, { user: publicUser(updated) });
-      return;
-    }
-
-    if (req.method === "GET" && url.pathname === "/api/admin/users") {
-      const user = await requireAuth(req, res);
-      if (!user) return;
-      if (user.role !== "admin") {
-        sendJson(res, { error: "Forbidden" }, 403);
-        return;
-      }
-      const [users, talents] = await Promise.all([listUsers(), listTalents()]);
-      const counts = {};
-      for (const talent of talents) {
-        if (!talent.ownerId) continue;
-        counts[talent.ownerId] = (counts[talent.ownerId] || 0) + 1;
-      }
-      sendJson(res, {
-        users: users.map((item) => ({
-          id: item.id,
-          email: item.email,
-          role: item.role,
-          createdAt: item.createdAt,
-          hasApiKey: Boolean(item.comfyApiKey),
-          maskedApiKey: item.comfyApiKey
-            ? `${item.comfyApiKey.slice(0, 4)}••••${item.comfyApiKey.slice(-4)}`
-            : null,
-          talentCount: counts[item.id] || 0,
-        })),
-      });
-      return;
-    }
-
     if (req.method === "GET" && url.pathname === "/api/workflow") {
-      const user = await getOptionalUser(req);
       sendJson(res, {
         summary: workflowSummary,
         workflow: workflowGraph,
         wardrobeGroups,
-        hasApiKey: Boolean(user?.comfyApiKey),
+        hasApiKey: Boolean(getApiKey()),
         comfyuiEndpoint: COMFYUI_ENDPOINT,
       });
       return;
     }
 
     if (req.method === "GET" && url.pathname === "/api/intake") {
-      const user = await getOptionalUser(req);
       sendJson(res, {
         workflow: workflowSummary,
         wardrobeGroups,
-        hasApiKey: Boolean(user?.comfyApiKey),
+        hasApiKey: Boolean(getApiKey()),
         comfyuiEndpoint: COMFYUI_ENDPOINT,
       });
       return;
     }
 
     if (req.method === "POST" && url.pathname === "/api/workflow/render") {
-      const user = await requireAuth(req, res);
-      if (!user) return;
       try {
         const body = normalizeBody(await readJsonBody(req));
         const payload = buildComfyUIPayload(workflowGraph, body);
@@ -731,7 +599,7 @@ const server = http.createServer(async (req, res) => {
             wardrobe: body.wardrobe ?? null,
             clientOutfit: body.clientOutfit ?? null,
           },
-          hasApiKey: Boolean(user.comfyApiKey),
+          hasApiKey: Boolean(getApiKey()),
           activeNodeId: payload.activeNodeId,
           activeNodeTitle: payload.activeNodeTitle,
           comfyuiEndpoint: COMFYUI_ENDPOINT,
@@ -750,19 +618,15 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (req.method === "POST" && url.pathname === "/api/workflow/run") {
-      const user = await requireAuth(req, res);
-      if (!user) return;
       try {
-        if (!user.comfyApiKey) {
-          sendJson(res, {
-            error: "Set your ComfyUI Cloud API key to generate.",
-            redirectHint: "/#/account",
-          }, 400);
+        const apiKey = getApiKey();
+        if (!apiKey) {
+          sendJson(res, { error: "Missing COMFY_CLOUD_API_KEY in .env.local." }, 500);
           return;
         }
 
         const { fields, files } = await parseMultipart(req);
-        const result = await runComfyGeneration(user.comfyApiKey, fields, files);
+        const result = await runComfyGeneration(apiKey, fields, files);
 
         sendJson(res, {
           promptId: result.promptId,
@@ -783,17 +647,12 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (req.method === "POST" && url.pathname === "/api/talents") {
-      const user = await requireAuth(req, res);
-      if (!user) return;
       try {
-        if (!user.comfyApiKey) {
-          sendJson(res, {
-            error: "Set your ComfyUI Cloud API key to generate.",
-            redirectHint: "/#/account",
-          }, 400);
+        const apiKey = getApiKey();
+        if (!apiKey) {
+          sendJson(res, { error: "Missing COMFY_CLOUD_API_KEY in .env.local." }, 500);
           return;
         }
-        const apiKey = user.comfyApiKey;
 
         const { fields, files } = await parseMultipart(req);
         const name = (fields.name || "").trim();
@@ -804,7 +663,7 @@ const server = http.createServer(async (req, res) => {
 
         const requestId = fields.requestId || randomUUID();
         const abortController = new AbortController();
-        activeGenerations.set(requestId, { controller: abortController, ownerId: user.id });
+        activeGenerations.set(requestId, abortController);
         req.on("aborted", () => abortController.abort());
         req.on("close", () => {
           if (!res.writableEnded) abortController.abort();
@@ -832,7 +691,6 @@ const server = http.createServer(async (req, res) => {
 
         const talent = await addTalent({
           id: talentId,
-          ownerId: user.id,
           name,
           wardrobe: result.payload.wardrobe,
           clientOutfitUsed: result.payload.wardrobe?.source === "client",
@@ -852,47 +710,35 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (req.method === "POST" && url.pathname.startsWith("/api/generations/") && url.pathname.endsWith("/cancel")) {
-      const user = await requireAuth(req, res);
-      if (!user) return;
       const requestId = url.pathname.slice("/api/generations/".length, -"/cancel".length);
-      const entry = activeGenerations.get(requestId);
-      if (!entry || (entry.ownerId !== user.id && user.role !== "admin")) {
+      const controller = activeGenerations.get(requestId);
+      if (!controller) {
         sendJson(res, { ok: false, message: "No active generation found (it may have already finished)." }, 404);
         return;
       }
-      entry.controller.abort();
+      controller.abort();
       sendJson(res, { ok: true });
       return;
     }
 
     if (req.method === "GET" && url.pathname === "/api/talents") {
-      const user = await requireAuth(req, res);
-      if (!user) return;
       const talents = await listTalents();
-      const visible = user.role === "admin" ? talents : talents.filter((talent) => talent.ownerId === user.id);
-      const ownerEmailById = {};
-      if (user.role === "admin") {
-        for (const account of await listUsers()) ownerEmailById[account.id] = account.email;
-      }
       sendJson(res, {
-        talents: visible.map((talent) => ({
+        talents: talents.map((talent) => ({
           id: talent.id,
           name: talent.name,
           createdAt: talent.createdAt,
           wardrobe: talent.wardrobe,
           coverUrl: talent.assets?.editorial1?.url ?? talent.assets?.characterDownload?.url ?? null,
-          ...(user.role === "admin" ? { ownerEmail: ownerEmailById[talent.ownerId] || "unknown" } : {}),
         })),
       });
       return;
     }
 
     if (req.method === "GET" && url.pathname.startsWith("/api/talents/")) {
-      const user = await requireAuth(req, res);
-      if (!user) return;
       const id = url.pathname.slice("/api/talents/".length);
       const talent = await getTalent(id);
-      if (!talent || (talent.ownerId !== user.id && user.role !== "admin")) {
+      if (!talent) {
         sendJson(res, { error: "Not found" }, 404);
         return;
       }
@@ -901,14 +747,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (req.method === "DELETE" && url.pathname.startsWith("/api/talents/")) {
-      const user = await requireAuth(req, res);
-      if (!user) return;
       const id = url.pathname.slice("/api/talents/".length);
-      const talent = await getTalent(id);
-      if (!talent || (talent.ownerId !== user.id && user.role !== "admin")) {
-        sendJson(res, { error: "Not found" }, 404);
-        return;
-      }
       const removed = await deleteTalent(id);
       if (!removed) {
         sendJson(res, { error: "Not found" }, 404);
@@ -920,22 +759,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (req.method === "GET" && url.pathname === "/api/view") {
-      const user = await requireAuth(req, res);
-      if (!user) return;
-      await proxyComfyView(res, url, user.comfyApiKey);
-      return;
-    }
-
-    if (req.method === "GET" && url.pathname.startsWith("/generated/")) {
-      const user = await requireAuth(req, res);
-      if (!user) return;
-      const talentId = url.pathname.slice("/generated/".length).split("/")[0];
-      const talent = await getTalent(talentId);
-      if (!talent || (talent.ownerId !== user.id && user.role !== "admin")) {
-        sendJson(res, { error: "Not found" }, 404);
-        return;
-      }
-      await serveStatic(res, url.pathname);
+      await proxyComfyView(res, url);
       return;
     }
 
@@ -950,19 +774,6 @@ const server = http.createServer(async (req, res) => {
     sendJson(res, { error: error.message || "Unexpected server error" }, 500);
   }
 });
-
-async function migrateOrphanedTalents() {
-  const users = await listUsers();
-  const admin = users.find((user) => user.role === "admin");
-  if (!admin) return;
-  const talents = await listTalents();
-  const orphaned = talents.filter((talent) => !talent.ownerId);
-  for (const talent of orphaned) {
-    await updateTalentOwner(talent.id, admin.id);
-  }
-}
-
-await migrateOrphanedTalents();
 
 server.listen(PORT, () => {
   console.log(`ComfyUI workflow studio running on http://localhost:${PORT}`);

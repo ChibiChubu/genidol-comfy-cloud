@@ -1,7 +1,6 @@
-import { getIntake, getMe, logout } from "./js/api.js";
-import { initRouter, refresh } from "./js/router.js";
+import { getIntake } from "./js/api.js";
+import { initRouter } from "./js/router.js";
 import { openPipeline } from "./js/views/pipeline.js";
-import { getCurrentUser, setCurrentUser } from "./js/session.js";
 
 function initTheme() {
   const btn = document.getElementById("themeToggle");
@@ -13,7 +12,6 @@ function initTheme() {
 }
 
 async function initStatus() {
-  if (!getCurrentUser()) return;
   const pill = document.getElementById("apiStatus");
   try {
     const data = await getIntake();
@@ -25,38 +23,8 @@ async function initStatus() {
   }
 }
 
-function initUserMenu() {
-  const btn = document.getElementById("userMenuBtn");
-  const drop = document.getElementById("userMenuDrop");
-
-  btn.addEventListener("click", (event) => {
-    event.stopPropagation();
-    drop.hidden = !drop.hidden;
-  });
-  document.addEventListener("click", (event) => {
-    if (!drop.hidden && !drop.contains(event.target) && event.target !== btn) drop.hidden = true;
-  });
-  document.getElementById("userMenuAccount").addEventListener("click", () => {
-    drop.hidden = true;
-    location.hash = "#/account";
-  });
-  document.getElementById("userMenuAdmin").addEventListener("click", () => {
-    drop.hidden = true;
-    location.hash = "#/admin";
-  });
-  document.getElementById("userMenuLogout").addEventListener("click", async () => {
-    drop.hidden = true;
-    await logout().catch(() => {});
-    setCurrentUser(null);
-    refresh();
-  });
-}
-
 document.getElementById("newTwinBtn").addEventListener("click", () => openPipeline());
 
 initTheme();
-initUserMenu();
-
-setCurrentUser(await getMe());
 initStatus();
 initRouter();
