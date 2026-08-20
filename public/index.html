@@ -38,6 +38,17 @@
       <a class="btn sm" href="https://cloud.comfy.org/billing" target="_blank" rel="noopener noreferrer">Add credits</a>
       <button class="iconbtn" id="themeToggle" aria-label="Theme"><svg class="ic"><use href="#i-moon" class="theicon"/></svg></button>
       <button class="btn primary" id="newTwinBtn"><svg class="ic"><use href="#i-plus"/></svg> New twin</button>
+      <div class="usermenu" id="userMenu" hidden>
+        <button type="button" class="iconbtn usermenu-btn" id="userMenuBtn" aria-label="Account menu">
+          <svg class="ic" style="width:16px;height:16px"><use href="#i-cube"/></svg>
+        </button>
+        <div class="usermenu-drop" id="userMenuDrop" hidden>
+          <div class="usermenu-email" id="userMenuEmail"></div>
+          <a id="userMenuAccount">Account &amp; API key</a>
+          <a id="userMenuAdmin" hidden>Admin — all clients</a>
+          <button type="button" id="userMenuLogout">Log out</button>
+        </div>
+      </div>
     </div>
   </header>
   <div class="wrap">
@@ -90,6 +101,76 @@
       <div class="player" id="pfVideoHost"></div>
     </section>
 
+  </div>
+</div>
+
+<!-- ===================== AUTH ===================== -->
+<div id="view-auth" class="view" hidden>
+  <div class="auth-wrap">
+    <div class="auth-card card">
+      <div class="brand" style="margin-bottom:24px">
+        <div class="mark"><svg class="ic" style="width:20px;height:20px"><use href="#i-cube"/></svg></div>
+        <div><div class="name">Twin Studio</div><div class="sub" id="authSub">Sign in</div></div>
+      </div>
+      <div id="authError"></div>
+      <form id="authForm">
+        <div class="field"><label class="lbl" for="authEmail">Email</label><input type="email" id="authEmail" required autocomplete="email"></div>
+        <div class="field"><label class="lbl" for="authPassword">Password</label><input type="password" id="authPassword" required autocomplete="current-password" minlength="8"></div>
+        <button type="submit" class="btn primary" id="authSubmit" style="width:100%;justify-content:center">Log in</button>
+      </form>
+      <div class="auth-switch" id="authSwitchWrap">Don't have an account? <a id="authSwitch">Sign up</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ACCOUNT ===================== -->
+<div id="view-account" class="view" hidden>
+  <header class="top">
+    <button class="iconbtn" id="acctBack" aria-label="Back to roster"><svg class="ic"><use href="#i-left"/></svg></button>
+    <div class="crumb"><span data-nav="roster">Roster</span><span class="sep">/</span><span class="cur">Account</span></div>
+  </header>
+  <div class="wrap" style="max-width:560px">
+    <div class="hero" style="margin-bottom:24px">
+      <div>
+        <div class="eyebrow"><svg class="ic" style="width:13px;height:13px"><use href="#i-cube"/></svg> Account</div>
+        <h1 style="font-size:26px">Your ComfyUI Cloud API key</h1>
+        <p class="lede">Generations run against your own ComfyUI Cloud account and balance. Paste your API key below — top up credits directly on cloud.comfy.org whenever you like.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div id="acctStatus" class="pill gray" style="margin-bottom:18px"></div>
+      <div class="field" style="max-width:none">
+        <label class="lbl" for="acctApiKey">API key</label>
+        <input type="password" id="acctApiKey" placeholder="Paste your ComfyUI Cloud API key" autocomplete="off">
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn primary" id="acctSave">Save key</button>
+        <a class="btn" href="https://cloud.comfy.org/billing" target="_blank" rel="noopener noreferrer">Open cloud.comfy.org</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ADMIN ===================== -->
+<div id="view-admin" class="view" hidden>
+  <header class="top">
+    <button class="iconbtn" id="adminBack" aria-label="Back to roster"><svg class="ic"><use href="#i-left"/></svg></button>
+    <div class="crumb"><span data-nav="roster">Roster</span><span class="sep">/</span><span class="cur">Admin</span></div>
+  </header>
+  <div class="wrap">
+    <div class="hero" style="margin-bottom:24px">
+      <div>
+        <div class="eyebrow"><svg class="ic" style="width:13px;height:13px"><use href="#i-grid"/></svg> Admin</div>
+        <h1 style="font-size:26px">All clients</h1>
+        <p class="lede">Every account on this studio, their API key status, and how many twins they've generated.</p>
+      </div>
+    </div>
+    <div class="card" style="padding:0;overflow-x:auto">
+      <table class="admin-table" id="adminTable">
+        <thead><tr><th>Email</th><th>Role</th><th>API key</th><th>Twins</th><th>Joined</th></tr></thead>
+        <tbody id="adminTableBody"></tbody>
+      </table>
+    </div>
   </div>
 </div>
 

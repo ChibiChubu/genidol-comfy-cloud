@@ -170,9 +170,34 @@ h1.title{font-size:30px;font-weight:600;letter-spacing:-.025em;margin:10px 0 6px
 .panel-anim{animation:rise .4s cubic-bezier(.2,.7,.3,1) both}
 
 .field{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;max-width:360px}
-.field input[type=text]{border:1px solid var(--line2);border-radius:var(--r-sm);background:var(--panel);color:var(--text);
+.field input[type=text],.field input[type=email],.field input[type=password]{border:1px solid var(--line2);border-radius:var(--r-sm);background:var(--panel);color:var(--text);
   padding:11px 13px;font-size:15px}
-.field input[type=text]:focus{border-color:var(--iris-bd)}
+.field input[type=text]:focus,.field input[type=email]:focus,.field input[type=password]:focus{border-color:var(--iris-bd)}
+
+/* ===== AUTH ===== */
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.auth-card{width:100%;max-width:380px}
+.auth-card .field{max-width:none}
+.auth-switch{margin-top:18px;font-size:13px;color:var(--text2);text-align:center}
+.auth-switch a{color:var(--iris);cursor:pointer;text-decoration:none}
+.errbox{background:rgba(224,96,122,.1);border:1px solid rgba(224,96,122,.35);color:#e0607a;border-radius:var(--r-sm);
+  padding:10px 13px;font-size:13px;margin-bottom:18px}
+
+/* ===== ACCOUNT / ADMIN ===== */
+.usermenu{position:relative}
+.usermenu-btn{display:flex;align-items:center;gap:8px;cursor:pointer}
+.usermenu-drop{position:absolute;top:calc(100% + 8px);right:0;background:var(--panel);border:1px solid var(--line2);
+  border-radius:var(--r-sm);min-width:200px;padding:6px;z-index:30;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.usermenu-drop a,.usermenu-drop button{display:flex;width:100%;align-items:center;gap:8px;padding:9px 10px;border-radius:7px;
+  background:none;border:0;color:var(--text);font-size:13px;text-align:left;cursor:pointer;text-decoration:none}
+.usermenu-drop a:hover,.usermenu-drop button:hover{background:var(--panel2)}
+.usermenu-email{font-size:12px;color:var(--text3);padding:8px 10px 4px;font-family:var(--mono)}
+
+.admin-table{width:100%;border-collapse:collapse;font-size:13px}
+.admin-table th{text-align:left;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--text3);padding:10px 14px;border-bottom:1px solid var(--line2)}
+.admin-table td{padding:12px 14px;border-bottom:1px solid var(--line)}
+.admin-table tr:last-child td{border-bottom:0}
 
 .wgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(146px,1fr));gap:13px}
 .wcard{position:relative;border:1.5px solid var(--line);border-radius:var(--r);padding:11px;cursor:pointer;background:var(--panel);transition:.15s}
