@@ -1,7 +1,7 @@
 import { getIntake, createTalent, cancelGeneration } from "../api.js";
 import { createWardrobeController } from "../wardrobe.js";
 import { escapeHtml, formatFileSize, showToast } from "../util.js";
-import { goToTalent } from "../router.js";
+import { goToTalent, refresh } from "../router.js";
 
 const REF_META = [
   { title: "Reference 1", subtitle: "Primary face" },
@@ -314,6 +314,8 @@ function closePipeline() {
     showToast("Cancel the generation first.", true);
     return;
   }
+  const shouldRefresh = Boolean(savedTalentId);
   els.overlay.hidden = true;
   document.body.classList.remove("locked");
+  if (shouldRefresh) refresh();
 }
