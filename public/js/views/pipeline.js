@@ -1,7 +1,8 @@
-import { getIntake, createTalent, cancelGeneration } from "../api.js";
+import { getIntake } from "../api.js";
 import { createWardrobeController } from "../wardrobe.js";
 import { escapeHtml, formatFileSize, showToast } from "../util.js";
-import { goToTalent, refresh } from "../router.js";
+import { goToTalent } from "../router.js";
+import { enqueueGeneration, cancelQueuedJob, getJob, onQueueChange } from "../queue.js";
 
 const REF_META = [
   { title: "Reference 1", subtitle: "Primary face" },
@@ -27,11 +28,12 @@ let cur = 0;
 let references = [null, null, null, null];
 let wardrobeController = null;
 let intakeLoaded = false;
-let generating = false;
-let savedTalentId = null;
-let abortController = null;
-let currentRequestId = null;
-let cancelling = false;
+
+let currentJobId = null;
+let currentJobStatus = null;
+let currentJobTalent = null;
+let currentJobError = null;
+let cancelRequested = false;
 
 function q(id) {
   return document.getElementById(id);
@@ -89,6 +91,14 @@ function bindOnce() {
     if (els.overlay.hidden) return;
     if (event.key === "Escape") closePipeline();
   });
+
+  onQueueChange(() => {
+    syncCurrentJob();
+    if (!els.overlay.hidden) {
+      updateGenStatus();
+      render();
+    }
+  });
 }
 
 function syncRef(index, file) {
@@ -127,6 +137,10 @@ async function ensureIntake() {
   intakeLoaded = true;
 }
 
+function inProgress() {
+  return currentJobStatus === "queued" || currentJobStatus === "generating";
+}
+
 function render() {
   els.panels.forEach((panel, i) => {
     const was = panel.classList.contains("active");
@@ -146,20 +160,26 @@ function render() {
   });
   els.crumb.textContent = NAMES[cur];
   els.count.textContent = `Stage ${cur + 1} / ${TOTAL}`;
-  els.backBtn.disabled = cur === 0 || generating;
-  els.cancelBtn.hidden = !generating;
-  els.cancelBtn.disabled = cancelling;
-  els.cancelBtn.textContent = cancelling ? "Cancelling..." : "Cancel generate";
-  els.closeBtn.disabled = generating;
+  els.backBtn.disabled = cur === 0 || inProgress();
+  els.cancelBtn.hidden = !inProgress();
+  els.cancelBtn.disabled = cancelRequested;
+  els.cancelBtn.textContent = cancelRequested
+    ? "Cancelling..."
+    : currentJobStatus === "queued"
+      ? "Cancel (remove from queue)"
+      : "Cancel generate";
+  els.closeBtn.disabled = false;
 
   const last = cur === TOTAL - 1;
   if (last) {
-    if (savedTalentId) {
+    if (currentJobStatus === "done" && currentJobTalent) {
       els.primaryBtn.innerHTML = `<svg class="ic"><use href="#i-check"/></svg> View twin`;
       els.primaryBtn.disabled = false;
     } else {
-      els.primaryBtn.textContent = generating ? "Generating..." : "Generate twin";
-      els.primaryBtn.disabled = generating;
+      els.primaryBtn.textContent = inProgress()
+        ? currentJobStatus === "queued" ? "Queued..." : "Generating..."
+        : "Generate twin";
+      els.primaryBtn.disabled = inProgress();
     }
   } else {
     els.primaryBtn.innerHTML = `${VERBS[cur]} <svg class="ic"><use href="#i-right"/></svg>`;
@@ -193,69 +213,68 @@ async function onPrimary() {
     go(cur + 1);
     return;
   }
-  if (savedTalentId) {
-    const id = savedTalentId;
+  if (currentJobStatus === "done" && currentJobTalent) {
+    const id = currentJobTalent.id;
     closePipeline();
     goToTalent(id);
     return;
   }
-  await runGeneration();
+  if (!inProgress()) startGeneration();
 }
 
-async function runGeneration() {
-  generating = true;
-  cancelling = false;
-  savedTalentId = null;
-  currentRequestId = crypto.randomUUID();
-  abortController = new AbortController();
+function syncCurrentJob() {
+  if (!currentJobId) return;
+  const job = getJob(currentJobId);
+  if (!job) return;
+  currentJobStatus = job.status;
+  if (job.talent) currentJobTalent = job.talent;
+  if (job.errorMessage) currentJobError = job.errorMessage;
+}
+
+function startGeneration() {
+  const formData = new FormData();
+  const name = els.twinName.value.trim();
+  formData.set("name", name);
+  formData.set("mode", "character-sheet");
+  formData.set("wardrobe", JSON.stringify(wardrobeController.getPayload()));
+  formData.set("selectedEditorialNodeId", "editorial-1");
+  for (let i = 0; i < 4; i += 1) {
+    formData.set(`ref${i + 1}`, references[i].file, references[i].name);
+  }
+  const clientFile = wardrobeController.getClientOutfitFile();
+  if (clientFile) formData.set("clientOutfit", clientFile, clientFile.name);
+
+  cancelRequested = false;
+  currentJobTalent = null;
+  currentJobError = null;
   els.genResults.hidden = true;
   els.genResults.innerHTML = "";
   els.genVideoHost.innerHTML = "";
-  els.genStatus.innerHTML = `<div class="review-note"><span class="spin"></span> Generating character download, editorials, and video — this can take a few minutes...</div>`;
+
+  currentJobId = enqueueGeneration(name, formData);
+  currentJobStatus = "queued";
+  syncCurrentJob();
+  updateGenStatus();
   render();
-
-  try {
-    const formData = new FormData();
-    formData.set("requestId", currentRequestId);
-    formData.set("name", els.twinName.value.trim());
-    formData.set("mode", "character-sheet");
-    formData.set("wardrobe", JSON.stringify(wardrobeController.getPayload()));
-    formData.set("selectedEditorialNodeId", "editorial-1");
-    for (let i = 0; i < 4; i += 1) {
-      formData.set(`ref${i + 1}`, references[i].file, references[i].name);
-    }
-    const clientFile = wardrobeController.getClientOutfitFile();
-    if (clientFile) formData.set("clientOutfit", clientFile, clientFile.name);
-
-    const talent = await createTalent(formData, abortController.signal);
-    savedTalentId = talent.id;
-    els.genStatus.innerHTML = `<div class="review-note"><svg class="ic" style="color:var(--mint);width:16px;height:16px"><use href="#i-check"/></svg> Saved to your library as "${escapeHtml(talent.name)}".</div>`;
-    renderReview(talent);
-    showToast("New twin generated and saved to the library.");
-  } catch (error) {
-    const cancelled = error?.name === "AbortError";
-    els.genStatus.innerHTML = cancelled
-      ? `<div class="review-note">Generation cancelled.</div>`
-      : `<div class="review-note" style="border-color:#e0607a;color:#e0607a">${escapeHtml(error.message)}</div>`;
-    if (!cancelled) showToast(error.message, true);
-  } finally {
-    generating = false;
-    cancelling = false;
-    abortController = null;
-    currentRequestId = null;
-    render();
-  }
 }
 
-async function onCancel() {
-  if (!generating || cancelling || !currentRequestId) return;
-  cancelling = true;
+function onCancel() {
+  if (!currentJobId || !inProgress()) return;
+  cancelRequested = true;
   render();
-  if (abortController) abortController.abort();
-  try {
-    await cancelGeneration(currentRequestId);
-  } catch {
-    // Ignore — the generation may have already finished server-side.
+  cancelQueuedJob(currentJobId);
+}
+
+function updateGenStatus() {
+  if (currentJobStatus === "queued") {
+    els.genStatus.innerHTML = `<div class="review-note"><span class="spin"></span> Queued — another twin is generating first. This one starts automatically.</div>`;
+  } else if (currentJobStatus === "generating") {
+    els.genStatus.innerHTML = `<div class="review-note"><span class="spin"></span> Generating character download, editorials, and video — this can take a few minutes. You can close this and start another twin; this one keeps going in the background.</div>`;
+  } else if (currentJobStatus === "done" && currentJobTalent) {
+    els.genStatus.innerHTML = `<div class="review-note"><svg class="ic" style="color:var(--mint);width:16px;height:16px"><use href="#i-check"/></svg> Saved to your library as "${escapeHtml(currentJobTalent.name)}".</div>`;
+    renderReview(currentJobTalent);
+  } else if (currentJobStatus === "error") {
+    els.genStatus.innerHTML = `<div class="review-note" style="border-color:#e0607a;color:#e0607a">${escapeHtml(currentJobError || "Generation failed.")}</div>`;
   }
 }
 
@@ -289,10 +308,11 @@ function renderReview(talent) {
 export function openPipeline() {
   bindOnce();
   cur = 0;
-  generating = false;
-  cancelling = false;
-  currentRequestId = null;
-  savedTalentId = null;
+  currentJobId = null;
+  currentJobStatus = null;
+  currentJobTalent = null;
+  currentJobError = null;
+  cancelRequested = false;
   intakeLoaded = false;
   wardrobeController = null;
   references = [null, null, null, null];
@@ -310,12 +330,6 @@ export function openPipeline() {
 }
 
 function closePipeline() {
-  if (generating) {
-    showToast("Cancel the generation first.", true);
-    return;
-  }
-  const shouldRefresh = Boolean(savedTalentId);
   els.overlay.hidden = true;
   document.body.classList.remove("locked");
-  if (shouldRefresh) refresh();
 }

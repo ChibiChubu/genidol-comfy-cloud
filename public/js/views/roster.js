@@ -2,6 +2,10 @@ import { getTalents, deleteTalent } from "../api.js";
 import { escapeHtml, showToast } from "../util.js";
 import { goToTalent } from "../router.js";
 import { openPipeline } from "./pipeline.js";
+import { getQueueSnapshot, onQueueChange, cancelQueuedJob } from "../queue.js";
+
+let queueUnsubscribe = null;
+let cachedTalents = [];
 
 export async function renderRoster() {
   const gallery = document.getElementById("gallery");
@@ -16,10 +20,44 @@ export async function renderRoster() {
     return;
   }
 
+  cachedTalents = talents;
   statTwins.textContent = String(talents.length);
+  renderGallery();
+
+  if (!queueUnsubscribe) {
+    queueUnsubscribe = onQueueChange(() => {
+      const view = document.getElementById("view-roster");
+      if (view && !view.hidden) renderGallery();
+    });
+  }
+}
+
+function renderGallery() {
+  const gallery = document.getElementById("gallery");
   gallery.innerHTML = "";
 
-  for (const talent of talents) {
+  for (const job of getQueueSnapshot()) {
+    if (job.status !== "queued" && job.status !== "generating") continue;
+    const card = document.createElement("div");
+    card.className = "twin";
+    card.innerHTML = `
+      <div class="cov">
+        <div class="vp">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <span class="ph"><span class="spin"></span>${job.status === "queued" ? "Queued" : "Generating..."}</span>
+        </div>
+        <button type="button" class="iconbtn del-btn" aria-label="Cancel ${escapeHtml(job.name)}" title="Cancel"><svg class="ic" style="width:15px;height:15px"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="tmeta"><div class="tn">${escapeHtml(job.name)}</div><div class="ts">${job.status === "queued" ? "Waiting..." : "In progress"}</div></div>
+    `;
+    card.querySelector(".del-btn").addEventListener("click", (event) => {
+      event.stopPropagation();
+      cancelQueuedJob(job.id);
+    });
+    gallery.appendChild(card);
+  }
+
+  for (const talent of cachedTalents) {
     const card = document.createElement("div");
     card.className = "twin";
     card.setAttribute("role", "button");
