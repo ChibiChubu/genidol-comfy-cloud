@@ -194,9 +194,9 @@ h1.title{font-size:30px;font-weight:600;letter-spacing:-.025em;margin:10px 0 6px
 .usermenu-key-row input[type=password]{flex:1;min-width:0;border:1px solid var(--line2);border-radius:var(--r-sm);
   background:var(--panel2);color:var(--text);padding:8px 10px;font-size:13px}
 .usermenu-key-row input[type=password]:focus{border-color:var(--iris-bd)}
-.usermenu-drop > button{width:100%;padding:9px 10px;border-radius:7px;background:none;border:1px solid var(--line2);
-  color:var(--text);font-size:13px;text-align:center;cursor:pointer}
-.usermenu-drop > button:hover{background:var(--panel2)}
+.usermenu-drop > button,.usermenu-drop > a{display:block;width:100%;padding:9px 10px;border-radius:7px;background:none;border:1px solid var(--line2);
+  color:var(--text);font-size:13px;text-align:center;cursor:pointer;text-decoration:none;box-sizing:border-box}
+.usermenu-drop > button:hover,.usermenu-drop > a:hover{background:var(--panel2)}
 
 .wgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(146px,1fr));gap:13px}
 .wcard{position:relative;border:1.5px solid var(--line);border-radius:var(--r);padding:11px;cursor:pointer;background:var(--panel);transition:.15s}
