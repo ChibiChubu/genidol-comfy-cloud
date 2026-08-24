@@ -4,6 +4,7 @@ import { escapeHtml, formatFileSize, showToast } from "../util.js";
 import { goToTalent } from "../router.js";
 import { enqueueGeneration, cancelQueuedJob, getJob, onQueueChange } from "../queue.js";
 import { setPendingVoiceAudio } from "../pendingAudio.js";
+import { renderAudioPreview } from "../audioPreview.js";
 
 const REF_META = [
   { title: "Reference 1", subtitle: "Primary face" },
@@ -35,6 +36,7 @@ let currentJobStatus = null;
 let currentJobTalent = null;
 let currentJobError = null;
 let cancelRequested = false;
+let voiceAudioCleanup = null;
 
 function q(id) {
   return document.getElementById(id);
@@ -79,6 +81,11 @@ function bindOnce() {
     fileInputs.push(input);
     els.fileInputPool.appendChild(input);
   }
+
+  els.twinVoiceAudio.addEventListener("change", () => {
+    if (voiceAudioCleanup) voiceAudioCleanup();
+    voiceAudioCleanup = renderAudioPreview(q("twinVoiceAudioPreview"), els.twinVoiceAudio.files?.[0] ?? null);
+  });
 
   els.scrim.addEventListener("click", closePipeline);
   els.closeBtn.addEventListener("click", closePipeline);
@@ -330,6 +337,9 @@ export function openPipeline() {
   els.twinEyes.value = "";
   els.twinHair.value = "";
   els.twinVoiceAudio.value = "";
+  if (voiceAudioCleanup) voiceAudioCleanup();
+  voiceAudioCleanup = null;
+  q("twinVoiceAudioPreview").innerHTML = "";
   els.genStatus.innerHTML = "";
   els.genResults.hidden = true;
   els.genResults.innerHTML = "";

@@ -2,6 +2,7 @@ import { getTalent, deleteTalent, generateVoiceSample } from "../api.js";
 import { escapeHtml, showToast } from "../util.js";
 import { goToRoster } from "../router.js";
 import { takePendingVoiceAudio } from "../pendingAudio.js";
+import { renderAudioPreview } from "../audioPreview.js";
 
 const OUTPUT_ORDER = [
   ["characterDownload", "Character download"],
@@ -12,6 +13,7 @@ const OUTPUT_ORDER = [
 
 let bound = false;
 let currentTalent = null;
+let voiceAudioCleanup = null;
 
 function bindOnce() {
   if (bound) return;
@@ -52,6 +54,10 @@ function bindOnce() {
     });
   }
 
+  document.getElementById("pfVoiceAudio").addEventListener("change", () => {
+    showVoicePreview(document.getElementById("pfVoiceAudio").files?.[0] ?? null);
+  });
+
   document.getElementById("pfVoiceGenerate").addEventListener("click", async () => {
     if (!currentTalent) return;
     const audioInput = document.getElementById("pfVoiceAudio");
@@ -81,6 +87,11 @@ function bindOnce() {
       genBtn.disabled = false;
     }
   });
+}
+
+function showVoicePreview(file) {
+  if (voiceAudioCleanup) voiceAudioCleanup();
+  voiceAudioCleanup = renderAudioPreview(document.getElementById("pfVoiceAudioPreview"), file);
 }
 
 function renderVoiceResult(talent) {
@@ -126,8 +137,10 @@ export async function renderProfile(id) {
     dt.items.add(pendingAudio);
     voiceAudioInput.files = dt.files;
     document.getElementById("pfVoiceStatus").innerHTML = `<div class="review-note">Voice sample carried over from intake — ready to generate.</div>`;
+    showVoicePreview(pendingAudio);
   } else {
     voiceAudioInput.value = "";
+    showVoicePreview(null);
   }
 
   let talent;

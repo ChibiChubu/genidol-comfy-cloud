@@ -114,6 +114,7 @@
           <label class="lbl" for="pfVoiceAudio">Upload a short voice reference clip</label>
           <input type="file" id="pfVoiceAudio" accept="audio/*">
         </div>
+        <div id="pfVoiceAudioPreview"></div>
         <button type="button" class="btn primary" id="pfVoiceGenerate">Generate voice sample</button>
         <div id="pfVoiceStatus" style="margin-top:14px"></div>
         <div id="pfVoiceResult" style="margin-top:14px"></div>
@@ -194,6 +195,7 @@
               <div class="field" style="max-width:360px">
                 <label class="lbl" for="twinVoiceAudio" style="margin-bottom:0">Voice sample (optional)</label>
                 <input type="file" id="twinVoiceAudio" accept="audio/*">
+                <div id="twinVoiceAudioPreview"></div>
               </div>
               <div class="refgrid" id="refGrid"></div>
               <div id="fileInputPool" hidden></div>
