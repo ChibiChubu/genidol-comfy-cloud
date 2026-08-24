@@ -1,6 +1,7 @@
 import { getTalent, deleteTalent, generateVoiceSample } from "../api.js";
 import { escapeHtml, showToast } from "../util.js";
 import { goToRoster } from "../router.js";
+import { takePendingVoiceAudio } from "../pendingAudio.js";
 
 const OUTPUT_ORDER = [
   ["characterDownload", "Character download"],
@@ -118,7 +119,16 @@ export async function renderProfile(id) {
   document.getElementById("pfWardrobeMeta").innerHTML = "";
   document.getElementById("pfVoiceStatus").innerHTML = "";
   document.getElementById("pfVoiceResult").innerHTML = "";
-  document.getElementById("pfVoiceAudio").value = "";
+  const voiceAudioInput = document.getElementById("pfVoiceAudio");
+  const pendingAudio = takePendingVoiceAudio();
+  if (pendingAudio) {
+    const dt = new DataTransfer();
+    dt.items.add(pendingAudio);
+    voiceAudioInput.files = dt.files;
+    document.getElementById("pfVoiceStatus").innerHTML = `<div class="review-note">Voice sample carried over from intake — ready to generate.</div>`;
+  } else {
+    voiceAudioInput.value = "";
+  }
 
   let talent;
   try {

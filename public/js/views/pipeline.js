@@ -3,6 +3,7 @@ import { createWardrobeController } from "../wardrobe.js";
 import { escapeHtml, formatFileSize, showToast } from "../util.js";
 import { goToTalent } from "../router.js";
 import { enqueueGeneration, cancelQueuedJob, getJob, onQueueChange } from "../queue.js";
+import { setPendingVoiceAudio } from "../pendingAudio.js";
 
 const REF_META = [
   { title: "Reference 1", subtitle: "Primary face" },
@@ -56,6 +57,7 @@ function bindOnce() {
     twinHeight: q("twinHeight"),
     twinEyes: q("twinEyes"),
     twinHair: q("twinHair"),
+    twinVoiceAudio: q("twinVoiceAudio"),
     fileInputPool: q("fileInputPool"),
     wardrobeModes: q("wardrobeModes"),
     wardrobeGroups: q("wardrobeGroups"),
@@ -218,6 +220,7 @@ async function onPrimary() {
   }
   if (currentJobStatus === "done" && currentJobTalent) {
     const id = currentJobTalent.id;
+    setPendingVoiceAudio(els.twinVoiceAudio.files?.[0] ?? null);
     closePipeline();
     goToTalent(id);
     return;
@@ -326,6 +329,7 @@ export function openPipeline() {
   els.twinHeight.value = "";
   els.twinEyes.value = "";
   els.twinHair.value = "";
+  els.twinVoiceAudio.value = "";
   els.genStatus.innerHTML = "";
   els.genResults.hidden = true;
   els.genResults.innerHTML = "";
