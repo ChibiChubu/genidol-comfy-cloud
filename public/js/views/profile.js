@@ -102,6 +102,9 @@ export async function renderProfile(id) {
     ? "Client-uploaded outfit"
     : [wardrobe.mode, wardrobe.shirtId, wardrobe.pantsId, wardrobe.dressId].filter(Boolean).join(" · ");
   document.getElementById("pfWardrobeMeta").innerHTML = `
+    <div class="stat"><div class="k">Height</div><div class="v">${escapeHtml(talent.height || "—")}</div></div>
+    <div class="stat"><div class="k">Eyes</div><div class="v">${escapeHtml(talent.eyes || "—")}</div></div>
+    <div class="stat"><div class="k">Hair</div><div class="v">${escapeHtml(talent.hair || "—")}</div></div>
     <div class="stat"><div class="k">Wardrobe</div><div class="v">${escapeHtml(wardrobeLabel || "—")}</div></div>
   `;
 

@@ -53,6 +53,9 @@ function bindOnce() {
     panels: Array.from(document.querySelectorAll("#pStage .panel")),
     refGrid: q("refGrid"),
     twinName: q("twinName"),
+    twinHeight: q("twinHeight"),
+    twinEyes: q("twinEyes"),
+    twinHair: q("twinHair"),
     fileInputPool: q("fileInputPool"),
     wardrobeModes: q("wardrobeModes"),
     wardrobeGroups: q("wardrobeGroups"),
@@ -235,6 +238,9 @@ function startGeneration() {
   const formData = new FormData();
   const name = els.twinName.value.trim();
   formData.set("name", name);
+  formData.set("height", els.twinHeight.value.trim());
+  formData.set("eyes", els.twinEyes.value.trim());
+  formData.set("hair", els.twinHair.value.trim());
   formData.set("mode", "character-sheet");
   formData.set("wardrobe", JSON.stringify(wardrobeController.getPayload()));
   formData.set("selectedEditorialNodeId", "editorial-1");
@@ -317,6 +323,9 @@ export function openPipeline() {
   wardrobeController = null;
   references = [null, null, null, null];
   els.twinName.value = "";
+  els.twinHeight.value = "";
+  els.twinEyes.value = "";
+  els.twinHair.value = "";
   els.genStatus.innerHTML = "";
   els.genResults.hidden = true;
   els.genResults.innerHTML = "";

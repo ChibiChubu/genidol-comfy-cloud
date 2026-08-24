@@ -160,9 +160,23 @@
               <div class="eyebrow"><svg class="ic" style="width:13px;height:13px"><use href="#i-cube"/></svg> Stage 01 · Intake</div>
               <h1 class="title">Name &amp; reference photos</h1>
               <p class="lede">Give this twin a name, then bring in 4 reference photos of the talent.</p>
-              <div class="field">
-                <label class="lbl" for="twinName" style="margin-bottom:0">Twin name</label>
-                <input type="text" id="twinName" placeholder="e.g. Aiko" autocomplete="off">
+              <div style="display:flex;gap:16px;flex-wrap:wrap">
+                <div class="field" style="flex:2;min-width:200px">
+                  <label class="lbl" for="twinName" style="margin-bottom:0">Twin name</label>
+                  <input type="text" id="twinName" placeholder="e.g. Aiko" autocomplete="off">
+                </div>
+                <div class="field" style="flex:1;min-width:110px">
+                  <label class="lbl" for="twinHeight" style="margin-bottom:0">Height</label>
+                  <input type="text" id="twinHeight" placeholder="e.g. 165 cm" autocomplete="off">
+                </div>
+                <div class="field" style="flex:1;min-width:110px">
+                  <label class="lbl" for="twinEyes" style="margin-bottom:0">Eyes</label>
+                  <input type="text" id="twinEyes" placeholder="e.g. Brown" autocomplete="off">
+                </div>
+                <div class="field" style="flex:1;min-width:110px">
+                  <label class="lbl" for="twinHair" style="margin-bottom:0">Hair</label>
+                  <input type="text" id="twinHair" placeholder="e.g. Black, long" autocomplete="off">
+                </div>
               </div>
               <div class="refgrid" id="refGrid"></div>
               <div id="fileInputPool" hidden></div>
