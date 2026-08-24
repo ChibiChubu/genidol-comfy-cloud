@@ -13,6 +13,18 @@ function initTheme() {
   });
 }
 
+function initAccent() {
+  const btn = document.getElementById("accentToggle");
+  const stored = localStorage.getItem("pf-accent");
+  if (stored === "rose") document.documentElement.setAttribute("data-accent", "rose");
+
+  btn.addEventListener("click", () => {
+    const goingRose = document.documentElement.getAttribute("data-accent") !== "rose";
+    document.documentElement.setAttribute("data-accent", goingRose ? "rose" : "iris");
+    localStorage.setItem("pf-accent", goingRose ? "rose" : "iris");
+  });
+}
+
 async function initStatus() {
   if (!getCurrentUser()) return;
   const pill = document.getElementById("apiStatus");
@@ -78,6 +90,7 @@ function initUserMenu() {
 document.getElementById("newTwinBtn").addEventListener("click", () => openPipeline());
 
 initTheme();
+initAccent();
 initUserMenu();
 
 setCurrentUser(await getMe());
