@@ -34,6 +34,12 @@ export async function deleteTalent(id) {
   return parseJson(response);
 }
 
+export async function generateVoiceSample(talentId, formData) {
+  const response = await fetch(`/api/talents/${encodeURIComponent(talentId)}/voice`, { method: "POST", body: formData });
+  const payload = await parseJson(response);
+  return payload.talent;
+}
+
 export async function cancelGeneration(requestId) {
   const response = await fetch(`/api/generations/${encodeURIComponent(requestId)}/cancel`, { method: "POST" });
   return parseJson(response);

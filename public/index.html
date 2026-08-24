@@ -84,7 +84,7 @@
       </div>
     </header>
     <nav class="subnav" id="subnav">
-      <a data-t="assets" class="on">Assets</a><a data-t="twin">Digital twin</a><a data-t="motion">Motion</a>
+      <a data-t="assets" class="on">Assets</a><a data-t="twin">Digital twin</a><a data-t="motion">Motion</a><a data-t="voice">Voice</a>
     </nav>
   </div>
   <div class="pf-wrap">
@@ -105,6 +105,19 @@
     <section class="section" id="motion">
       <div class="sec-h"><div><div class="eyebrow"><svg class="ic" style="width:13px;height:13px"><use href="#i-play"/></svg> Motion</div><h2>Short clip</h2></div></div>
       <div class="player" id="pfVideoHost"></div>
+    </section>
+
+    <section class="section" id="voice">
+      <div class="sec-h"><div><div class="eyebrow"><svg class="ic" style="width:13px;height:13px"><use href="#i-mic"/></svg> Voice</div><h2>Voice sample</h2></div></div>
+      <div class="card" style="max-width:480px">
+        <div class="field" style="max-width:none">
+          <label class="lbl" for="pfVoiceAudio">Upload a short voice reference clip</label>
+          <input type="file" id="pfVoiceAudio" accept="audio/*">
+        </div>
+        <button type="button" class="btn primary" id="pfVoiceGenerate">Generate voice sample</button>
+        <div id="pfVoiceStatus" style="margin-top:14px"></div>
+        <div id="pfVoiceResult" style="margin-top:14px"></div>
+      </div>
     </section>
 
   </div>

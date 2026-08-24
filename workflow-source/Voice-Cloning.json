@@ -1,0 +1,72 @@
+{
+  "1": {
+    "inputs": {
+      "text": "Hi, I am Zel digital twin, created with Proxifai.",
+      "stability": 0.5,
+      "apply_text_normalization": "on",
+      "model": "eleven_v3",
+      "model.speed": 1,
+      "model.similarity_boost": 0.75,
+      "language_code": "",
+      "seed": 1,
+      "output_format": "mp3_44100_192",
+      "voice": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "ElevenLabsTextToSpeech",
+    "_meta": {
+      "title": "ElevenLabs Text to Speech"
+    }
+  },
+  "3": {
+    "inputs": {
+      "remove_background_noise": true,
+      "files.audio0": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "ElevenLabsInstantVoiceClone",
+    "_meta": {
+      "title": "ElevenLabs Instant Voice Clone"
+    }
+  },
+  "4": {
+    "inputs": {
+      "audio": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "PreviewAudio",
+    "_meta": {
+      "title": "Preview Audio"
+    }
+  },
+  "5": {
+    "inputs": {
+      "filename_prefix": "audio/ComfyUI",
+      "format": "mp3",
+      "format.quality": "V0",
+      "audio": [
+        "1",
+        0
+      ]
+    },
+    "class_type": "SaveAudioAdvanced",
+    "_meta": {
+      "title": "Save Audio (Advanced)"
+    }
+  },
+  "8": {
+    "inputs": {
+      "audio": "5b5c537c4c9c170fd46efb130c4c67c0d281bdcf77eac22c1d120a9bfa855654.wav"
+    },
+    "class_type": "LoadAudio",
+    "_meta": {
+      "title": "Load Audio"
+    }
+  }
+}

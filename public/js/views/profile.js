@@ -1,4 +1,4 @@
-import { getTalent, deleteTalent } from "../api.js";
+import { getTalent, deleteTalent, generateVoiceSample } from "../api.js";
 import { escapeHtml, showToast } from "../util.js";
 import { goToRoster } from "../router.js";
 
@@ -45,11 +45,49 @@ function bindOnce() {
         if (entry.isIntersecting) setSub(entry.target.id);
       });
     }, { rootMargin: "-40% 0px -55% 0px" });
-    ["assets", "twin", "motion"].forEach((id) => {
+    ["assets", "twin", "motion", "voice"].forEach((id) => {
       const el = document.getElementById(id);
       if (el) io.observe(el);
     });
   }
+
+  document.getElementById("pfVoiceGenerate").addEventListener("click", async () => {
+    if (!currentTalent) return;
+    const audioInput = document.getElementById("pfVoiceAudio");
+    const file = audioInput.files?.[0];
+    if (!file) {
+      showToast("Please choose a voice reference audio file first.", true);
+      return;
+    }
+
+    const genBtn = document.getElementById("pfVoiceGenerate");
+    const status = document.getElementById("pfVoiceStatus");
+    genBtn.disabled = true;
+    status.innerHTML = `<div class="review-note"><span class="spin"></span> Cloning voice and generating sample...</div>`;
+
+    try {
+      const formData = new FormData();
+      formData.set("audio", file, file.name);
+      const talent = await generateVoiceSample(currentTalent.id, formData);
+      currentTalent = talent;
+      status.innerHTML = "";
+      renderVoiceResult(talent);
+      showToast("Voice sample generated.");
+    } catch (error) {
+      status.innerHTML = `<div class="review-note" style="border-color:#e0607a;color:#e0607a">${escapeHtml(error.message)}</div>`;
+      showToast(error.message, true);
+    } finally {
+      genBtn.disabled = false;
+    }
+  });
+}
+
+function renderVoiceResult(talent) {
+  const voice = talent.assets?.voiceSample;
+  document.getElementById("pfVoiceResult").innerHTML = voice
+    ? `<audio src="${voice.url}" controls></audio>
+       <div style="margin-top:10px"><a class="btn sm" href="${voice.url}" download><svg class="ic" style="width:14px;height:14px"><use href="#i-download"/></svg> Download voice sample</a></div>`
+    : "";
 }
 
 function setSub(t) {
@@ -78,6 +116,9 @@ export async function renderProfile(id) {
   document.getElementById("pfTwinGrid").innerHTML = "";
   document.getElementById("pfVideoHost").innerHTML = "";
   document.getElementById("pfWardrobeMeta").innerHTML = "";
+  document.getElementById("pfVoiceStatus").innerHTML = "";
+  document.getElementById("pfVoiceResult").innerHTML = "";
+  document.getElementById("pfVoiceAudio").value = "";
 
   let talent;
   try {
@@ -117,4 +158,6 @@ export async function renderProfile(id) {
     ? `<video src="${video.url}" controls playsinline></video>
        <div style="margin-top:10px"><a class="btn sm" href="${video.url}" download><svg class="ic" style="width:14px;height:14px"><use href="#i-download"/></svg> Download video</a></div>`
     : `<div class="vp" style="height:426px"><span class="ph">No video</span></div>`;
+
+  renderVoiceResult(talent);
 }

@@ -9,7 +9,15 @@ import {
   getWorkflowSummary,
   loadWorkflowGraph,
 } from "./lib/workflow.js";
-import { addTalent, deleteTalent, getTalent, listTalents, updateTalentOwner } from "./lib/talentStore.js";
+import {
+  addTalent,
+  deleteTalent,
+  getTalent,
+  listTalents,
+  updateTalentOwner,
+  updateTalentAsset,
+} from "./lib/talentStore.js";
+import { loadVoiceWorkflowGraph, buildVoiceCloningPayload } from "./lib/voiceWorkflow.js";
 import {
   createSessionCookie,
   clearSessionCookie,
@@ -55,6 +63,8 @@ const CONTENT_TYPES = {
   ".mp4": "video/mp4",
   ".webm": "video/webm",
   ".mov": "video/quicktime",
+  ".mp3": "audio/mpeg",
+  ".wav": "audio/wav",
 };
 
 function loadDotEnv(filePath) {
@@ -481,6 +491,36 @@ async function runComfyGeneration(apiKey, fields, files, signal) {
   return { body, payload, workflow, uploadedRefs, referenceFiles: references, promptId, outputs, assets };
 }
 
+function collectAudioAsset(outputs, saveNodeId) {
+  const output = outputs[saveNodeId];
+  if (!output) return null;
+  const groups = Object.values(output).filter((value) => Array.isArray(value));
+  for (const files of groups) {
+    for (const file of files || []) {
+      if (file?.filename) {
+        return { filename: file.filename, subfolder: file.subfolder || "", type: file.type || "output" };
+      }
+    }
+  }
+  return null;
+}
+
+async function runVoiceCloning(apiKey, twinName, audioFile) {
+  const uploadedAudio = await uploadImage(audioFile, apiKey);
+  const { workflow, saveAudioNodeId } = buildVoiceCloningPayload(voiceWorkflowGraph, {
+    twinName,
+    audioFilename: uploadedAudio.filename,
+  });
+
+  const promptId = await submitWorkflow(workflow, apiKey);
+  const outputs = await waitForCompletion(promptId, apiKey);
+  const asset = collectAudioAsset(outputs, saveAudioNodeId);
+  if (!asset) {
+    throw new Error("Voice generation completed but no audio output was found.");
+  }
+  return { asset, promptId };
+}
+
 async function downloadComfyAsset(filename, subfolder, type, apiKey) {
   const params = new URLSearchParams({ filename, subfolder: subfolder || "", type: type || "output" });
   const response = await fetch(`${COMFYUI_ENDPOINT}/api/view?${params.toString()}`, {
@@ -551,6 +591,7 @@ async function proxyComfyView(res, url, apiKey) {
 }
 
 const workflowGraph = loadWorkflowGraph();
+const voiceWorkflowGraph = loadVoiceWorkflowGraph();
 const workflowSummary = getWorkflowSummary(workflowGraph);
 const wardrobeGroups = [
   {
@@ -829,6 +870,48 @@ const server = http.createServer(async (req, res) => {
       }
       entry.controller.abort();
       sendJson(res, { ok: true });
+      return;
+    }
+
+    if (req.method === "POST" && url.pathname.startsWith("/api/talents/") && url.pathname.endsWith("/voice")) {
+      const user = await requireAuth(req, res);
+      if (!user) return;
+      const id = url.pathname.slice("/api/talents/".length, -"/voice".length);
+      const talent = await getTalent(id);
+      if (!talent || talent.ownerId !== user.id) {
+        sendJson(res, { error: "Not found" }, 404);
+        return;
+      }
+      try {
+        if (!user.comfyApiKey) {
+          sendJson(res, { error: "Set your ComfyUI Cloud API key from the account menu (top right) to generate." }, 400);
+          return;
+        }
+
+        const { files } = await parseMultipart(req);
+        const audioFile = files.audio;
+        if (!audioFile) {
+          sendJson(res, { error: "Please upload a voice sample audio file." }, 400);
+          return;
+        }
+
+        const { asset } = await runVoiceCloning(user.comfyApiKey, talent.name, audioFile);
+        const buffer = await downloadComfyAsset(asset.filename, asset.subfolder, asset.type, user.comfyApiKey);
+
+        const talentDir = join(GENERATED_DIR, id);
+        await mkdir(talentDir, { recursive: true });
+        const ext = extname(asset.filename) || ".mp3";
+        const outFilename = `voice-sample${ext}`;
+        await writeFile(join(talentDir, outFilename), buffer);
+
+        const updated = await updateTalentAsset(id, "voiceSample", { url: `/generated/${id}/${outFilename}` });
+        sendJson(res, { talent: updated });
+      } catch (error) {
+        sendJson(res, {
+          error: "Voice generation failed",
+          message: error instanceof Error ? error.message : "Unknown error",
+        }, error.status || 400);
+      }
       return;
     }
 
