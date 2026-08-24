@@ -10,18 +10,56 @@ function initTheme() {
     const goingDark = document.documentElement.getAttribute("data-theme") !== "light";
     document.documentElement.setAttribute("data-theme", goingDark ? "light" : "dark");
     document.querySelectorAll(".theicon").forEach((use) => use.setAttribute("href", goingDark ? "#i-sun" : "#i-moon"));
+    applyAccentColor(getStoredAccent());
   });
 }
 
-function initAccent() {
-  const btn = document.getElementById("accentToggle");
-  const stored = localStorage.getItem("pf-accent");
-  if (stored === "rose") document.documentElement.setAttribute("data-accent", "rose");
+const DEFAULT_ACCENT = "#9d8dff";
 
-  btn.addEventListener("click", () => {
-    const goingRose = document.documentElement.getAttribute("data-accent") !== "rose";
-    document.documentElement.setAttribute("data-accent", goingRose ? "rose" : "iris");
-    localStorage.setItem("pf-accent", goingRose ? "rose" : "iris");
+function getStoredAccent() {
+  const stored = localStorage.getItem("pf-accent");
+  return /^#[0-9a-fA-F]{6}$/.test(stored) ? stored : DEFAULT_ACCENT;
+}
+
+function hexToRgb(hex) {
+  const clean = hex.replace("#", "");
+  return {
+    r: parseInt(clean.slice(0, 2), 16),
+    g: parseInt(clean.slice(2, 4), 16),
+    b: parseInt(clean.slice(4, 6), 16),
+  };
+}
+
+function rgbToHex(r, g, b) {
+  return `#${[r, g, b].map((v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0")).join("")}`;
+}
+
+function adjustLightness(hex, amount) {
+  const { r, g, b } = hexToRgb(hex);
+  return rgbToHex(r + amount, g + amount, b + amount);
+}
+
+function applyAccentColor(hex) {
+  const { r, g, b } = hexToRgb(hex);
+  const isLight = document.documentElement.getAttribute("data-theme") === "light";
+  const bgAlpha = isLight ? 0.1 : 0.16;
+  const bdAlpha = isLight ? 0.28 : 0.36;
+  const root = document.documentElement.style;
+  root.setProperty("--iris", hex);
+  root.setProperty("--iris2", adjustLightness(hex, isLight ? -24 : 24));
+  root.setProperty("--iris-bg", `rgba(${r}, ${g}, ${b}, ${bgAlpha})`);
+  root.setProperty("--iris-bd", `rgba(${r}, ${g}, ${b}, ${bdAlpha})`);
+}
+
+function initAccent() {
+  const picker = document.getElementById("accentColorPicker");
+  const stored = getStoredAccent();
+  picker.value = stored;
+  applyAccentColor(stored);
+
+  picker.addEventListener("input", () => {
+    applyAccentColor(picker.value);
+    localStorage.setItem("pf-accent", picker.value);
   });
 }
 
