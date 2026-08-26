@@ -3,6 +3,7 @@ import { escapeHtml, showToast } from "../util.js";
 import { goToRoster } from "../router.js";
 import { takePendingVoiceAudio } from "../pendingAudio.js";
 import { renderAudioPreview } from "../audioPreview.js";
+import { trimAudioTo15s } from "../audioTrim.js";
 
 const OUTPUT_ORDER = [
   ["characterDownload", "Character download"],
@@ -54,8 +55,21 @@ function bindOnce() {
     });
   }
 
-  document.getElementById("pfVoiceAudio").addEventListener("change", () => {
-    showVoicePreview(document.getElementById("pfVoiceAudio").files?.[0] ?? null);
+  document.getElementById("pfVoiceAudio").addEventListener("change", async () => {
+    const input = document.getElementById("pfVoiceAudio");
+    const rawFile = input.files?.[0] ?? null;
+    let finalFile = rawFile;
+    if (rawFile) {
+      const { file, trimmed } = await trimAudioTo15s(rawFile);
+      finalFile = file;
+      if (trimmed) {
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        input.files = dt.files;
+        showToast("Voice sample trimmed to the first 15 seconds.");
+      }
+    }
+    showVoicePreview(finalFile);
   });
 
   document.getElementById("pfVoiceGenerate").addEventListener("click", async () => {

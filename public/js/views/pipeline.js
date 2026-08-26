@@ -5,6 +5,7 @@ import { goToTalent } from "../router.js";
 import { enqueueGeneration, cancelQueuedJob, getJob, onQueueChange } from "../queue.js";
 import { setPendingVoiceAudio } from "../pendingAudio.js";
 import { renderAudioPreview } from "../audioPreview.js";
+import { trimAudioTo15s } from "../audioTrim.js";
 
 const REF_META = [
   { title: "Reference 1", subtitle: "Primary face" },
@@ -82,9 +83,21 @@ function bindOnce() {
     els.fileInputPool.appendChild(input);
   }
 
-  els.twinVoiceAudio.addEventListener("change", () => {
+  els.twinVoiceAudio.addEventListener("change", async () => {
+    const rawFile = els.twinVoiceAudio.files?.[0] ?? null;
+    let finalFile = rawFile;
+    if (rawFile) {
+      const { file, trimmed } = await trimAudioTo15s(rawFile);
+      finalFile = file;
+      if (trimmed) {
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        els.twinVoiceAudio.files = dt.files;
+        showToast("Voice sample trimmed to the first 15 seconds.");
+      }
+    }
     if (voiceAudioCleanup) voiceAudioCleanup();
-    voiceAudioCleanup = renderAudioPreview(q("twinVoiceAudioPreview"), els.twinVoiceAudio.files?.[0] ?? null);
+    voiceAudioCleanup = renderAudioPreview(q("twinVoiceAudioPreview"), finalFile);
   });
 
   els.scrim.addEventListener("click", closePipeline);
