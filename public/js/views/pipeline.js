@@ -240,7 +240,9 @@ async function onPrimary() {
   }
   if (currentJobStatus === "done" && currentJobTalent) {
     const id = currentJobTalent.id;
-    setPendingVoiceAudio(els.twinVoiceAudio.files?.[0] ?? null);
+    if (!currentJobTalent.assets?.voiceSample) {
+      setPendingVoiceAudio(els.twinVoiceAudio.files?.[0] ?? null);
+    }
     closePipeline();
     goToTalent(id);
     return;
@@ -272,6 +274,8 @@ function startGeneration() {
   }
   const clientFile = wardrobeController.getClientOutfitFile();
   if (clientFile) formData.set("clientOutfit", clientFile, clientFile.name);
+  const voiceFile = els.twinVoiceAudio.files?.[0];
+  if (voiceFile) formData.set("audio", voiceFile, voiceFile.name);
 
   cancelRequested = false;
   currentJobTalent = null;
@@ -298,7 +302,8 @@ function updateGenStatus() {
   if (currentJobStatus === "queued") {
     els.genStatus.innerHTML = `<div class="review-note"><span class="spin"></span> Queued — another twin is generating first. This one starts automatically.</div>`;
   } else if (currentJobStatus === "generating") {
-    els.genStatus.innerHTML = `<div class="review-note"><span class="spin"></span> Generating character download, editorials, and video — this can take a few minutes. You can close this and start another twin; this one keeps going in the background.</div>`;
+    const voiceNote = els.twinVoiceAudio.files?.[0] ? "Cloning the voice sample, then generating" : "Generating";
+    els.genStatus.innerHTML = `<div class="review-note"><span class="spin"></span> ${voiceNote} character download, editorials, and video — this can take a few minutes. You can close this and start another twin; this one keeps going in the background.</div>`;
   } else if (currentJobStatus === "done" && currentJobTalent) {
     els.genStatus.innerHTML = `<div class="review-note"><svg class="ic" style="color:var(--mint);width:16px;height:16px"><use href="#i-check"/></svg> Saved to your library as "${escapeHtml(currentJobTalent.name)}".</div>`;
     renderReview(currentJobTalent);

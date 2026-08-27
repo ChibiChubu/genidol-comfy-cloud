@@ -505,7 +505,7 @@ function collectAudioAsset(outputs, saveNodeId) {
   return null;
 }
 
-async function runVoiceCloning(apiKey, twinName, audioFile) {
+async function runVoiceCloning(apiKey, twinName, audioFile, signal) {
   const uploadedAudio = await uploadImage(audioFile, apiKey);
   const { workflow, saveAudioNodeId } = buildVoiceCloningPayload(voiceWorkflowGraph, {
     twinName,
@@ -513,7 +513,7 @@ async function runVoiceCloning(apiKey, twinName, audioFile) {
   });
 
   const promptId = await submitWorkflow(workflow, apiKey);
-  const outputs = await waitForCompletion(promptId, apiKey);
+  const outputs = await waitForCompletion(promptId, apiKey, signal);
   const asset = collectAudioAsset(outputs, saveAudioNodeId);
   if (!asset) {
     throw new Error("Voice generation completed but no audio output was found.");
@@ -815,41 +815,53 @@ const server = http.createServer(async (req, res) => {
           if (!res.writableEnded) abortController.abort();
         });
 
-        let result;
+        const talentId = randomUUID();
         try {
-          result = await runComfyGeneration(apiKey, fields, files, abortController.signal);
+          let voiceAssetMap = {};
+          if (files.audio) {
+            throwIfAborted(abortController.signal);
+            const { asset: voiceAsset } = await runVoiceCloning(apiKey, name, files.audio, abortController.signal);
+            const voiceBuffer = await downloadComfyAsset(voiceAsset.filename, voiceAsset.subfolder, voiceAsset.type, apiKey);
+            const talentDir = join(GENERATED_DIR, talentId);
+            await mkdir(talentDir, { recursive: true });
+            const voiceExt = extname(voiceAsset.filename) || ".mp3";
+            const voiceOutFilename = `voice-sample${voiceExt}`;
+            await writeFile(join(talentDir, voiceOutFilename), voiceBuffer);
+            voiceAssetMap = { voiceSample: { url: `/generated/${talentId}/${voiceOutFilename}` } };
+          }
+
+          const result = await runComfyGeneration(apiKey, fields, files, abortController.signal);
+          const { assetMap, references } = await persistTalentAssets(
+            talentId,
+            result.assets,
+            result.referenceFiles,
+            apiKey,
+          );
+
+          const requiredKeys = Object.values(TALENT_ASSET_NODES).map((mapping) => mapping.key);
+          const missing = requiredKeys.filter((key) => !assetMap[key]);
+          if (missing.length) {
+            throw new Error(`Generation completed but missing expected outputs: ${missing.join(", ")}`);
+          }
+
+          const talent = await addTalent({
+            id: talentId,
+            ownerId: user.id,
+            name,
+            height: (fields.height || "").trim(),
+            eyes: (fields.eyes || "").trim(),
+            hair: (fields.hair || "").trim(),
+            wardrobe: result.payload.wardrobe,
+            clientOutfitUsed: result.payload.wardrobe?.source === "client",
+            promptId: result.promptId,
+            assets: { ...voiceAssetMap, ...assetMap },
+            references,
+          });
+
+          sendJson(res, { talent });
         } finally {
           activeGenerations.delete(requestId);
         }
-        const talentId = randomUUID();
-        const { assetMap, references } = await persistTalentAssets(
-          talentId,
-          result.assets,
-          result.referenceFiles,
-          apiKey,
-        );
-
-        const requiredKeys = Object.values(TALENT_ASSET_NODES).map((mapping) => mapping.key);
-        const missing = requiredKeys.filter((key) => !assetMap[key]);
-        if (missing.length) {
-          throw new Error(`Generation completed but missing expected outputs: ${missing.join(", ")}`);
-        }
-
-        const talent = await addTalent({
-          id: talentId,
-          ownerId: user.id,
-          name,
-          height: (fields.height || "").trim(),
-          eyes: (fields.eyes || "").trim(),
-          hair: (fields.hair || "").trim(),
-          wardrobe: result.payload.wardrobe,
-          clientOutfitUsed: result.payload.wardrobe?.source === "client",
-          promptId: result.promptId,
-          assets: assetMap,
-          references,
-        });
-
-        sendJson(res, { talent });
       } catch (error) {
         sendJson(res, {
           error: "Talent generation failed",
