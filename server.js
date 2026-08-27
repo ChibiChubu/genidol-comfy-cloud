@@ -927,6 +927,38 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
+    if (req.method === "POST" && url.pathname === "/api/voice-preview") {
+      const user = await requireAuth(req, res);
+      if (!user) return;
+      try {
+        if (!user.comfyApiKey) {
+          sendJson(res, { error: "Set your ComfyUI Cloud API key from the account menu (top right) to generate." }, 400);
+          return;
+        }
+
+        const { fields, files } = await parseMultipart(req);
+        const name = (fields.name || "").trim();
+        const audioFile = files.audio;
+        if (!audioFile) {
+          sendJson(res, { error: "Please upload a voice sample audio file." }, 400);
+          return;
+        }
+
+        const { asset } = await runVoiceCloning(user.comfyApiKey, name, audioFile);
+        const buffer = await downloadComfyAsset(asset.filename, asset.subfolder, asset.type, user.comfyApiKey);
+        const ext = extname(asset.filename).toLowerCase();
+        const contentType = ext === ".wav" ? "audio/wav" : "audio/mpeg";
+        res.writeHead(200, { "Content-Type": contentType, "Content-Length": buffer.length, "Cache-Control": "no-store" });
+        res.end(buffer);
+      } catch (error) {
+        sendJson(res, {
+          error: "Voice preview failed",
+          message: error instanceof Error ? error.message : "Unknown error",
+        }, error.status || 400);
+      }
+      return;
+    }
+
     if (req.method === "GET" && url.pathname === "/api/talents") {
       const user = await requireAuth(req, res);
       if (!user) return;

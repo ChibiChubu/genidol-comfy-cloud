@@ -1,4 +1,4 @@
-import { getIntake } from "../api.js";
+import { getIntake, previewVoiceSample } from "../api.js";
 import { createWardrobeController } from "../wardrobe.js";
 import { escapeHtml, formatFileSize, showToast } from "../util.js";
 import { goToTalent } from "../router.js";
@@ -38,6 +38,8 @@ let currentJobTalent = null;
 let currentJobError = null;
 let cancelRequested = false;
 let voiceAudioCleanup = null;
+let voiceTestCleanup = null;
+let voiceTesting = false;
 
 function q(id) {
   return document.getElementById(id);
@@ -61,6 +63,8 @@ function bindOnce() {
     twinEyes: q("twinEyes"),
     twinHair: q("twinHair"),
     twinVoiceAudio: q("twinVoiceAudio"),
+    twinVoiceTestBtn: q("twinVoiceTestBtn"),
+    twinVoiceTestResult: q("twinVoiceTestResult"),
     fileInputPool: q("fileInputPool"),
     wardrobeModes: q("wardrobeModes"),
     wardrobeGroups: q("wardrobeGroups"),
@@ -98,6 +102,31 @@ function bindOnce() {
     }
     if (voiceAudioCleanup) voiceAudioCleanup();
     voiceAudioCleanup = renderAudioPreview(q("twinVoiceAudioPreview"), finalFile);
+    updateVoiceTestButton();
+  });
+
+  els.twinName.addEventListener("input", updateVoiceTestButton);
+
+  els.twinVoiceTestBtn.addEventListener("click", async () => {
+    const name = els.twinName.value.trim();
+    const audioFile = els.twinVoiceAudio.files?.[0];
+    if (!name || !audioFile || voiceTesting) return;
+
+    voiceTesting = true;
+    updateVoiceTestButton();
+    els.twinVoiceTestResult.innerHTML = `<div class="review-note"><span class="spin"></span> Testing voice clone...</div>`;
+
+    try {
+      const blob = await previewVoiceSample(name, audioFile);
+      const resultFile = new File([blob], "voice-test.mp3", { type: blob.type || "audio/mpeg" });
+      if (voiceTestCleanup) voiceTestCleanup();
+      voiceTestCleanup = renderAudioPreview(els.twinVoiceTestResult, resultFile);
+    } catch (error) {
+      els.twinVoiceTestResult.innerHTML = `<div class="review-note" style="border-color:#e0607a;color:#e0607a">${escapeHtml(error.message)}</div>`;
+    } finally {
+      voiceTesting = false;
+      updateVoiceTestButton();
+    }
   });
 
   els.scrim.addEventListener("click", closePipeline);
@@ -124,6 +153,13 @@ function bindOnce() {
       render();
     }
   });
+}
+
+function updateVoiceTestButton() {
+  const hasName = Boolean(els.twinName.value.trim());
+  const hasAudio = Boolean(els.twinVoiceAudio.files?.[0]);
+  els.twinVoiceTestBtn.disabled = voiceTesting || !hasName || !hasAudio;
+  els.twinVoiceTestBtn.textContent = voiceTesting ? "Testing..." : "Test voice";
 }
 
 function syncRef(index, file) {
@@ -358,6 +394,11 @@ export function openPipeline() {
   if (voiceAudioCleanup) voiceAudioCleanup();
   voiceAudioCleanup = null;
   q("twinVoiceAudioPreview").innerHTML = "";
+  if (voiceTestCleanup) voiceTestCleanup();
+  voiceTestCleanup = null;
+  voiceTesting = false;
+  els.twinVoiceTestResult.innerHTML = "";
+  updateVoiceTestButton();
   els.genStatus.innerHTML = "";
   els.genResults.hidden = true;
   els.genResults.innerHTML = "";
