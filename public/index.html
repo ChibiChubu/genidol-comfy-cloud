@@ -119,6 +119,10 @@
             <input type="file" id="pfVoiceAudio" accept="audio/*">
           </div>
           <div id="pfVoiceAudioPreview"></div>
+          <div class="field" style="max-width:none;margin-top:14px">
+            <label class="lbl" for="pfVoiceScript">Voice script</label>
+            <textarea id="pfVoiceScript" rows="4" placeholder="Type what you want the cloned voice to say..."></textarea>
+          </div>
           <button type="button" class="btn primary" id="pfVoiceGenerate">Generate voice sample</button>
           <div id="pfVoiceStatus" style="margin-top:14px"></div>
           <div id="pfVoiceResult" style="margin-top:14px"></div>
@@ -201,6 +205,8 @@
                 <label class="lbl" for="twinVoiceAudio" style="margin-bottom:0">Voice sample (optional)</label>
                 <input type="file" id="twinVoiceAudio" accept="audio/*">
                 <div id="twinVoiceAudioPreview"></div>
+                <label class="lbl" for="twinVoiceScript" style="margin-top:14px;margin-bottom:0">Voice script</label>
+                <textarea id="twinVoiceScript" rows="4" placeholder="Type what you want the cloned voice to say..."></textarea>
                 <button type="button" class="btn sm" id="twinVoiceTestBtn" style="margin-top:10px" disabled>Test voice</button>
                 <div id="twinVoiceTestResult" style="margin-top:10px"></div>
               </div>

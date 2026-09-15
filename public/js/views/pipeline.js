@@ -63,6 +63,7 @@ function bindOnce() {
     twinEyes: q("twinEyes"),
     twinHair: q("twinHair"),
     twinVoiceAudio: q("twinVoiceAudio"),
+    twinVoiceScript: q("twinVoiceScript"),
     twinVoiceTestBtn: q("twinVoiceTestBtn"),
     twinVoiceTestResult: q("twinVoiceTestResult"),
     fileInputPool: q("fileInputPool"),
@@ -105,19 +106,19 @@ function bindOnce() {
     updateVoiceTestButton();
   });
 
-  els.twinName.addEventListener("input", updateVoiceTestButton);
+  els.twinVoiceScript.addEventListener("input", updateVoiceTestButton);
 
   els.twinVoiceTestBtn.addEventListener("click", async () => {
-    const name = els.twinName.value.trim();
+    const script = els.twinVoiceScript.value.trim();
     const audioFile = els.twinVoiceAudio.files?.[0];
-    if (!name || !audioFile || voiceTesting) return;
+    if (!script || !audioFile || voiceTesting) return;
 
     voiceTesting = true;
     updateVoiceTestButton();
     els.twinVoiceTestResult.innerHTML = `<div class="review-note"><span class="spin"></span> Testing voice clone...</div>`;
 
     try {
-      const blob = await previewVoiceSample(name, audioFile);
+      const blob = await previewVoiceSample(script, audioFile);
       const resultFile = new File([blob], "voice-test.mp3", { type: blob.type || "audio/mpeg" });
       if (voiceTestCleanup) voiceTestCleanup();
       voiceTestCleanup = renderAudioPreview(els.twinVoiceTestResult, resultFile);
@@ -156,9 +157,9 @@ function bindOnce() {
 }
 
 function updateVoiceTestButton() {
-  const hasName = Boolean(els.twinName.value.trim());
+  const hasScript = Boolean(els.twinVoiceScript.value.trim());
   const hasAudio = Boolean(els.twinVoiceAudio.files?.[0]);
-  els.twinVoiceTestBtn.disabled = voiceTesting || !hasName || !hasAudio;
+  els.twinVoiceTestBtn.disabled = voiceTesting || !hasScript || !hasAudio;
   els.twinVoiceTestBtn.textContent = voiceTesting ? "Testing..." : "Test voice";
 }
 
@@ -263,6 +264,10 @@ function validateStage(i) {
       showToast("Please upload all 4 reference photos.", true);
       return false;
     }
+    if (els.twinVoiceAudio.files?.[0] && !els.twinVoiceScript.value.trim()) {
+      showToast("Please write a voice script for the audio sample to say.", true);
+      return false;
+    }
   }
   return true;
 }
@@ -311,7 +316,10 @@ function startGeneration() {
   const clientFile = wardrobeController.getClientOutfitFile();
   if (clientFile) formData.set("clientOutfit", clientFile, clientFile.name);
   const voiceFile = els.twinVoiceAudio.files?.[0];
-  if (voiceFile) formData.set("audio", voiceFile, voiceFile.name);
+  if (voiceFile) {
+    formData.set("audio", voiceFile, voiceFile.name);
+    formData.set("voiceScript", els.twinVoiceScript.value.trim());
+  }
 
   cancelRequested = false;
   currentJobTalent = null;
@@ -391,6 +399,7 @@ export function openPipeline() {
   els.twinEyes.value = "";
   els.twinHair.value = "";
   els.twinVoiceAudio.value = "";
+  els.twinVoiceScript.value = "";
   if (voiceAudioCleanup) voiceAudioCleanup();
   voiceAudioCleanup = null;
   q("twinVoiceAudioPreview").innerHTML = "";

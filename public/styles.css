@@ -178,9 +178,10 @@ h1.title{font-size:30px;font-weight:600;letter-spacing:-.025em;margin:10px 0 6px
 .panel-anim{animation:rise .4s cubic-bezier(.2,.7,.3,1) both}
 
 .field{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;max-width:360px}
-.field input[type=text],.field input[type=email],.field input[type=password]{border:1px solid var(--line2);border-radius:var(--r-sm);background:var(--panel);color:var(--text);
+.field input[type=text],.field input[type=email],.field input[type=password],.field textarea{border:1px solid var(--line2);border-radius:var(--r-sm);background:var(--panel);color:var(--text);
   padding:11px 13px;font-size:15px}
-.field input[type=text]:focus,.field input[type=email]:focus,.field input[type=password]:focus{border-color:var(--iris-bd)}
+.field textarea{resize:vertical;font-family:inherit;line-height:1.5}
+.field input[type=text]:focus,.field input[type=email]:focus,.field input[type=password]:focus,.field textarea:focus{border-color:var(--iris-bd)}
 
 /* ===== AUTH ===== */
 .auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}

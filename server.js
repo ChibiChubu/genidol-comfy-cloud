@@ -505,10 +505,10 @@ function collectAudioAsset(outputs, saveNodeId) {
   return null;
 }
 
-async function runVoiceCloning(apiKey, twinName, audioFile, signal) {
+async function runVoiceCloning(apiKey, script, audioFile, signal) {
   const uploadedAudio = await uploadImage(audioFile, apiKey);
   const { workflow, saveAudioNodeId } = buildVoiceCloningPayload(voiceWorkflowGraph, {
-    twinName,
+    script,
     audioFilename: uploadedAudio.filename,
   });
 
@@ -820,7 +820,13 @@ const server = http.createServer(async (req, res) => {
           let voiceAssetMap = {};
           if (files.audio) {
             throwIfAborted(abortController.signal);
-            const { asset: voiceAsset } = await runVoiceCloning(apiKey, name, files.audio, abortController.signal);
+            const voiceScript = (fields.voiceScript || "").trim();
+            if (!voiceScript) {
+              const error = new Error("Please write a voice script for the audio sample to say.");
+              error.status = 400;
+              throw error;
+            }
+            const { asset: voiceAsset } = await runVoiceCloning(apiKey, voiceScript, files.audio, abortController.signal);
             const voiceBuffer = await downloadComfyAsset(voiceAsset.filename, voiceAsset.subfolder, voiceAsset.type, apiKey);
             const talentDir = join(GENERATED_DIR, talentId);
             await mkdir(talentDir, { recursive: true });
@@ -900,14 +906,19 @@ const server = http.createServer(async (req, res) => {
           return;
         }
 
-        const { files } = await parseMultipart(req);
+        const { fields, files } = await parseMultipart(req);
         const audioFile = files.audio;
         if (!audioFile) {
           sendJson(res, { error: "Please upload a voice sample audio file." }, 400);
           return;
         }
+        const voiceScript = (fields.voiceScript || "").trim();
+        if (!voiceScript) {
+          sendJson(res, { error: "Please write a voice script for the audio sample to say." }, 400);
+          return;
+        }
 
-        const { asset } = await runVoiceCloning(user.comfyApiKey, talent.name, audioFile);
+        const { asset } = await runVoiceCloning(user.comfyApiKey, voiceScript, audioFile);
         const buffer = await downloadComfyAsset(asset.filename, asset.subfolder, asset.type, user.comfyApiKey);
 
         const talentDir = join(GENERATED_DIR, id);
@@ -937,14 +948,18 @@ const server = http.createServer(async (req, res) => {
         }
 
         const { fields, files } = await parseMultipart(req);
-        const name = (fields.name || "").trim();
+        const voiceScript = (fields.voiceScript || "").trim();
         const audioFile = files.audio;
         if (!audioFile) {
           sendJson(res, { error: "Please upload a voice sample audio file." }, 400);
           return;
         }
+        if (!voiceScript) {
+          sendJson(res, { error: "Please write a voice script for the audio sample to say." }, 400);
+          return;
+        }
 
-        const { asset } = await runVoiceCloning(user.comfyApiKey, name, audioFile);
+        const { asset } = await runVoiceCloning(user.comfyApiKey, voiceScript, audioFile);
         const buffer = await downloadComfyAsset(asset.filename, asset.subfolder, asset.type, user.comfyApiKey);
         const ext = extname(asset.filename).toLowerCase();
         const contentType = ext === ".wav" ? "audio/wav" : "audio/mpeg";

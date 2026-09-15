@@ -80,6 +80,11 @@ function bindOnce() {
       showToast("Please choose a voice reference audio file first.", true);
       return;
     }
+    const script = document.getElementById("pfVoiceScript").value.trim();
+    if (!script) {
+      showToast("Please write a voice script for the audio sample to say.", true);
+      return;
+    }
 
     const genBtn = document.getElementById("pfVoiceGenerate");
     const status = document.getElementById("pfVoiceStatus");
@@ -89,6 +94,7 @@ function bindOnce() {
     try {
       const formData = new FormData();
       formData.set("audio", file, file.name);
+      formData.set("voiceScript", script);
       const talent = await generateVoiceSample(currentTalent.id, formData);
       currentTalent = talent;
       status.innerHTML = "";
@@ -144,6 +150,7 @@ export async function renderProfile(id) {
   document.getElementById("pfWardrobeMeta").innerHTML = "";
   document.getElementById("pfVoiceStatus").innerHTML = "";
   document.getElementById("pfVoiceResult").innerHTML = "";
+  document.getElementById("pfVoiceScript").value = "";
   const voiceAudioInput = document.getElementById("pfVoiceAudio");
   const pendingAudio = takePendingVoiceAudio();
   if (pendingAudio) {
