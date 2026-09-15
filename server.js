@@ -505,11 +505,12 @@ function collectAudioAsset(outputs, saveNodeId) {
   return null;
 }
 
-async function runVoiceCloning(apiKey, script, audioFile, signal) {
+async function runVoiceCloning(apiKey, script, audioFile, signal, trimDuration) {
   const uploadedAudio = await uploadImage(audioFile, apiKey);
   const { workflow, saveAudioNodeId } = buildVoiceCloningPayload(voiceWorkflowGraph, {
     script,
     audioFilename: uploadedAudio.filename,
+    trimDuration,
   });
 
   const promptId = await submitWorkflow(workflow, apiKey);
@@ -826,7 +827,7 @@ const server = http.createServer(async (req, res) => {
               error.status = 400;
               throw error;
             }
-            const { asset: voiceAsset } = await runVoiceCloning(apiKey, voiceScript, files.audio, abortController.signal);
+            const { asset: voiceAsset } = await runVoiceCloning(apiKey, voiceScript, files.audio, abortController.signal, fields.voiceTrimDuration);
             const voiceBuffer = await downloadComfyAsset(voiceAsset.filename, voiceAsset.subfolder, voiceAsset.type, apiKey);
             const talentDir = join(GENERATED_DIR, talentId);
             await mkdir(talentDir, { recursive: true });
@@ -918,7 +919,7 @@ const server = http.createServer(async (req, res) => {
           return;
         }
 
-        const { asset } = await runVoiceCloning(user.comfyApiKey, voiceScript, audioFile);
+        const { asset } = await runVoiceCloning(user.comfyApiKey, voiceScript, audioFile, undefined, fields.voiceTrimDuration);
         const buffer = await downloadComfyAsset(asset.filename, asset.subfolder, asset.type, user.comfyApiKey);
 
         const talentDir = join(GENERATED_DIR, id);
@@ -959,7 +960,7 @@ const server = http.createServer(async (req, res) => {
           return;
         }
 
-        const { asset } = await runVoiceCloning(user.comfyApiKey, voiceScript, audioFile);
+        const { asset } = await runVoiceCloning(user.comfyApiKey, voiceScript, audioFile, undefined, fields.voiceTrimDuration);
         const buffer = await downloadComfyAsset(asset.filename, asset.subfolder, asset.type, user.comfyApiKey);
         const ext = extname(asset.filename).toLowerCase();
         const contentType = ext === ".wav" ? "audio/wav" : "audio/mpeg";

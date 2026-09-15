@@ -64,6 +64,7 @@ function bindOnce() {
     twinHair: q("twinHair"),
     twinVoiceAudio: q("twinVoiceAudio"),
     twinVoiceScript: q("twinVoiceScript"),
+    twinVoiceTrimDuration: q("twinVoiceTrimDuration"),
     twinVoiceTestBtn: q("twinVoiceTestBtn"),
     twinVoiceTestResult: q("twinVoiceTestResult"),
     fileInputPool: q("fileInputPool"),
@@ -118,7 +119,7 @@ function bindOnce() {
     els.twinVoiceTestResult.innerHTML = `<div class="review-note"><span class="spin"></span> Testing voice clone...</div>`;
 
     try {
-      const blob = await previewVoiceSample(script, audioFile);
+      const blob = await previewVoiceSample(script, audioFile, els.twinVoiceTrimDuration.value);
       const resultFile = new File([blob], "voice-test.mp3", { type: blob.type || "audio/mpeg" });
       if (voiceTestCleanup) voiceTestCleanup();
       voiceTestCleanup = renderAudioPreview(els.twinVoiceTestResult, resultFile);
@@ -319,6 +320,7 @@ function startGeneration() {
   if (voiceFile) {
     formData.set("audio", voiceFile, voiceFile.name);
     formData.set("voiceScript", els.twinVoiceScript.value.trim());
+    formData.set("voiceTrimDuration", els.twinVoiceTrimDuration.value);
   }
 
   cancelRequested = false;
@@ -400,6 +402,7 @@ export function openPipeline() {
   els.twinHair.value = "";
   els.twinVoiceAudio.value = "";
   els.twinVoiceScript.value = "";
+  els.twinVoiceTrimDuration.value = "60";
   if (voiceAudioCleanup) voiceAudioCleanup();
   voiceAudioCleanup = null;
   q("twinVoiceAudioPreview").innerHTML = "";

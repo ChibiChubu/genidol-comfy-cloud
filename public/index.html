@@ -120,6 +120,13 @@
           </div>
           <div id="pfVoiceAudioPreview"></div>
           <div class="field" style="max-width:none;margin-top:14px">
+            <label class="lbl" for="pfVoiceTrimDuration">Reference clip length</label>
+            <select id="pfVoiceTrimDuration">
+              <option value="45">45 seconds</option>
+              <option value="60" selected>60 seconds</option>
+            </select>
+          </div>
+          <div class="field" style="max-width:none">
             <label class="lbl" for="pfVoiceScript">Voice script</label>
             <textarea id="pfVoiceScript" rows="4" placeholder="Type what you want the cloned voice to say..."></textarea>
           </div>
@@ -205,6 +212,11 @@
                 <label class="lbl" for="twinVoiceAudio" style="margin-bottom:0">Voice sample (optional)</label>
                 <input type="file" id="twinVoiceAudio" accept="audio/*">
                 <div id="twinVoiceAudioPreview"></div>
+                <label class="lbl" for="twinVoiceTrimDuration" style="margin-top:14px;margin-bottom:0">Reference clip length</label>
+                <select id="twinVoiceTrimDuration">
+                  <option value="45">45 seconds</option>
+                  <option value="60" selected>60 seconds</option>
+                </select>
                 <label class="lbl" for="twinVoiceScript" style="margin-top:14px;margin-bottom:0">Voice script</label>
                 <textarea id="twinVoiceScript" rows="4" placeholder="Type what you want the cloned voice to say..."></textarea>
                 <button type="button" class="btn sm" id="twinVoiceTestBtn" style="margin-top:10px" disabled>Test voice</button>

@@ -1,7 +1,7 @@
 {
   "8": {
     "inputs": {
-      "audio": "5b5c537c4c9c170fd46efb130c4c67c0d281bdcf77eac22c1d120a9bfa855654.wav"
+      "audio": "145693a47ab60c0120a94a04b62b272b55e11cb81aa241c263bac7a17e5906aa.wav"
     },
     "class_type": "LoadAudio",
     "_meta": {
@@ -11,14 +11,14 @@
   "9": {
     "inputs": {
       "text": [
-        "12",
+        "24",
         0
       ],
       "model": "s2.1-pro",
-      "model.temperature": 0.4,
+      "model.temperature": 0.7,
       "model.top_p": 0.5,
       "model.speed": 1,
-      "model.volume": 0,
+      "model.volume": 1.5,
       "model.normalize": false,
       "seed": 144368708,
       "model.voices.voice0": [
@@ -80,6 +80,36 @@
     "class_type": "TrimAudioDuration",
     "_meta": {
       "title": "Trim Audio Duration"
+    }
+  },
+  "23": {
+    "inputs": {
+      "model": "Gemini 3.8 Flash",
+      "model.prompt": [
+        "12",
+        0
+      ],
+      "model.video_processing": "static",
+      "model.thinking_level": "MEDIUM",
+      "model.max_output_tokens": 32768,
+      "model.seed": 42,
+      "model.system_prompt": "[Dialogue Performance Instruction]\n\nDeliver the dialogue in a natural, relaxed, conversational voice.\n\nPrioritize realistic human speech and natural intonation over emotional acting.\n\nThe character should sound like they are naturally talking to the audience, not performing a dramatic monologue.\n\nUse subtle changes in pitch, rhythm, emphasis, pacing, and pauses to reflect the meaning of the dialogue.\n\nKeep the emotional expression restrained and understated. Do not overact, exaggerate emotions, or suddenly change the character's tone.\n\n**Do not automatically add laughter, chuckling, sighing, gasping, crying, smiling sounds, or other vocal reactions.**\n\nOnly use a vocal reaction when the original dialogue or scene explicitly requires it.\n\nDo not add `[chuckle]`, `[laughs]`, `[giggles]`, `[sighs]`, `[gasps]`, `[groans]`, or similar reaction cues unless specifically requested or clearly necessary for the scene.\n\nDo not interpret ordinary words, pauses, or dramatic wording as a reason to laugh or add a vocal reaction.\n\nPauses should normally be silent and natural. Use `[pauses]` or `[long pause]` only when needed for realistic pacing or emphasis.\n\nDo not turn pauses into audible breaths, laughs, or dramatic vocal effects.\n\nUse emotional cues sparingly. Do not add an emotional cue to every line.\n\nAvoid sudden shifts into whispering, shouting, laughing, or exaggerated emotional delivery.\n\nThe default delivery should remain calm, natural, conversational, and consistent from beginning to end.\n\nIf no specific emotion or performance cue is provided, use a neutral but naturally expressive conversational intonation.\n\nPreserve the original dialogue wording and meaning. Do not add words, reactions, or sounds that are not present in the original dialogue.\n\n**Default behavior: natural conversational delivery, subtle intonation, minimal expression, no unnecessary vocal reactions.**\n"
+    },
+    "class_type": "GeminiNodeV3",
+    "_meta": {
+      "title": "Google Gemini"
+    }
+  },
+  "24": {
+    "inputs": {
+      "source": [
+        "23",
+        0
+      ]
+    },
+    "class_type": "PreviewAny",
+    "_meta": {
+      "title": "Preview as Text"
     }
   }
 }

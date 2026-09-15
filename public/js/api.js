@@ -40,10 +40,11 @@ export async function generateVoiceSample(talentId, formData) {
   return payload.talent;
 }
 
-export async function previewVoiceSample(script, audioFile) {
+export async function previewVoiceSample(script, audioFile, trimDuration) {
   const formData = new FormData();
   formData.set("voiceScript", script);
   formData.set("audio", audioFile, audioFile.name);
+  if (trimDuration) formData.set("voiceTrimDuration", trimDuration);
   const response = await fetch("/api/voice-preview", { method: "POST", body: formData });
   if (!response.ok) {
     const payload = await response.json().catch(() => ({}));

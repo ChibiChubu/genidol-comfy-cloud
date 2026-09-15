@@ -95,6 +95,7 @@ function bindOnce() {
       const formData = new FormData();
       formData.set("audio", file, file.name);
       formData.set("voiceScript", script);
+      formData.set("voiceTrimDuration", document.getElementById("pfVoiceTrimDuration").value);
       const talent = await generateVoiceSample(currentTalent.id, formData);
       currentTalent = talent;
       status.innerHTML = "";
@@ -151,6 +152,7 @@ export async function renderProfile(id) {
   document.getElementById("pfVoiceStatus").innerHTML = "";
   document.getElementById("pfVoiceResult").innerHTML = "";
   document.getElementById("pfVoiceScript").value = "";
+  document.getElementById("pfVoiceTrimDuration").value = "60";
   const voiceAudioInput = document.getElementById("pfVoiceAudio");
   const pendingAudio = takePendingVoiceAudio();
   if (pendingAudio) {
