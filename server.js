@@ -451,6 +451,68 @@ function throwIfAborted(signal) {
   }
 }
 
+const RATE_LIMIT_RETRIES = 2;
+const RATE_LIMIT_WAIT_MS = 45_000;
+
+function isRateLimitError(error) {
+  return /rate limit|429/i.test(error?.message || "");
+}
+
+function abortableDelay(ms, signal) {
+  return new Promise((resolvePromise, reject) => {
+    const timer = setTimeout(resolvePromise, ms);
+    signal?.addEventListener("abort", () => {
+      clearTimeout(timer);
+      const error = new Error("Generation cancelled.");
+      error.status = 499;
+      reject(error);
+    }, { once: true });
+  });
+}
+
+// A partner node (OpenAI/Seedream/Kling) can hit an upstream 429. Resubmitting the same
+// workflow reuses Comfy Cloud's cached node results, so only the failed nodes rerun.
+async function submitAndWait(workflow, apiKey, signal) {
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      const promptId = await submitWorkflow(workflow, apiKey);
+      const outputs = await waitForCompletion(promptId, apiKey, signal);
+      return { promptId, outputs };
+    } catch (error) {
+      if (attempt >= RATE_LIMIT_RETRIES || !isRateLimitError(error) || signal?.aborted) throw error;
+      await abortableDelay(RATE_LIMIT_WAIT_MS * (attempt + 1), signal);
+      throwIfAborted(signal);
+    }
+  }
+}
+
+const keyGates = new Map();
+
+// One generation at a time per API key: parallel jobs multiply the simultaneous
+// Seedream/OpenAI calls and trigger upstream 429s. Later jobs wait their turn.
+async function withKeyGate(apiKey, signal, fn) {
+  const previous = keyGates.get(apiKey) || Promise.resolve();
+  let release;
+  const mine = new Promise((resolvePromise) => { release = resolvePromise; });
+  const tail = previous.then(() => mine);
+  keyGates.set(apiKey, tail);
+  tail.then(() => {
+    if (keyGates.get(apiKey) === tail) keyGates.delete(apiKey);
+  });
+  try {
+    await new Promise((resolvePromise, reject) => {
+      previous.then(resolvePromise);
+      if (signal?.aborted) reject(Object.assign(new Error("Generation cancelled."), { status: 499 }));
+      signal?.addEventListener("abort", () => {
+        reject(Object.assign(new Error("Generation cancelled."), { status: 499 }));
+      }, { once: true });
+    });
+    return await fn();
+  } finally {
+    release();
+  }
+}
+
 async function runComfyGeneration(apiKey, fields, files, signal) {
   const body = normalizeBody(fields);
   const references = ["ref1", "ref2", "ref3", "ref4"].map((name) => files[name]).filter(Boolean);
@@ -484,8 +546,7 @@ async function runComfyGeneration(apiKey, fields, files, signal) {
   }
 
   throwIfAborted(signal);
-  const promptId = await submitWorkflow(workflow, apiKey);
-  const outputs = await waitForCompletion(promptId, apiKey, signal);
+  const { promptId, outputs } = await withKeyGate(apiKey, signal, () => submitAndWait(workflow, apiKey, signal));
   const assets = collectAssets(workflow, outputs);
 
   return { body, payload, workflow, uploadedRefs, referenceFiles: references, promptId, outputs, assets };
@@ -513,8 +574,7 @@ async function runVoiceCloning(apiKey, script, audioFile, signal, trimDuration) 
     trimDuration,
   });
 
-  const promptId = await submitWorkflow(workflow, apiKey);
-  const outputs = await waitForCompletion(promptId, apiKey, signal);
+  const { promptId, outputs } = await submitAndWait(workflow, apiKey, signal);
   const asset = collectAudioAsset(outputs, saveAudioNodeId);
   if (!asset) {
     throw new Error("Voice generation completed but no audio output was found.");
