@@ -55,6 +55,9 @@ html[data-theme="light"] .btn.primary{color:#fff}
 .pill.iris{background:var(--iris-bg);color:var(--iris);border:1px solid var(--iris-bd)}
 .pill.amber{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
 .pill.gray{background:var(--panel3);color:var(--text2);border:1px solid var(--line2)}
+.logobar{padding:14px 26px;background:var(--panel)}
+.brand-logo{height:34px;width:auto;display:block}
+html[data-theme="light"] .brand-logo{filter:invert(1)}
 .mark{width:34px;height:34px;border-radius:10px;background:var(--iris-bg);color:var(--iris);
   display:flex;align-items:center;justify-content:center;border:1px solid var(--iris-bd)}
 .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:11px}
