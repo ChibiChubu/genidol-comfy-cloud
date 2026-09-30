@@ -175,11 +175,14 @@ export async function renderProfile(id) {
   const wardrobeLabel = talent.clientOutfitUsed
     ? "Client-uploaded outfit"
     : [wardrobe.mode, wardrobe.shirtId, wardrobe.pantsId, wardrobe.dressId].filter(Boolean).join(" · ");
+  const usage = talent.usage;
+  const usageLabel = usage ? `~$${usage.estimatedUsd.toFixed(2)}` : "—";
   document.getElementById("pfWardrobeMeta").innerHTML = `
     <div class="stat"><div class="k">Height</div><div class="v">${escapeHtml(talent.height || "—")}</div></div>
     <div class="stat"><div class="k">Eyes</div><div class="v">${escapeHtml(talent.eyes || "—")}</div></div>
     <div class="stat"><div class="k">Hair</div><div class="v">${escapeHtml(talent.hair || "—")}</div></div>
     <div class="stat"><div class="k">Wardrobe</div><div class="v">${escapeHtml(wardrobeLabel || "—")}</div></div>
+    <div class="stat" ${usage ? `title="${escapeHtml(usage.note)}"` : ""}><div class="k">Est. usage</div><div class="v">${usageLabel}</div></div>
   `;
 
   document.getElementById("pfTwinGrid").innerHTML = OUTPUT_ORDER

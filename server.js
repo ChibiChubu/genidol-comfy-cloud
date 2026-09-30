@@ -16,6 +16,7 @@ import {
   listTalents,
   updateTalentOwner,
   updateTalentAsset,
+  addTalentUsage,
 } from "./lib/talentStore.js";
 import { loadVoiceWorkflowGraph, buildVoiceCloningPayload } from "./lib/voiceWorkflow.js";
 import {
@@ -473,16 +474,49 @@ function abortableDelay(ms, signal) {
 // A partner node (OpenAI/Seedream/Kling) can hit an upstream 429. Resubmitting the same
 // workflow reuses Comfy Cloud's cached node results, so only the failed nodes rerun.
 async function submitAndWait(workflow, apiKey, signal) {
+  const startedAt = Date.now();
   for (let attempt = 0; ; attempt += 1) {
     try {
       const promptId = await submitWorkflow(workflow, apiKey);
       const outputs = await waitForCompletion(promptId, apiKey, signal);
-      return { promptId, outputs };
+      return { promptId, outputs, startedAt, endedAt: Date.now() };
     } catch (error) {
       if (attempt >= RATE_LIMIT_RETRIES || !isRateLimitError(error) || signal?.aborted) throw error;
       await abortableDelay(RATE_LIMIT_WAIT_MS * (attempt + 1), signal);
       throwIfAborted(signal);
     }
+  }
+}
+
+// ComfyUI Cloud has no per-job cost endpoint, only account-wide spend bucketed by hour
+// (GET /api/billing/usage/timeseries). We approximate a generation's cost by summing the
+// hourly buckets that overlap its run window - an estimate, not an exact per-job figure,
+// and it can be skewed by other activity on the same account in the same hour.
+async function estimateUsageUsd(apiKey, startedAt, endedAt) {
+  try {
+    const hourMs = 60 * 60 * 1000;
+    const starting_on = new Date(Math.floor(startedAt / hourMs) * hourMs).toISOString();
+    const ending_before = new Date(Math.ceil(endedAt / hourMs) * hourMs + hourMs).toISOString();
+    const params = new URLSearchParams({ granularity: "hour", group_by: "model", starting_on, ending_before });
+    const response = await fetch(`${COMFYUI_ENDPOINT}/api/billing/usage/timeseries?${params.toString()}`, {
+      headers: { "X-API-Key": apiKey },
+    });
+    if (!response.ok) return null;
+    const data = JSON.parse(await readResponse(response));
+    let totalMicros = 0;
+    for (const bucket of data.buckets || []) {
+      const bucketStart = new Date(bucket.period_start).getTime();
+      const bucketEnd = new Date(bucket.period_end).getTime();
+      if (bucketStart < endedAt && bucketEnd > startedAt) {
+        totalMicros += bucket.cost_micros || 0;
+      }
+    }
+    return {
+      estimatedUsd: totalMicros / 1_000_000,
+      note: "Estimated from Comfy Cloud's hourly usage buckets - may include other activity on this account during the same hour(s).",
+    };
+  } catch {
+    return null;
   }
 }
 
@@ -546,10 +580,10 @@ async function runComfyGeneration(apiKey, fields, files, signal) {
   }
 
   throwIfAborted(signal);
-  const { promptId, outputs } = await withKeyGate(apiKey, signal, () => submitAndWait(workflow, apiKey, signal));
+  const { promptId, outputs, startedAt, endedAt } = await withKeyGate(apiKey, signal, () => submitAndWait(workflow, apiKey, signal));
   const assets = collectAssets(workflow, outputs);
 
-  return { body, payload, workflow, uploadedRefs, referenceFiles: references, promptId, outputs, assets };
+  return { body, payload, workflow, uploadedRefs, referenceFiles: references, promptId, outputs, assets, startedAt, endedAt };
 }
 
 function collectAudioAsset(outputs, saveNodeId) {
@@ -574,12 +608,12 @@ async function runVoiceCloning(apiKey, script, audioFile, signal, trimDuration) 
     trimDuration,
   });
 
-  const { promptId, outputs } = await submitAndWait(workflow, apiKey, signal);
+  const { promptId, outputs, startedAt, endedAt } = await submitAndWait(workflow, apiKey, signal);
   const asset = collectAudioAsset(outputs, saveAudioNodeId);
   if (!asset) {
     throw new Error("Voice generation completed but no audio output was found.");
   }
-  return { asset, promptId };
+  return { asset, promptId, startedAt, endedAt };
 }
 
 async function downloadComfyAsset(filename, subfolder, type, apiKey) {
@@ -879,6 +913,8 @@ const server = http.createServer(async (req, res) => {
         const talentId = randomUUID();
         try {
           let voiceAssetMap = {};
+          let usageStart = null;
+          let usageEnd = null;
           if (files.audio) {
             throwIfAborted(abortController.signal);
             const voiceScript = (fields.voiceScript || "").trim();
@@ -887,7 +923,10 @@ const server = http.createServer(async (req, res) => {
               error.status = 400;
               throw error;
             }
-            const { asset: voiceAsset } = await runVoiceCloning(apiKey, voiceScript, files.audio, abortController.signal, fields.voiceTrimDuration);
+            const { asset: voiceAsset, startedAt: voiceStart, endedAt: voiceEnd } =
+              await runVoiceCloning(apiKey, voiceScript, files.audio, abortController.signal, fields.voiceTrimDuration);
+            usageStart = voiceStart;
+            usageEnd = voiceEnd;
             const voiceBuffer = await downloadComfyAsset(voiceAsset.filename, voiceAsset.subfolder, voiceAsset.type, apiKey);
             const talentDir = join(GENERATED_DIR, talentId);
             await mkdir(talentDir, { recursive: true });
@@ -898,6 +937,8 @@ const server = http.createServer(async (req, res) => {
           }
 
           const result = await runComfyGeneration(apiKey, fields, files, abortController.signal);
+          usageStart = usageStart === null ? result.startedAt : Math.min(usageStart, result.startedAt);
+          usageEnd = usageEnd === null ? result.endedAt : Math.max(usageEnd, result.endedAt);
           const { assetMap, references } = await persistTalentAssets(
             talentId,
             result.assets,
@@ -911,6 +952,8 @@ const server = http.createServer(async (req, res) => {
             throw new Error(`Generation completed but missing expected outputs: ${missing.join(", ")}`);
           }
 
+          const usage = await estimateUsageUsd(apiKey, usageStart, usageEnd);
+
           const talent = await addTalent({
             id: talentId,
             ownerId: user.id,
@@ -923,6 +966,7 @@ const server = http.createServer(async (req, res) => {
             promptId: result.promptId,
             assets: { ...voiceAssetMap, ...assetMap },
             references,
+            usage,
           });
 
           sendJson(res, { talent });
@@ -979,7 +1023,7 @@ const server = http.createServer(async (req, res) => {
           return;
         }
 
-        const { asset } = await runVoiceCloning(user.comfyApiKey, voiceScript, audioFile, undefined, fields.voiceTrimDuration);
+        const { asset, startedAt, endedAt } = await runVoiceCloning(user.comfyApiKey, voiceScript, audioFile, undefined, fields.voiceTrimDuration);
         const buffer = await downloadComfyAsset(asset.filename, asset.subfolder, asset.type, user.comfyApiKey);
 
         const talentDir = join(GENERATED_DIR, id);
@@ -988,7 +1032,9 @@ const server = http.createServer(async (req, res) => {
         const outFilename = `voice-sample${ext}`;
         await writeFile(join(talentDir, outFilename), buffer);
 
-        const updated = await updateTalentAsset(id, "voiceSample", { url: `/generated/${id}/${outFilename}` });
+        await updateTalentAsset(id, "voiceSample", { url: `/generated/${id}/${outFilename}` });
+        const usage = await estimateUsageUsd(user.comfyApiKey, startedAt, endedAt);
+        const updated = await addTalentUsage(id, usage);
         sendJson(res, { talent: updated });
       } catch (error) {
         sendJson(res, {
